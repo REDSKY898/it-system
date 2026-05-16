@@ -158,7 +158,18 @@
     const nextWeek = new Date(Date.now() + 7*24*60*60*1000).toISOString().split('T')[0];
 
     // โหลดอุปกรณ์ที่เลือกไว้
-    const deviceStr = sessionStorage.getItem('borrowDevice') || localStorage.getItem('selectedDevice');
+    // รับ device_id จาก URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const deviceId = urlParams.get('id');
+
+    // หาข้อมูลอุปกรณ์จาก selectedDevice หรือ id
+    let deviceStr = localStorage.getItem('selectedDevice');
+    if (deviceId && deviceStr) {
+      const d = JSON.parse(deviceStr);
+      if (d.device_id !== deviceId) {
+        deviceStr = null; // ล้างถ้า id ไม่ตรง
+      }
+    }
     if (deviceStr) {
       const d = JSON.parse(deviceStr);
       const deviceSection = document.getElementById('device-section');
