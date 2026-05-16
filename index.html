@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IT Helpdesk — เข้าสู่ระบบ</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -40,37 +41,31 @@
       color: #1a1a1a;
       margin-bottom: 8px;
     }
-    p {
+    .subtitle {
       font-size: 14px;
       color: #666;
       margin-bottom: 32px;
     }
-    .btn-login {
-      width: 100%;
-      padding: 14px;
-      background: #1D9E75;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 500;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    .btn-login:hover { background: #178a64; }
-    .note {
-      margin-top: 20px;
-      font-size: 12px;
-      color: #999;
-    }
+    #g_signin { display: flex; justify-content: center; margin-bottom: 16px; }
     #msg {
       margin-top: 16px;
       font-size: 14px;
       color: #e53e3e;
       display: none;
+      padding: 10px;
+      background: #fff5f5;
+      border-radius: 8px;
+    }
+    .note {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #999;
+    }
+    .loading {
+      display: none;
+      font-size: 14px;
+      color: #666;
+      margin-top: 12px;
     }
   </style>
 </head>
@@ -78,45 +73,79 @@
   <div class="card">
     <div class="logo">🖥️</div>
     <h1>IT Helpdesk</h1>
-    <p>มหาวิทยาลัยเกษตรศาสตร์<br>เข้าสู่ระบบด้วยอีเมล @ku.th เท่านั้น</p>
+    <p class="subtitle">มหาวิทยาลัยเกษตรศาสตร์<br>เข้าสู่ระบบด้วยอีเมล @ku.th เท่านั้น</p>
 
-    <button class="btn-login" onclick="signIn()">
-      <img src="https://www.google.com/favicon.ico" width="20" height="20"/>
-      เข้าสู่ระบบด้วย Google
-    </button>
-
+    <div id="g_signin"></div>
+    <div class="loading" id="loading">⏳ กำลังตรวจสอบ...</div>
     <div id="msg"></div>
     <p class="note">เฉพาะบุคลากรที่ได้รับสิทธิ์เท่านั้น</p>
   </div>
 
   <script>
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbwRwYG6zliBbpSrQQzgTIVhFODMbe6Nfb5zG-AV_APAIuC-2HP2QJAb98FfKEYVC3vY/exec';
+    const CLIENT_ID = '767597310474-euurrls08gs2ep2lss8kh43a6ilhdlv9.apps.googleusercontent.com';
 
     // ถ้า login อยู่แล้ว ไป dashboard เลย
     if (localStorage.getItem('user')) {
       location.href = 'dashboard.html';
     }
 
-    function signIn() {
-      const email = prompt('กรอกอีเมล @ku.th ของคุณ (ทดสอบ):');
-      if (!email) return;
+    // เมื่อ Google Sign In สำเร็จ
+    function handleCredentialResponse(response) {
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('msg').style.display = 'none';
 
+      // ถอดข้อมูลจาก JWT token
+      const payload = JSON.parse(atob(response.credential.split('.')[1]));
+      const email = payload.email;
+      const name = payload.name;
+
+      // ตรวจ domain @ku.th ฝั่ง Frontend ก่อน
+      if (!email.endsWith('@ku.th')) {
+        document.getElementById('loading').style.display = 'none';
+        showError('อีเมลต้องเป็น @ku.th เท่านั้น');
+        return;
+      }
+
+      // ส่งไป GAS ตรวจ Whitelist
       fetch(GAS_URL + '?action=checkUser&email=' + email)
         .then(res => res.json())
         .then(data => {
+          document.getElementById('loading').style.display = 'none';
           if (data.success) {
-            localStorage.setItem('user', JSON.stringify(data));
+            localStorage.setItem('user', JSON.stringify({
+              email: email,
+              name: name,
+              role: data.role
+            }));
             location.href = 'dashboard.html';
           } else {
-            document.getElementById('msg').style.display = 'block';
-            document.getElementById('msg').textContent = data.message;
+            showError(data.message);
           }
         })
-        .catch(err => {
-          document.getElementById('msg').style.display = 'block';
-          document.getElementById('msg').textContent = 'เกิดข้อผิดพลาด กรุณาลองใหม่';
+        .catch(() => {
+          document.getElementById('loading').style.display = 'none';
+          showError('เกิดข้อผิดพลาด กรุณาลองใหม่');
         });
     }
+
+    function showError(msg) {
+      const el = document.getElementById('msg');
+      el.style.display = 'block';
+      el.textContent = msg;
+    }
+
+    // เริ่ม Google Sign In
+    window.onload = function() {
+      google.accounts.id.initialize({
+        client_id: CLIENT_ID,
+        callback: handleCredentialResponse
+      });
+      google.accounts.id.renderButton(
+        document.getElementById('g_signin'),
+        { theme: 'outline', size: 'large', text: 'signin_with', locale: 'th' }
+      );
+    };
   </script>
 </body>
 </html>
