@@ -233,9 +233,8 @@
     }
 
     function goBorrow() {
-      // เก็บข้อมูลอุปกรณ์ไว้ใน sessionStorage แทน localStorage
-      sessionStorage.setItem('borrowDevice', deviceStr);
-      location.href = 'borrow.html';
+    const d = JSON.parse(localStorage.getItem('selectedDevice'));
+      location.href = 'borrow.html?id=' + d.device_id;
     }
   </script>
 
