@@ -82,6 +82,7 @@
     .no-device {
       text-align: center; padding: 20px; color: #999; font-size: 14px;
     }
+    .loading { text-align: center; padding: 20px; color: #666; font-size: 14px; }
   </style>
 </head>
 <body>
@@ -93,24 +94,15 @@
 
   <div class="container">
 
-    <!-- อุปกรณ์ที่เลือก -->
     <div class="card">
       <p class="card-title">อุปกรณ์ที่ต้องการยืม</p>
       <div id="device-section">
-        <div class="no-device">
-          กรุณาเลือกอุปกรณ์จากหน้ารายการก่อนครับ<br><br>
-          <button onclick="location.href='devices.html'"
-            style="padding:10px 20px;background:#7F77DD;color:white;border:none;border-radius:10px;cursor:pointer;font-size:14px">
-            เลือกอุปกรณ์
-          </button>
-        </div>
+        <div class="loading">⏳ กำลังโหลดข้อมูลอุปกรณ์...</div>
       </div>
     </div>
 
-    <!-- ฟอร์มยืม -->
     <div class="card" id="form-card" style="display:none">
       <p class="card-title">รายละเอียดการยืม</p>
-
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">วันที่ต้องการยืม <span>*</span></label>
@@ -121,13 +113,11 @@
           <input type="date" class="form-input" id="return-date"/>
         </div>
       </div>
-
       <div class="form-group">
         <label class="form-label">วัตถุประสงค์การยืม <span>*</span></label>
         <textarea class="form-input" id="purpose"
           placeholder="เช่น ใช้สำหรับการประชุมโครงการวิจัย..."></textarea>
       </div>
-
       <div id="action-btn"></div>
       <div id="msg"></div>
     </div>
@@ -153,28 +143,56 @@
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     if (!user.email) { location.href = 'index.html'; }
 
-    // ตั้งวันที่เริ่มต้น
     const today = new Date().toISOString().split('T')[0];
     const nextWeek = new Date(Date.now() + 7*24*60*60*1000).toISOString().split('T')[0];
 
-    // โหลดอุปกรณ์ที่เลือกไว้
     // รับ device_id จาก URL parameter
     const urlParams = new URLSearchParams(window.location.search);
     const deviceId = urlParams.get('id');
 
-    // หาข้อมูลอุปกรณ์จาก selectedDevice หรือ id
-    let deviceStr = localStorage.getItem('selectedDevice');
-    if (deviceId && deviceStr) {
-      const d = JSON.parse(deviceStr);
-      if (d.device_id !== deviceId) {
-        deviceStr = null; // ล้างถ้า id ไม่ตรง
+    // โหลดข้อมูลอุปกรณ์จาก GAS โดยตรง
+    if (deviceId) {
+      fetch(GAS_URL + '?action=getDevices')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            const device = data.devices.find(d => d.device_id === deviceId);
+            if (device) {
+              showDevice(device);
+            } else {
+              showNoDevice();
+            }
+          } else {
+            showNoDevice();
+          }
+        })
+        .catch(() => showNoDevice());
+    } else {
+      // ถ้าไม่มี id ใน URL ให้ดึงจาก localStorage
+      const deviceStr = localStorage.getItem('selectedDevice');
+      if (deviceStr) {
+        showDevice(JSON.parse(deviceStr));
+      } else {
+        showNoDevice();
       }
     }
-    if (deviceStr) {
-      const d = JSON.parse(deviceStr);
-      const deviceSection = document.getElementById('device-section');
 
-      // แสดงข้อมูลอุปกรณ์
+    function showNoDevice() {
+      document.getElementById('device-section').innerHTML = `
+        <div class="no-device">
+          กรุณาเลือกอุปกรณ์จากหน้ารายการก่อนครับ<br><br>
+          <button onclick="location.href='devices.html'"
+            style="padding:10px 20px;background:#7F77DD;color:white;border:none;border-radius:10px;cursor:pointer;font-size:14px">
+            เลือกอุปกรณ์
+          </button>
+        </div>`;
+    }
+
+    function showDevice(d) {
+      // เก็บไว้ใช้ตอน submit
+      window.currentDevice = d;
+
+      const deviceSection = document.getElementById('device-section');
       let statusClass = 'status-available';
       if (d.status === 'borrowed' || d.status === 'prep') statusClass = 'status-unavailable';
       if (d.type === 'room') statusClass = 'status-room';
@@ -194,13 +212,11 @@
           ${d.type === 'room' ? ' — อุปกรณ์ประจำห้องไม่สามารถยืมได้' : ''}
         </div>`;
 
-      // แสดงฟอร์มถ้ายืมได้หรือลงคิวได้
       if (d.type !== 'room') {
         document.getElementById('form-card').style.display = 'block';
         document.getElementById('borrow-date').value = today;
         document.getElementById('return-date').value = nextWeek;
 
-        // ปุ่มตามสถานะ
         if (d.status === 'available') {
           document.getElementById('action-btn').innerHTML = `
             <button class="btn-submit" onclick="submitBorrow('borrow')">
@@ -217,4 +233,66 @@
 
     async function submitBorrow(type) {
       const borrowDate = document.getElementById('borrow-date').value;
-      const returnDate = document.getElementById('return-date').v
+      const returnDate = document.getElementById('return-date').value;
+      const purpose = document.getElementById('purpose').value.trim();
+
+      if (!borrowDate) { showMsg('กรุณาเลือกวันที่ยืม', 'error'); return; }
+      if (!returnDate) { showMsg('กรุณาเลือกวันที่คืน', 'error'); return; }
+      if (!purpose) { showMsg('กรุณากรอกวัตถุประสงค์', 'error'); return; }
+      if (returnDate < borrowDate) {
+        showMsg('วันที่คืนต้องหลังวันที่ยืม', 'error'); return;
+      }
+
+      const d = window.currentDevice;
+      if (!d) { showMsg('ไม่พบข้อมูลอุปกรณ์', 'error'); return; }
+
+      const btn = document.querySelector('.btn-submit, .btn-queue');
+      btn.disabled = true;
+      btn.textContent = '⏳ กำลังส่ง...';
+
+      const payload = {
+        action: type === 'borrow' ? 'createBorrow' : 'createQueue',
+        device_id: d.device_id,
+        borrower_email: user.email,
+        borrow_date: borrowDate,
+        due_date: returnDate,
+        purpose: purpose
+      };
+
+      try {
+        const res = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          const id = data.borrow_id || data.queue_id;
+          showMsg(
+            type === 'borrow'
+              ? '✅ ส่งคำขอยืมสำเร็จ! รอ Admin อนุมัติ ID: ' + id
+              : '✅ ลงคิวสำเร็จ! ระบบจะแจ้งทาง Email เมื่ออุปกรณ์ว่าง ID: ' + id,
+            'success'
+          );
+          btn.textContent = '✅ ส่งแล้ว';
+        } else {
+          showMsg('❌ ' + data.message, 'error');
+          btn.disabled = false;
+          btn.textContent = type === 'borrow' ? '📦 ส่งคำขอยืม' : '⏳ ลงคิวรออุปกรณ์';
+        }
+      } catch(e) {
+        showMsg('❌ เกิดข้อผิดพลาด กรุณาลองใหม่', 'error');
+        btn.disabled = false;
+        btn.textContent = type === 'borrow' ? '📦 ส่งคำขอยืม' : '⏳ ลงคิวรออุปกรณ์';
+      }
+    }
+
+    function showMsg(text, type) {
+      const el = document.getElementById('msg');
+      el.style.display = 'block';
+      el.className = type === 'success' ? 'msg-success' : 'msg-error';
+      el.textContent = text;
+    }
+  </script>
+
+</body>
+</html>
