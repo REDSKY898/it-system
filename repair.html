@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IT Helpdesk — แจ้งซ่อม</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Sarabun', sans-serif; background: #f0f4f8; }
+    .navbar {
+      background: #1D9E75; padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .navbar-brand { color: white; font-size: 18px; font-weight: 600; }
+    .btn-back {
+      background: rgba(255,255,255,0.2); color: white;
+      border: none; padding: 6px 14px; border-radius: 8px;
+      cursor: pointer; font-size: 13px;
+    }
+    .container { max-width: 600px; margin: 0 auto; padding: 24px 16px; }
+    .card {
+      background: white; border-radius: 16px; padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 15px; font-weight: 600; color: #1a1a1a;
+      margin-bottom: 16px; padding-bottom: 10px;
+      border-bottom: 0.5px solid #eee;
+    }
+    .device-selected {
+      display: flex; align-items: center; gap: 12px;
+      background: #f0f4f8; border-radius: 10px; padding: 12px;
+      margin-bottom: 16px;
+    }
+    .device-icon { font-size: 28px; }
+    .device-info-name { font-size: 14px; font-weight: 500; color: #1a1a1a; }
+    .device-info-code { font-size: 12px; color: #999; font-family: monospace; }
+    .btn-change {
+      margin-left: auto; font-size: 12px; color: #1D9E75;
+      background: none; border: none; cursor: pointer;
+    }
+    .form-group { margin-bottom: 16px; }
+    .form-label {
+      font-size: 13px; font-weight: 500; color: #444;
+      margin-bottom: 6px; display: block;
+    }
+    .form-label span { color: #e53e3e; }
+    .form-input {
+      width: 100%; padding: 10px 14px; border: 0.5px solid #ddd;
+      border-radius: 10px; font-size: 14px; outline: none;
+      font-family: inherit; background: white; color: #1a1a1a;
+    }
+    .form-input:focus { border-color: #1D9E75; }
+    textarea.form-input { height: 100px; resize: none; }
+    .photo-grid {
+      display: grid; grid-template-columns: repeat(5,1fr); gap: 8px;
+    }
+    .photo-slot {
+      aspect-ratio: 1; border: 1.5px dashed #ddd; border-radius: 10px;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; cursor: pointer; font-size: 20px;
+      background: #fafafa; position: relative; overflow: hidden;
+    }
+    .photo-slot:hover { border-color: #1D9E75; background: #f0fdf8; }
+    .photo-slot img {
+      width: 100%; height: 100%; object-fit: cover; position: absolute;
+    }
+    .photo-slot input { display: none; }
+    .photo-label { font-size: 10px; color: #999; margin-top: 4px; }
+    .btn-submit {
+      width: 100%; padding: 14px; background: #1D9E75; color: white;
+      border: none; border-radius: 12px; font-size: 16px; font-weight: 500;
+      cursor: pointer; margin-top: 8px;
+    }
+    .btn-submit:hover { background: #178a64; }
+    .btn-submit:disabled { background: #aaa; cursor: not-allowed; }
+    #msg {
+      padding: 12px; border-radius: 10px; font-size: 14px;
+      text-align: center; display: none; margin-top: 12px;
+    }
+    .msg-success { background: #E1F5EE; color: #085041; }
+    .msg-error { background: #FCEBEB; color: #791F1F; }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <span class="navbar-brand">🔧 แจ้งซ่อม</span>
+    <button class="btn-back" onclick="history.back()">← กลับ</button>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <p class="card-title">อุปกรณ์ที่แจ้งซ่อม</p>
+
+      <div class="device-selected" id="device-selected">
+        <span class="device-icon" id="rep-icon">📦</span>
+        <div>
+          <p class="device-info-name" id="rep-name">เลือกอุปกรณ์</p>
+          <p class="device-info-code" id="rep-code">-</p>
+        </div>
+        <button class="btn-change" onclick="location.href='devices.html'">เปลี่ยน</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">อาการที่พบ <span>*</span></label>
+        <textarea class="form-input" id="symptom" placeholder="อธิบายอาการที่พบ เช่น หน้าจอกะพริบ เปิดไม่ติด..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">รูปภาพประกอบ (สูงสุด 5 รูป)</label>
+        <div class="photo-grid">
+          <div class="photo-slot" onclick="document.getElementById('photo1').click()">
+            📷<span class="photo-label">รูปที่ 1</span>
+            <input type="file" id="photo1" accept="image/*" onchange="previewPhoto(this,0)"/>
+          </div>
+          <div class="photo-slot" onclick="document.getElementById('photo2').click()">
+            📷<span class="photo-label">รูปที่ 2</span>
+            <input type="file" id="photo2" accept="image/*" onchange="previewPhoto(this,1)"/>
+          </div>
+          <div class="photo-slot" onclick="document.getElementById('photo3').click()">
+            📷<span class="photo-label">รูปที่ 3</span>
+            <input type="file" id="photo3" accept="image/*" onchange="previewPhoto(this,2)"/>
+          </div>
+          <div class="photo-slot" onclick="document.getElementById('photo4').click()">
+            📷<span class="photo-label">รูปที่ 4</span>
+            <input type="file" id="photo4" accept="image/*" onchange="previewPhoto(this,3)"/>
+          </div>
+          <div class="photo-slot" onclick="document.getElementById('photo5').click()">
+            📷<span class="photo-label">รูปที่ 5</span>
+            <input type="file" id="photo5" accept="image/*" onchange="previewPhoto(this,4)"/>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-submit" id="btn-submit" onclick="submitRepair()">
+        📨 ส่งแจ้งซ่อม
+      </button>
+      <div id="msg"></div>
+    </div>
+  </div>
+
+  <script>
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwRwYG6zliBbpSrQQzgTIVhFODMbe6Nfb5zG-AV_APAIuC-2HP2QJAb98FfKEYVC3vY/exec';
+
+    const ICONS = {
+      'Notebook':'💻','Projector':'📽️','PC':'🖥️',
+      'Adapter':'🔌','Camera':'📷','Mouse':'🖱️','default':'📦'
+    };
+
+    // โหลดอุปกรณ์ที่เลือกไว้
+    const deviceStr = localStorage.getItem('selectedDevice');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+    if (deviceStr) {
+      const d = JSON.parse(deviceStr);
+      document.getElementById('rep-icon').textContent = ICONS[d.category] || ICONS.default;
+      document.getElementById('rep-name').textContent = d.name;
+      document.getElementById('rep-code').textContent = d.device_id + ' · ' + d.krupha_no;
+    }
+
+    // Preview รูป
+    function previewPhoto(input, index) {
+      if (!input.files[0]) return;
+      const slots = document.querySelectorAll('.photo-slot');
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        slots[index].innerHTML = '';
+        slots[index].appendChild(img);
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+
+    // ส่งแจ้งซ่อม
+    async function submitRepair() {
+      const symptom = document.getElementById('symptom').value.trim();
+      if (!symptom) {
+        showMsg('กรุณากรอกอาการที่พบ', 'error'); return;
+      }
+      if (!deviceStr) {
+        showMsg('กรุณาเลือกอุปกรณ์ก่อน', 'error'); return;
+      }
+
+      const device = JSON.parse(deviceStr);
+      const btn = document.getElementById('btn-submit');
+      btn.disabled = true;
+      btn.textContent = '⏳ กำลังส่ง...';
+
+      const payload = {
+        action: 'createTicket',
+        device_id: device.device_id,
+        requester_email: user.email || '',
+        symptom: symptom
+      };
+
+      try {
+        const res = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          showMsg('✅ ส่งแจ้งซ่อมสำเร็จ! Ticket: ' + data.ticket_id, 'success');
+          btn.textContent = '✅ ส่งแล้ว';
+        } else {
+          showMsg('❌ ' + data.message, 'error');
+          btn.disabled = false;
+          btn.textContent = '📨 ส่งแจ้งซ่อม';
+        }
+      } catch(e) {
+        showMsg('❌ เกิดข้อผิดพลาด กรุณาลองใหม่', 'error');
+        btn.disabled = false;
+        btn.textContent = '📨 ส่งแจ้งซ่อม';
+      }
+    }
+
+    function showMsg(text, type) {
+      const el = document.getElementById('msg');
+      el.style.display = 'block';
+      el.className = type === 'success' ? 'msg-success' : 'msg-error';
+      el.textContent = text;
+    }
+  </script>
+
+</body>
+</html>
