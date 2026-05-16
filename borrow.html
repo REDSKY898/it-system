@@ -158,7 +158,7 @@
     const nextWeek = new Date(Date.now() + 7*24*60*60*1000).toISOString().split('T')[0];
 
     // โหลดอุปกรณ์ที่เลือกไว้
-    const deviceStr = localStorage.getItem('borrowDevice') || localStorage.getItem('selectedDevice');
+    const deviceStr = sessionStorage.getItem('borrowDevice') || localStorage.getItem('selectedDevice');
     if (deviceStr) {
       const d = JSON.parse(deviceStr);
       const deviceSection = document.getElementById('device-section');
