@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IT Helpdesk — บันทึกงานหน้างาน</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Sarabun', sans-serif; background: #f0f4f8; }
+    .navbar {
+      background: #D85A30; padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .navbar-brand { color: white; font-size: 18px; font-weight: 600; }
+    .btn-back {
+      background: rgba(255,255,255,0.2); color: white;
+      border: none; padding: 6px 14px; border-radius: 8px;
+      cursor: pointer; font-size: 13px;
+    }
+    .container { max-width: 600px; margin: 0 auto; padding: 24px 16px; }
+    .card {
+      background: white; border-radius: 16px; padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 15px; font-weight: 600; color: #1a1a1a;
+      margin-bottom: 16px; padding-bottom: 10px;
+      border-bottom: 0.5px solid #eee;
+    }
+    .form-group { margin-bottom: 16px; }
+    .form-label {
+      font-size: 13px; font-weight: 500; color: #444;
+      margin-bottom: 6px; display: block;
+    }
+    .form-label span { color: #e53e3e; }
+    .form-input {
+      width: 100%; padding: 10px 14px; border: 0.5px solid #ddd;
+      border-radius: 10px; font-size: 14px; outline: none;
+      font-family: inherit; background: white; color: #1a1a1a;
+    }
+    .form-input:focus { border-color: #D85A30; }
+    textarea.form-input { height: 90px; resize: none; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .device-selected {
+      display: flex; align-items: center; gap: 12px;
+      background: #f0f4f8; border-radius: 10px; padding: 12px;
+      margin-bottom: 4px;
+    }
+    .device-icon { font-size: 28px; }
+    .device-info-name { font-size: 14px; font-weight: 500; color: #1a1a1a; }
+    .device-info-code { font-size: 12px; color: #999; font-family: monospace; }
+    .btn-change {
+      margin-left: auto; font-size: 12px; color: #D85A30;
+      background: none; border: none; cursor: pointer;
+    }
+    .optional-note {
+      font-size: 11px; color: #999; margin-top: 4px;
+    }
+    .photo-grid {
+      display: grid; grid-template-columns: repeat(5,1fr); gap: 8px;
+    }
+    .photo-slot {
+      aspect-ratio: 1; border: 1.5px dashed #ddd; border-radius: 10px;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; cursor: pointer; font-size: 20px;
+      background: #fafafa; position: relative; overflow: hidden;
+    }
+    .photo-slot:hover { border-color: #D85A30; background: #fff8f5; }
+    .photo-slot img { width: 100%; height: 100%; object-fit: cover; position: absolute; }
+    .photo-slot input { display: none; }
+    .photo-label { font-size: 10px; color: #999; margin-top: 4px; }
+    .btn-submit {
+      width: 100%; padding: 14px; background: #D85A30; color: white;
+      border: none; border-radius: 12px; font-size: 16px; font-weight: 500;
+      cursor: pointer; margin-top: 8px;
+    }
+    .btn-submit:hover { background: #c04e28; }
+    .btn-submit:disabled { background: #aaa; cursor: not-allowed; }
+    #msg {
+      padding: 12px; border-radius: 10px; font-size: 14px;
+      text-align: center; display: none; margin-top: 12px;
+    }
+    .msg-success { background: #E1F5EE; color: #085041; }
+    .msg-error { background: #FCEBEB; color: #791F1F; }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <span class="navbar-brand">🏃 บันทึกงานหน้างาน</span>
+    <button class="btn-back" onclick="location.href='dashboard.html'">← กลับ</button>
+  </div>
+
+  <div class="container">
+
+    <!-- อุปกรณ์ที่เกี่ยวข้อง -->
+    <div class="card">
+      <p class="card-title">อุปกรณ์ที่เกี่ยวข้อง (ถ้ามี)</p>
+      <div class="device-selected" id="device-selected">
+        <span class="device-icon" id="wi-icon">📦</span>
+        <div>
+          <p class="device-info-name" id="wi-name">ยังไม่ได้เลือกอุปกรณ์</p>
+          <p class="device-info-code" id="wi-code">ไม่จำเป็นต้องเลือก</p>
+        </div>
+        <button class="btn-change" onclick="location.href='devices.html'">เลือก</button>
+      </div>
+      <p class="optional-note">* ถ้าไม่มีอุปกรณ์เฉพาะ ข้ามได้เลยครับ</p>
+    </div>
+
+    <!-- ผู้ร้องขอ -->
+    <div class="card">
+      <p class="card-title">ผู้ร้องขอ (ถ้ามี)</p>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">ชื่อผู้ร้องขอ</label>
+          <input type="text" class="form-input" id="requester-name" placeholder="เช่น อ.สมชาย"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">อีเมล</label>
+          <input type="email" class="form-input" id="requester-email" placeholder="xxxx@ku.th"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">ภาควิชา/หน่วยงาน</label>
+          <input type="text" class="form-input" id="requester-dept" placeholder="เช่น ภาควิชาวิทยาฯ"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">สถานที่</label>
+          <input type="text" class="form-input" id="location" placeholder="เช่น ห้อง 301"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- รายละเอียดงาน -->
+    <div class="card">
+      <p class="card-title">รายละเอียดงาน</p>
+      <div class="form-group">
+        <label class="form-label">อาการที่พบ <span>*</span></label>
+        <textarea class="form-input" id="symptom" placeholder="อธิบายอาการที่พบ..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">วิธีแก้ไข <span>*</span></label>
+        <textarea class="form-input" id="solution" placeholder="อธิบายวิธีที่แก้ไข..."></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">เวลาที่ใช้ (นาที) <span>*</span></label>
+          <input type="number" class="form-input" id="duration" placeholder="เช่น 30" min="1"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">รูปภาพหน้างาน (สูงสุด 5 รูป)</label>
+        <div class="photo-grid">
+          <div class="photo-slot" onclick="document.getElementById('wphoto1').click()">
+            📷<span class="photo-label">รูปที่ 1</span>
+            <input type="file" id="wphoto1" accept="image/*" onchange="previewPhoto(this,0)"/>
+          </div>
+          <div class="photo-slot" onclick="document.getElementById('wphoto2').click()">
+            📷<span class="photo-label">รูปที่ 2</span>
+            <input type="file" id="wphoto2" accept="image/*" onchange="previewPhoto(this,1)"/>
+          </div>
+          <div class="photo-slot" onclick="document.getElementById('wphoto3').click()">
+            📷<span class="photo-label">รูปที่ 3</span>
+            <input type="file" id="wphoto3" accept="image/*" onchange="previewPhoto(this,2)"/>
+          </div>
+          <div class="photo-slot" onclick="document.getElementById('wphoto4').click()">
+            📷<span class="photo-label">รูปที่ 4</span>
+            <input type="file" id="wphoto4" accept="image/*" onchange="previewPhoto(this,3)"/>
+          </div>
+          <div class="photo-slot" onclick="document.getElementById('wphoto5').click()">
+            📷<span class="photo-label">รูปที่ 5</span>
+            <input type="file" id="wphoto5" accept="image/*" onchange="previewPhoto(this,4)"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">หมายเหตุเพิ่มเติม</label>
+        <textarea class="form-input" id="note" placeholder="เช่น แนะนำให้เปลี่ยน HDD ทีหลัง..."></textarea>
+      </div>
+
+      <button class="btn-submit" id="btn-submit" onclick="submitWalkIn()">
+        💾 บันทึกงานหน้างาน
+      </button>
+      <div id="msg"></div>
+    </div>
+
+  </div>
+
+  <script>
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwRwYG6zliBbpSrQQzgTIVhFODMbe6Nfb5zG-AV_APAIuC-2HP2QJAb98FfKEYVC3vY/exec';
+
+    const ICONS = {
+      'Notebook':'💻','Projector':'📽️','PC':'🖥️',
+      'Adapter':'🔌','Camera':'📷','Mouse':'🖱️','default':'📦'
+    };
+
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user.email) { location.href = 'index.html'; }
+
+    // โหลดอุปกรณ์ที่เลือกไว้ (ถ้ามี)
+    const deviceStr = localStorage.getItem('selectedDevice');
+    if (deviceStr) {
+      const d = JSON.parse(deviceStr);
+      document.getElementById('wi-icon').textContent = ICONS[d.category] || ICONS.default;
+      document.getElementById('wi-name').textContent = d.name;
+      document.getElementById('wi-code').textContent = d.device_id + ' · ' + d.krupha_no;
+    }
+
+    // Preview รูป
+    function previewPhoto(input, index) {
+      if (!input.files[0]) return;
+      const slots = document.querySelectorAll('.photo-slot');
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        slots[index].innerHTML = '';
+        slots[index].appendChild(img);
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+
+    async function submitWalkIn() {
+      const symptom = document.getElementById('symptom').value.trim();
+      const solution = document.getElementById('solution').value.trim();
+      const duration = document.getElementById('duration').value.trim();
+
+      if (!symptom) { showMsg('กรุณากรอกอาการที่พบ', 'error'); return; }
+      if (!solution) { showMsg('กรุณากรอกวิธีแก้ไข', 'error'); return; }
+      if (!duration) { showMsg('กรุณากรอกเวลาที่ใช้', 'error'); return; }
+
+      const device = deviceStr ? JSON.parse(deviceStr) : null;
+      const btn = document.getElementById('btn-submit');
+      btn.disabled = true;
+      btn.textContent = '⏳ กำลังบันทึก...';
+
+      const payload = {
+        action: 'createWalkIn',
+        it_email: user.email,
+        device_id: device ? device.device_id : '',
+        requester_name: document.getElementById('requester-name').value.trim(),
+        requester_email: document.getElementById('requester-email').value.trim(),
+        requester_dept: document.getElementById('requester-dept').value.trim(),
+        location: document.getElementById('location').value.trim(),
+        symptom: symptom,
+        solution: solution,
+        duration_min: duration,
+        note: document.getElementById('note').value.trim()
+      };
+
+      try {
+        const res = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          showMsg('✅ บันทึกงานสำเร็จ! ID: ' + data.walkin_id, 'success');
+          btn.textContent = '✅ บันทึกแล้ว';
+          localStorage.removeItem('selectedDevice');
+        } else {
+          showMsg('❌ ' + data.message, 'error');
+          btn.disabled = false;
+          btn.textContent = '💾 บันทึกงานหน้างาน';
+        }
+      } catch(e) {
+        showMsg('❌ เกิดข้อผิดพลาด กรุณาลองใหม่', 'error');
+        btn.disabled = false;
+        btn.textContent = '💾 บันทึกงานหน้างาน';
+      }
+    }
+
+    function showMsg(text, type) {
+      const el = document.getElementById('msg');
+      el.style.display = 'block';
+      el.className = type === 'success' ? 'msg-success' : 'msg-error';
+      el.textContent = text;
+    }
+  </script>
+
+</body>
+</html>
