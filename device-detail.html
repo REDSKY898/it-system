@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IT Helpdesk — รายละเอียดอุปกรณ์</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Sarabun', sans-serif; background: #f0f4f8; }
+    .navbar {
+      background: #1D9E75; padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .navbar-brand { color: white; font-size: 18px; font-weight: 600; }
+    .btn-back {
+      background: rgba(255,255,255,0.2); color: white;
+      border: none; padding: 6px 14px; border-radius: 8px;
+      cursor: pointer; font-size: 13px;
+    }
+    .container { max-width: 700px; margin: 0 auto; padding: 24px 16px; }
+
+    /* Device Header */
+    .device-header {
+      background: white; border-radius: 16px;
+      overflow: hidden; margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .device-image {
+      width: 100%; height: 200px; background: #f0f4f8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 72px; position: relative;
+    }
+    .device-image img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .status-badge {
+      position: absolute; top: 12px; right: 12px;
+      font-size: 12px; padding: 4px 12px;
+      border-radius: 20px; font-weight: 500;
+    }
+    .s-available { background: #E1F5EE; color: #085041; }
+    .s-borrowed { background: #FCEBEB; color: #791F1F; }
+    .s-prep { background: #FAEEDA; color: #633806; }
+    .s-room { background: #EEEDFE; color: #3C3489; }
+    .s-assigned { background: #FAECE7; color: #712B13; }
+    .device-info { padding: 16px 20px; }
+    .device-name { font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
+    .device-sub { font-size: 14px; color: #666; margin-bottom: 12px; }
+
+    /* Info Grid */
+    .info-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px; margin-bottom: 16px;
+    }
+    .info-item { }
+    .info-label { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: .3px; margin-bottom: 2px; }
+    .info-val { font-size: 13px; font-weight: 500; color: #1a1a1a; font-family: monospace; }
+    .info-val.normal { font-family: inherit; }
+
+    /* Action Buttons */
+    .action-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px; margin-bottom: 16px;
+    }
+    .btn-action {
+      padding: 14px; border-radius: 12px; border: none;
+      font-size: 15px; font-weight: 500; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-repair { background: #E1F5EE; color: #085041; }
+    .btn-repair:hover { background: #c5ede0; }
+    .btn-borrow { background: #1D9E75; color: white; }
+    .btn-borrow:hover { background: #178a64; }
+    .btn-disabled {
+      background: #f0f4f8; color: #999; cursor: not-allowed;
+    }
+    .btn-full {
+      width: 100%; padding: 14px; border-radius: 12px; border: none;
+      font-size: 15px; font-weight: 500; cursor: pointer;
+      background: #E1F5EE; color: #085041; margin-bottom: 16px;
+    }
+    .btn-full:hover { background: #c5ede0; }
+
+    /* Section */
+    .section {
+      background: white; border-radius: 16px;
+      padding: 16px 20px; margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .section-title {
+      font-size: 13px; font-weight: 600; color: #1a1a1a;
+      margin-bottom: 12px; padding-bottom: 8px;
+      border-bottom: 0.5px solid #eee;
+    }
+    .spec-row {
+      display: flex; justify-content: space-between;
+      padding: 6px 0; border-bottom: 0.5px solid #f5f5f5;
+      font-size: 13px;
+    }
+    .spec-row:last-child { border-bottom: none; }
+    .spec-label { color: #666; }
+    .spec-val { color: #1a1a1a; font-weight: 500; text-align: right; font-family: monospace; font-size: 12px; }
+    .spec-val.normal { font-family: inherit; font-size: 13px; }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <span class="navbar-brand" id="nav-title">รายละเอียดอุปกรณ์</span>
+    <button class="btn-back" onclick="location.href='devices.html'">← กลับ</button>
+  </div>
+
+  <div class="container">
+
+    <div class="device-header">
+      <div class="device-image" id="device-image">
+        <span id="device-icon">📦</span>
+        <span class="status-badge s-available" id="status-badge">พร้อมยืม</span>
+      </div>
+      <div class="device-info">
+        <p class="device-name" id="device-name">กำลังโหลด...</p>
+        <p class="device-sub" id="device-sub">-</p>
+        <div class="info-grid">
+          <div class="info-item">
+            <p class="info-label">รหัสอุปกรณ์</p>
+            <p class="info-val" id="device-id">-</p>
+          </div>
+          <div class="info-item">
+            <p class="info-label">เลขครุภัณฑ์</p>
+            <p class="info-val" id="krupha-no">-</p>
+          </div>
+          <div class="info-item">
+            <p class="info-label">ที่ตั้ง</p>
+            <p class="info-val normal" id="location">-</p>
+          </div>
+          <div class="info-item">
+            <p class="info-label">ประเภท</p>
+            <p class="info-val normal" id="device-type">-</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ปุ่ม action -->
+    <div id="action-section"></div>
+
+    <!-- ข้อมูลเพิ่มเติม -->
+    <div class="section">
+      <p class="section-title">🔧 ข้อมูลอุปกรณ์</p>
+      <div class="spec-row">
+        <span class="spec-label">ยี่ห้อ / รุ่น</span>
+        <span class="spec-val normal" id="brand-model">-</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">Serial Number</span>
+        <span class="spec-val" id="serial-no">-</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">MAC Ethernet</span>
+        <span class="spec-val" id="mac-eth">-</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">MAC WiFi</span>
+        <span class="spec-val" id="mac-wifi">-</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">วันที่ซื้อ</span>
+        <span class="spec-val normal" id="purchase-date">-</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">ราคา</span>
+        <span class="spec-val normal" id="purchase-price">-</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const ICONS = {
+      'Notebook': '💻', 'Projector': '📽️',
+      'PC': '🖥️', 'Adapter': '🔌',
+      'Camera': '📷', 'Mouse': '🖱️', 'default': '📦'
+    };
+
+    const STATUS_LABEL = {
+      'available': 'พร้อมยืม', 'borrowed': 'ถูกยืม',
+      'prep': 'เตรียมพร้อม', 'room': 'ประจำห้อง',
+      'assigned': 'ประจำตัว', 'degraded': 'เสื่อมสภาพ'
+    };
+
+    const STATUS_CLASS = {
+      'available': 's-available', 'borrowed': 's-borrowed',
+      'prep': 's-prep', 'room': 's-room',
+      'assigned': 's-assigned'
+    };
+
+    // โหลดข้อมูลจาก localStorage
+    const deviceStr = localStorage.getItem('selectedDevice');
+    if (!deviceStr) { location.href = 'devices.html'; }
+    const d = JSON.parse(deviceStr);
+
+    // แสดงข้อมูล
+    document.getElementById('nav-title').textContent = d.name;
+    document.getElementById('device-name').textContent = d.name;
+    document.getElementById('device-sub').textContent = d.brand + ' ' + d.model;
+    document.getElementById('device-id').textContent = d.device_id;
+    document.getElementById('krupha-no').textContent = d.krupha_no;
+    document.getElementById('location').textContent = d.location;
+    document.getElementById('serial-no').textContent = d.serial_no || '-';
+    document.getElementById('mac-eth').textContent = d.mac_ethernet || '-';
+    document.getElementById('mac-wifi').textContent = d.mac_wifi || '-';
+    document.getElementById('brand-model').textContent = (d.brand || '-') + ' ' + (d.model || '');
+
+    // ประเภท
+    const typeLabel = { 'borrow': 'ยืมได้', 'room': 'ประจำห้อง', 'assigned': 'ประจำตัว' };
+    document.getElementById('device-type').textContent = typeLabel[d.type] || d.type;
+
+    // วันที่ซื้อ
+    if (d.purchase_date) {
+      const date = new Date(d.purchase_date);
+      document.getElementById('purchase-date').textContent =
+        date.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    // ราคา
+    if (d.purchase_price) {
+      document.getElementById('purchase-price').textContent =
+        Number(d.purchase_price).toLocaleString() + ' บาท';
+    }
+
+    // รูปภาพหรือไอคอน
+    if (d.photo_front_url) {
+      document.getElementById('device-image').innerHTML =
+        `<img src="${d.photo_front_url}" alt="${d.name}"/>
+         <span class="status-badge ${STATUS_CLASS[d.status]}">${STATUS_LABEL[d.status]}</span>`;
+    } else {
+      document.getElementById('device-icon').textContent = ICONS[d.category] || ICONS.default;
+      const badge = document.getElementById('status-badge');
+      badge.textContent = STATUS_LABEL[d.status] || d.status;
+      badge.className = 'status-badge ' + (STATUS_CLASS[d.status] || 's-available');
+    }
+
+    // ปุ่ม action ตามประเภทและสถานะ
+    const actionSection = document.getElementById('action-section');
+    if (d.type === 'room') {
+      // ประจำห้อง — แจ้งซ่อมอย่างเดียว
+      actionSection.innerHTML = `
+        <button class="btn-full" onclick="goRepair()">🔧 แจ้งซ่อมอุปกรณ์นี้</button>`;
+    } else if (d.type === 'borrow') {
+      // ยืมได้
+      const canBorrow = d.status === 'available';
+      actionSection.innerHTML = `
+        <div class="action-row">
+          <button class="btn-action btn-repair" onclick="goRepair()">🔧 แจ้งซ่อม</button>
+          <button class="btn-action ${canBorrow ? 'btn-borrow' : 'btn-disabled'}"
+            onclick="${canBorrow ? 'goBorrow()' : ''}">
+            ${canBorrow ? '📦 ยืมอุปกรณ์' : '⏳ ไม่ว่าง'}
+          </button>
+        </div>`;
+    } else if (d.type === 'assigned') {
+      // ประจำตัว — แจ้งซ่อมอย่างเดียว
+      actionSection.innerHTML = `
+        <button class="btn-full" onclick="goRepair()">🔧 แจ้งซ่อมอุปกรณ์นี้</button>`;
+    }
+
+    function goRepair() {
+      location.href = 'repair.html';
+    }
+
+    function goBorrow() {
+      location.href = 'borrow.html';
+    }
+  </script>
+
+</body>
+</html>
