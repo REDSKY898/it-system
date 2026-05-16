@@ -268,7 +268,9 @@
     }
 
     function goBorrow() {
-      location.href = 'borrow.html';
+    const device = JSON.parse(localStorage.getItem('selectedDevice'));
+    localStorage.setItem('borrowDevice', JSON.stringify(device));
+    location.href = 'borrow.html';
     }
   </script>
 
