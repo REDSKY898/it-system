@@ -92,8 +92,12 @@
   <script>
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbwRwYG6zliBbpSrQQzgTIVhFODMbe6Nfb5zG-AV_APAIuC-2HP2QJAb98FfKEYVC3vY/exec';
 
+    // ถ้า login อยู่แล้ว ไป dashboard เลย
+    if (localStorage.getItem('user')) {
+      location.href = 'dashboard.html';
+    }
+
     function signIn() {
-      // ทดสอบก่อน OAuth จริง
       const email = prompt('กรอกอีเมล @ku.th ของคุณ (ทดสอบ):');
       if (!email) return;
 
@@ -102,11 +106,15 @@
         .then(data => {
           if (data.success) {
             localStorage.setItem('user', JSON.stringify(data));
-            alert('ยินดีต้อนรับ ' + data.name);
+            location.href = 'dashboard.html';
           } else {
             document.getElementById('msg').style.display = 'block';
             document.getElementById('msg').textContent = data.message;
           }
+        })
+        .catch(err => {
+          document.getElementById('msg').style.display = 'block';
+          document.getElementById('msg').textContent = 'เกิดข้อผิดพลาด กรุณาลองใหม่';
         });
     }
   </script>
