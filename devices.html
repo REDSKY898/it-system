@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IT Helpdesk — อุปกรณ์</title>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Sarabun', sans-serif; background: #f0f4f8; }
+    .navbar {
+      background: #1D9E75; padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .navbar-brand { color: white; font-size: 18px; font-weight: 600; }
+    .btn-back {
+      background: rgba(255,255,255,0.2); color: white;
+      border: none; padding: 6px 14px; border-radius: 8px;
+      cursor: pointer; font-size: 13px;
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
+    .search-row {
+      display: flex; gap: 8px; margin-bottom: 16px;
+    }
+    .search-wrap {
+      flex: 1; display: flex; align-items: center; gap: 8px;
+      background: white; border: 0.5px solid #ddd;
+      border-radius: 10px; padding: 0 14px; height: 44px;
+    }
+    .search-wrap input {
+      border: none; background: transparent; flex: 1;
+      font-size: 14px; outline: none;
+    }
+    .btn-qr {
+      height: 44px; padding: 0 16px;
+      background: white; border: 0.5px solid #ddd;
+      border-radius: 10px; cursor: pointer;
+      font-size: 13px; display: flex; align-items: center; gap: 6px;
+    }
+    .btn-qr:hover { background: #f0f4f8; }
+    .filter-row { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .chip {
+      padding: 5px 14px; border-radius: 20px; font-size: 12px;
+      border: 0.5px solid #ddd; background: white;
+      cursor: pointer; color: #555;
+    }
+    .chip.active { background: #1D9E75; color: white; border-color: #1D9E75; }
+
+    /* QR Panel */
+    #qr-panel {
+      display: none; background: white; border-radius: 12px;
+      padding: 16px; margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    #qr-reader { width: 100%; max-width: 400px; margin: 0 auto; }
+    .btn-close-qr {
+      display: block; margin: 10px auto 0;
+      padding: 8px 20px; background: #f0f4f8;
+      border: none; border-radius: 8px; cursor: pointer; font-size: 13px;
+    }
+
+    /* Device Grid */
+    .device-grid {
+      display: grid; grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+    }
+    .device-card {
+      background: white; border-radius: 12px;
+      overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border: 1.5px solid transparent; cursor: pointer; transition: all 0.2s;
+    }
+    .device-card:hover { border-color: #1D9E75; transform: translateY(-2px); }
+    .device-thumb {
+      height: 100px; background: #f0f4f8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; position: relative;
+    }
+    .device-thumb img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .status-dot {
+      position: absolute; top: 8px; right: 8px;
+      font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 500;
+    }
+    .s-available { background: #E1F5EE; color: #085041; }
+    .s-borrowed { background: #FCEBEB; color: #791F1F; }
+    .s-prep { background: #FAEEDA; color: #633806; }
+    .s-room { background: #EEEDFE; color: #3C3489; }
+    .s-assigned { background: #FAECE7; color: #712B13; }
+    .device-body { padding: 10px 12px; }
+    .device-name { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 2px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .device-code { font-size: 11px; color: #999; font-family: monospace; margin-bottom: 6px; }
+    .device-loc { font-size: 12px; color: #666; }
+
+    /* Empty state */
+    .empty { text-align: center; padding: 40px; color: #999; font-size: 14px; }
+
+    /* Loading */
+    .loading { text-align: center; padding: 40px; color: #666; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <span class="navbar-brand">💻 อุปกรณ์ทั้งหมด</span>
+    <button class="btn-back" onclick="location.href='dashboard.html'">← กลับ</button>
+  </div>
+
+  <div class="container">
+
+    <div class="search-row">
+      <div class="search-wrap">
+        <span>🔍</span>
+        <input type="text" id="search-input" placeholder="ค้นหาชื่อ รหัส S/N เลขครุภัณฑ์..."
+          oninput="filterDevices()"/>
+      </div>
+      <button class="btn-qr" onclick="toggleQR()">📷 สแกน QR</button>
+    </div>
+
+    <div id="qr-panel">
+      <div id="qr-reader"></div>
+      <button class="btn-close-qr" onclick="stopQR()">✕ ปิดกล้อง</button>
+    </div>
+
+    <div class="filter-row">
+      <button class="chip active" onclick="setFilter(this,'all')">ทั้งหมด</button>
+      <button class="chip" onclick="setFilter(this,'Notebook')">Notebook</button>
+      <button class="chip" onclick="setFilter(this,'Projector')">Projector</button>
+      <button class="chip" onclick="setFilter(this,'PC')">PC</button>
+      <button class="chip" onclick="setFilter(this,'Adapter')">Adapter</button>
+    </div>
+
+    <div id="device-grid" class="device-grid">
+      <div class="loading">⏳ กำลังโหลดข้อมูล...</div>
+    </div>
+
+  </div>
+
+  <script>
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwRwYG6zliBbpSrQQzgTIVhFODMbe6Nfb5zG-AV_APAIuC-2HP2QJAb98FfKEYVC3vY/exec';
+
+    const ICONS = {
+      'Notebook': '💻', 'Projector': '📽️',
+      'PC': '🖥️', 'Adapter': '🔌',
+      'Camera': '📷', 'Mouse': '🖱️', 'default': '📦'
+    };
+
+    const STATUS_LABEL = {
+      'available': 'พร้อมยืม', 'borrowed': 'ถูกยืม',
+      'prep': 'เตรียมพร้อม', 'room': 'ประจำห้อง',
+      'assigned': 'ประจำตัว', 'degraded': 'เสื่อมสภาพ'
+    };
+
+    const STATUS_CLASS = {
+      'available': 's-available', 'borrowed': 's-borrowed',
+      'prep': 's-prep', 'room': 's-room',
+      'assigned': 's-assigned', 'degraded': 's-borrowed'
+    };
+
+    let allDevices = [];
+    let currentFilter = 'all';
+    let qrScanner = null;
+
+    // โหลดข้อมูลอุปกรณ์จาก GAS
+    fetch(GAS_URL + '?action=getDevices')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          allDevices = data.devices;
+          renderDevices(allDevices);
+        }
+      })
+      .catch(() => {
+        document.getElementById('device-grid').innerHTML =
+          '<div class="empty">❌ โหลดข้อมูลไม่ได้ กรุณาลองใหม่</div>';
+      });
+
+    function renderDevices(devices) {
+      const grid = document.getElementById('device-grid');
+      if (!devices.length) {
+        grid.innerHTML = '<div class="empty">ไม่พบอุปกรณ์ที่ตรงกัน</div>';
+        return;
+      }
+      grid.innerHTML = devices.map(d => `
+        <div class="device-card" onclick="selectDevice('${d.device_id}')">
+          <div class="device-thumb">
+            ${d.photo_front_url
+              ? `<img src="${d.photo_front_url}" alt="${d.name}"/>`
+              : (ICONS[d.category] || ICONS.default)}
+            <span class="status-dot ${STATUS_CLASS[d.status] || 's-available'}">
+              ${STATUS_LABEL[d.status] || d.status}
+            </span>
+          </div>
+          <div class="device-body">
+            <p class="device-name">${d.name}</p>
+            <p class="device-code">${d.device_id} · ${d.krupha_no}</p>
+            <p class="device-loc">📍 ${d.location}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterDevices() {
+      const q = document.getElementById('search-input').value.toLowerCase();
+      let filtered = allDevices;
+      if (currentFilter !== 'all') {
+        filtered = filtered.filter(d => d.category === currentFilter);
+      }
+      if (q) {
+        filtered = filtered.filter(d =>
+          d.name.toLowerCase().includes(q) ||
+          d.device_id.toLowerCase().includes(q) ||
+          d.krupha_no.toLowerCase().includes(q) ||
+          (d.serial_no && d.serial_no.toLowerCase().includes(q))
+        );
+      }
+      renderDevices(filtered);
+    }
+
+    function setFilter(el, filter) {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      currentFilter = filter;
+      filterDevices();
+    }
+
+    function selectDevice(deviceId) {
+      const device = allDevices.find(d => d.device_id === deviceId);
+      if (!device) return;
+      localStorage.setItem('selectedDevice', JSON.stringify(device));
+      location.href = 'device-detail.html';
+    }
+
+    function toggleQR() {
+      const panel = document.getElementById('qr-panel');
+      if (panel.style.display === 'block') {
+        stopQR(); return;
+      }
+      panel.style.display = 'block';
+      qrScanner = new Html5Qrcode('qr-reader');
+      qrScanner.start(
+        { facingMode: 'environment' },
+        { fps: 10, qrbox: 200 },
+        (decodedText) => {
+          stopQR();
+          document.getElementById('search-input').value = decodedText;
+          filterDevices();
+        }
+      ).catch(() => {
+        panel.style.display = 'none';
+        alert('ไม่สามารถเปิดกล้องได้');
+      });
+    }
+
+    function stopQR() {
+      if (qrScanner) {
+        qrScanner.stop().then(() => { qrScanner = null; });
+      }
+      document.getElementById('qr-panel').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
