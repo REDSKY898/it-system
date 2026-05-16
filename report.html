@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IT Helpdesk — รายงานภาพรวม</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Sarabun', sans-serif; background: #f0f4f8; }
+    .header {
+      background: linear-gradient(135deg, #1a1a2e, #1D9E75);
+      padding: 24px; color: white;
+    }
+    .header h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+    .header p { font-size: 14px; opacity: 0.8; }
+    .header-right { text-align: right; }
+    .header-row { display: flex; justify-content: space-between; align-items: center; }
+    .update-time { font-size: 12px; opacity: 0.7; margin-top: 8px; }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+
+    /* Stats */
+    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 24px; }
+    .stat-card {
+      background: white; border-radius: 14px; padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center;
+      border-top: 3px solid transparent;
+    }
+    .stat-card.green { border-top-color: #1D9E75; }
+    .stat-card.blue { border-top-color: #378ADD; }
+    .stat-card.orange { border-top-color: #EF9F27; }
+    .stat-card.red { border-top-color: #E24B4A; }
+    .stat-num { font-size: 32px; font-weight: 600; color: #1a1a2e; margin: 0 0 4px; }
+    .stat-label { font-size: 13px; color: #666; }
+    .stat-sub { font-size: 11px; color: #999; margin-top: 4px; }
+
+    /* Charts */
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .chart-card {
+      background: white; border-radius: 14px; padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .chart-title { font-size: 14px; font-weight: 600; color: #1a1a2e; margin-bottom: 16px; }
+    .chart-wrap { position: relative; height: 200px; }
+
+    /* Table */
+    .table-card {
+      background: white; border-radius: 14px; padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 16px;
+    }
+    .table-title { font-size: 14px; font-weight: 600; color: #1a1a2e; margin-bottom: 14px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { font-size: 11px; color: #666; padding: 8px 12px;
+      border-bottom: 0.5px solid #eee; text-align: left; }
+    td { padding: 10px 12px; border-bottom: 0.5px solid #f5f5f5; color: #1a1a1a; }
+    tr:last-child td { border-bottom: none; }
+    .badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
+    .b-pending { background: #FAEEDA; color: #633806; }
+    .b-resolved { background: #E1F5EE; color: #085041; }
+    .b-approved { background: #E6F1FB; color: #0C447C; }
+    .b-available { background: #E1F5EE; color: #085041; }
+    .b-borrowed { background: #FCEBEB; color: #791F1F; }
+
+    .loading { text-align: center; padding: 40px; color: #666; }
+    .footer { text-align: center; padding: 20px; font-size: 12px; color: #999; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-row">
+      <div>
+        <h1>📊 รายงานภาพรวม IT Helpdesk</h1>
+        <p>มหาวิทยาลัยเกษตรศาสตร์ — แผนกเทคโนโลยีสารสนเทศ</p>
+      </div>
+      <div class="header-right">
+        <p class="update-time" id="update-time">กำลังโหลดข้อมูล...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- Stats -->
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-card green">
+        <p class="stat-num" id="s-devices">-</p>
+        <p class="stat-label">อุปกรณ์ทั้งหมด</p>
+        <p class="stat-sub" id="s-available">พร้อมยืม -</p>
+      </div>
+      <div class="stat-card blue">
+        <p class="stat-num" id="s-tickets">-</p>
+        <p class="stat-label">แจ้งซ่อมทั้งหมด</p>
+        <p class="stat-sub" id="s-pending">ค้างอยู่ -</p>
+      </div>
+      <div class="stat-card orange">
+        <p class="stat-num" id="s-borrows">-</p>
+        <p class="stat-label">ยืมทั้งหมด</p>
+        <p class="stat-sub" id="s-borrowing">ยืมอยู่ตอนนี้ -</p>
+      </div>
+      <div class="stat-card red">
+        <p class="stat-num" id="s-walkin">-</p>
+        <p class="stat-label">งานหน้างาน</p>
+        <p class="stat-sub">Walk-in ทั้งหมด</p>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <p class="chart-title">📊 สถานะอุปกรณ์</p>
+        <div class="chart-wrap">
+          <canvas id="chart-devices"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <p class="chart-title">🔧 สถานะ Ticket</p>
+        <div class="chart-wrap">
+          <canvas id="chart-tickets"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ticket ล่าสุด -->
+    <div class="table-card">
+      <p class="table-title">🔧 Ticket แจ้งซ่อมล่าสุด</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Ticket ID</th>
+            <th>วันที่</th>
+            <th>ผู้แจ้ง</th>
+            <th>อุปกรณ์</th>
+            <th>อาการ</th>
+            <th>สถานะ</th>
+          </tr>
+        </thead>
+        <tbody id="tickets-table">
+          <tr><td colspan="6" class="loading">⏳ กำลังโหลด...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- การยืมล่าสุด -->
+    <div class="table-card">
+      <p class="table-title">📦 การยืมอุปกรณ์ล่าสุด</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Borrow ID</th>
+            <th>อุปกรณ์</th>
+            <th>ผู้ยืม</th>
+            <th>วันยืม</th>
+            <th>วันคืน</th>
+            <th>สถานะ</th>
+          </tr>
+        </thead>
+        <tbody id="borrows-table">
+          <tr><td colspan="6" class="loading">⏳ กำลังโหลด...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    รายงานนี้สร้างโดยระบบ IT Helpdesk อัตโนมัติ · อัปเดตทุกครั้งที่เปิดหน้านี้
+  </div>
+
+  <script>
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwRwYG6zliBbpSrQQzgTIVhFODMbe6Nfb5zG-AV_APAIuC-2HP2QJAb98FfKEYVC3vY/exec';
+
+    async function loadReport() {
+      try {
+        const [dRes, tRes, bRes, wRes] = await Promise.all([
+          fetch(GAS_URL + '?action=getDevices'),
+          fetch(GAS_URL + '?action=getTickets'),
+          fetch(GAS_URL + '?action=getBorrows'),
+          fetch(GAS_URL + '?action=getWalkIns')
+        ]);
+        const [dData, tData, bData, wData] = await Promise.all([
+          dRes.json(), tRes.json(), bRes.json(), wRes.json()
+        ]);
+
+        const devices = dData.success ? dData.devices : [];
+        const tickets = tData.success ? tData.tickets : [];
+        const borrows = bData.success ? bData.borrows : [];
+        const walkins = wData.success ? wData.walkins : [];
+
+        // Stats
+        const available = devices.filter(d => d.status === 'available').length;
+        const pending = tickets.filter(t => t.status === 'pending').length;
+        const borrowing = borrows.filter(b => b.status === 'approved').length;
+
+        document.getElementById('s-devices').textContent = devices.length;
+        document.getElementById('s-available').textContent = 'พร้อมยืม ' + available;
+        document.getElementById('s-tickets').textContent = tickets.length;
+        document.getElementById('s-pending').textContent = 'ค้างอยู่ ' + pending;
+        document.getElementById('s-borrows').textContent = borrows.length;
+        document.getElementById('s-borrowing').textContent = 'ยืมอยู่ตอนนี้ ' + borrowing;
+        document.getElementById('s-walkin').textContent = walkins.length;
+
+        // Update time
+        document.getElementById('update-time').textContent =
+          'อัปเดตล่าสุด: ' + new Date().toLocaleString('th-TH');
+
+        // Chart: devices
+        const statusCount = {};
+        devices.forEach(d => { statusCount[d.status] = (statusCount[d.status] || 0) + 1; });
+        new Chart(document.getElementById('chart-devices'), {
+          type: 'doughnut',
+          data: {
+            labels: Object.keys(statusCount),
+            datasets: [{
+              data: Object.values(statusCount),
+              backgroundColor: ['#1D9E75','#E24B4A','#EF9F27','#7F77DD','#378ADD']
+            }]
+          },
+          options: { responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom' } } }
+        });
+
+        // Chart: tickets
+        const tPending = tickets.filter(t => t.status === 'pending').length;
+        const tResolved = tickets.filter(t => t.status === 'resolved').length;
+        new Chart(document.getElementById('chart-tickets'), {
+          type: 'doughnut',
+          data: {
+            labels: ['ค้างอยู่', 'แก้ไขแล้ว'],
+            datasets: [{
+              data: [tPending, tResolved],
+              backgroundColor: ['#EF9F27', '#1D9E75']
+            }]
+          },
+          options: { responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom' } } }
+        });
+
+        // Table: tickets (5 ล่าสุด)
+        const recentTickets = tickets.slice(-5).reverse();
+        document.getElementById('tickets-table').innerHTML = recentTickets.length
+          ? recentTickets.map(t => `
+            <tr>
+              <td style="font-family:monospace;font-size:12px">${t.ticket_id}</td>
+              <td>${new Date(t.created_date).toLocaleDateString('th-TH')}</td>
+              <td>${t.requester_email}</td>
+              <td>${t.device_id}</td>
+              <td>${t.symptom}</td>
+              <td><span class="badge b-${t.status}">${t.status}</span></td>
+            </tr>`).join('')
+          : '<tr><td colspan="6" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>';
+
+        // Table: borrows (5 ล่าสุด)
+        const recentBorrows = borrows.slice(-5).reverse();
+        document.getElementById('borrows-table').innerHTML = recentBorrows.length
+          ? recentBorrows.map(b => `
+            <tr>
+              <td style="font-family:monospace;font-size:12px">${b.borrow_id}</td>
+              <td>${b.device_id}</td>
+              <td>${b.borrower_email}</td>
+              <td>${new Date(b.borrow_date).toLocaleDateString('th-TH')}</td>
+              <td>${new Date(b.due_date).toLocaleDateString('th-TH')}</td>
+              <td><span class="badge b-${b.status}">${b.status}</span></td>
+            </tr>`).join('')
+          : '<tr><td colspan="6" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>';
+
+      } catch(e) {
+        console.error('Load error:', e);
+      }
+    }
+
+    loadReport();
+  </script>
+
+</body>
+</html>
