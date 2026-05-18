@@ -27,6 +27,20 @@
       margin-bottom: 16px; padding-bottom: 10px;
       border-bottom: 0.5px solid #eee;
     }
+
+    /* Toggle ประเภทอุปกรณ์ */
+    .type-toggle {
+      display: flex; gap: 8px; margin-bottom: 16px;
+    }
+    .type-btn {
+      flex: 1; padding: 10px; border-radius: 10px; border: 1.5px solid #ddd;
+      background: white; font-size: 13px; font-weight: 500; cursor: pointer;
+      font-family: inherit; color: #666; transition: all 0.2s;
+    }
+    .type-btn.active {
+      background: #1D9E75; color: white; border-color: #1D9E75;
+    }
+
     .device-selected {
       display: flex; align-items: center; gap: 12px;
       background: #f0f4f8; border-radius: 10px; padding: 12px;
@@ -52,6 +66,15 @@
     }
     .form-input:focus { border-color: #1D9E75; }
     textarea.form-input { height: 100px; resize: none; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* Personal device box */
+    .personal-box {
+      background: #fff8f0; border: 1.5px solid #EF9F27;
+      border-radius: 12px; padding: 16px; margin-bottom: 16px;
+    }
+    .personal-box .form-input:focus { border-color: #EF9F27; }
+
     .photo-grid {
       display: grid; grid-template-columns: repeat(5,1fr); gap: 8px;
     }
@@ -62,9 +85,7 @@
       background: #fafafa; position: relative; overflow: hidden;
     }
     .photo-slot:hover { border-color: #1D9E75; background: #f0fdf8; }
-    .photo-slot img {
-      width: 100%; height: 100%; object-fit: cover; position: absolute;
-    }
+    .photo-slot img { width: 100%; height: 100%; object-fit: cover; position: absolute; }
     .photo-slot input { display: none; }
     .photo-label { font-size: 10px; color: #999; margin-top: 4px; }
     .btn-submit {
@@ -80,6 +101,10 @@
     }
     .msg-success { background: #E1F5EE; color: #085041; }
     .msg-error { background: #FCEBEB; color: #791F1F; }
+    .note-personal {
+      font-size: 12px; color: #EF9F27; font-weight: 500;
+      margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+    }
   </style>
 </head>
 <body>
@@ -93,20 +118,73 @@
     <div class="card">
       <p class="card-title">อุปกรณ์ที่แจ้งซ่อม</p>
 
-      <div class="device-selected" id="device-selected">
-        <span class="device-icon" id="rep-icon">📦</span>
-        <div>
-          <p class="device-info-name" id="rep-name">เลือกอุปกรณ์</p>
-          <p class="device-info-code" id="rep-code">-</p>
-        </div>
-        <button class="btn-change" onclick="location.href='devices.html'">เปลี่ยน</button>
+      <!-- Toggle ประเภท -->
+      <div class="type-toggle">
+        <button class="type-btn active" id="btn-system" onclick="switchType('system')">
+          💻 อุปกรณ์ในระบบ
+        </button>
+        <button class="type-btn" id="btn-personal" onclick="switchType('personal')">
+          👤 อุปกรณ์ส่วนตัว
+        </button>
       </div>
 
+      <!-- อุปกรณ์ในระบบ -->
+      <div id="section-system">
+        <div class="device-selected" id="device-selected">
+          <span class="device-icon" id="rep-icon">📦</span>
+          <div>
+            <p class="device-info-name" id="rep-name">เลือกอุปกรณ์</p>
+            <p class="device-info-code" id="rep-code">-</p>
+          </div>
+          <button class="btn-change" onclick="location.href='devices.html'">เปลี่ยน</button>
+        </div>
+      </div>
+
+      <!-- อุปกรณ์ส่วนตัว -->
+      <div id="section-personal" style="display:none">
+        <div class="personal-box">
+          <p class="note-personal">⚠️ กรอกข้อมูลอุปกรณ์ส่วนตัวให้ครบเพื่อให้ IT ระบุได้ถูกต้อง</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">ยี่ห้อ <span>*</span></label>
+              <input type="text" class="form-input" id="p-brand" placeholder="เช่น Acer, HP, Canon"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">รุ่น</label>
+              <input type="text" class="form-input" id="p-model" placeholder="เช่น Aspire 5"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">ประเภทอุปกรณ์ <span>*</span></label>
+              <select class="form-input" id="p-category">
+                <option value="Notebook">Notebook</option>
+                <option value="PC">PC</option>
+                <option value="Printer">Printer</option>
+                <option value="Monitor">Monitor</option>
+                <option value="Mouse">Mouse</option>
+                <option value="Keyboard">Keyboard</option>
+                <option value="Phone">มือถือ</option>
+                <option value="Tablet">Tablet</option>
+                <option value="Other">อื่นๆ</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">สี / ลักษณะ</label>
+              <input type="text" class="form-input" id="p-desc" placeholder="เช่น สีดำ สีเงิน"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- อาการ -->
       <div class="form-group">
         <label class="form-label">อาการที่พบ <span>*</span></label>
-        <textarea class="form-input" id="symptom" placeholder="อธิบายอาการที่พบ เช่น หน้าจอกะพริบ เปิดไม่ติด..."></textarea>
+        <textarea class="form-input" id="symptom"
+          placeholder="อธิบายอาการที่พบ เช่น หน้าจอกะพริบ เปิดไม่ติด ปริ้นไม่ได้..."></textarea>
       </div>
 
+      <!-- รูปภาพ -->
       <div class="form-group">
         <label class="form-label">รูปภาพประกอบ (สูงสุด 5 รูป)</label>
         <div class="photo-grid">
@@ -148,7 +226,8 @@
       'Adapter':'🔌','Camera':'📷','Mouse':'🖱️','default':'📦'
     };
 
-    // โหลดอุปกรณ์ที่เลือกไว้
+    let currentType = 'system';
+
     const deviceStr = localStorage.getItem('selectedDevice');
     const user = JSON.parse(localStorage.getItem('user') || '{}');
 
@@ -159,7 +238,14 @@
       document.getElementById('rep-code').textContent = d.device_id + ' · ' + d.krupha_no;
     }
 
-    // Preview รูป
+    function switchType(type) {
+      currentType = type;
+      document.getElementById('btn-system').classList.toggle('active', type === 'system');
+      document.getElementById('btn-personal').classList.toggle('active', type === 'personal');
+      document.getElementById('section-system').style.display = type === 'system' ? 'block' : 'none';
+      document.getElementById('section-personal').style.display = type === 'personal' ? 'block' : 'none';
+    }
+
     function previewPhoto(input, index) {
       if (!input.files[0]) return;
       const slots = document.querySelectorAll('.photo-slot');
@@ -173,26 +259,39 @@
       reader.readAsDataURL(input.files[0]);
     }
 
-    // ส่งแจ้งซ่อม
     async function submitRepair() {
       const symptom = document.getElementById('symptom').value.trim();
-      if (!symptom) {
-        showMsg('กรุณากรอกอาการที่พบ', 'error'); return;
-      }
-      if (!deviceStr) {
-        showMsg('กรุณาเลือกอุปกรณ์ก่อน', 'error'); return;
+      if (!symptom) { showMsg('กรุณากรอกอาการที่พบ', 'error'); return; }
+
+      let device_id = '';
+      let deviceLabel = '';
+
+      if (currentType === 'system') {
+        if (!deviceStr) { showMsg('กรุณาเลือกอุปกรณ์ก่อน', 'error'); return; }
+        const device = JSON.parse(deviceStr);
+        device_id = device.device_id;
+        deviceLabel = device.name;
+      } else {
+        const brand = document.getElementById('p-brand').value.trim();
+        const model = document.getElementById('p-model').value.trim();
+        const category = document.getElementById('p-category').value;
+        const desc = document.getElementById('p-desc').value.trim();
+        if (!brand) { showMsg('กรุณากรอกยี่ห้ออุปกรณ์', 'error'); return; }
+        device_id = '[ส่วนตัว]';
+        deviceLabel = category + ' ' + brand + ' ' + model + (desc ? ' (' + desc + ')' : '');
       }
 
-      const device = JSON.parse(deviceStr);
       const btn = document.getElementById('btn-submit');
       btn.disabled = true;
       btn.textContent = '⏳ กำลังส่ง...';
 
       const payload = {
         action: 'createTicket',
-        device_id: device.device_id,
+        device_id: device_id,
+        device_label: deviceLabel,
         requester_email: user.email || '',
-        symptom: symptom
+        symptom: symptom,
+        is_personal: currentType === 'personal'
       };
 
       try {
