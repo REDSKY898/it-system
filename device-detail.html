@@ -42,9 +42,11 @@
     .device-info { padding: 16px 20px; }
     .device-name { font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
     .device-sub { font-size: 14px; color: #666; margin-bottom: 12px; }
-    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-    .info-label { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: .3px; margin-bottom: 2px; }
-    .info-val { font-size: 13px; font-weight: 500; color: #1a1a1a; font-family: monospace; }
+    .info-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .info-item { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 0; border-bottom: 0.5px solid #f5f5f5; }
+    .info-item:last-child { border-bottom: none; }
+    .info-label { font-size: 12px; color: #999; margin-bottom: 0; }
+    .info-val { font-size: 13px; font-weight: 500; color: #1a1a1a; font-family: monospace; text-align: right; }
     .info-val.normal { font-family: inherit; }
     .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
     .btn-action {
@@ -196,14 +198,19 @@
     }
 
     if (d.photo_front_url) {
+      const badgeHtml = d.type === 'borrow'
+        ? `<span class="status-badge ${STATUS_CLASS[d.status]}">${STATUS_LABEL[d.status]}</span>` : '';
       document.getElementById('device-image').innerHTML =
-        `<img src="${d.photo_front_url}" alt="${d.name}"/>
-         <span class="status-badge ${STATUS_CLASS[d.status]}">${STATUS_LABEL[d.status]}</span>`;
+        `<img src="${d.photo_front_url}" alt="${d.name}"/>${badgeHtml}`;
     } else {
       document.getElementById('device-icon').textContent = ICONS[d.category] || ICONS.default;
       const badge = document.getElementById('status-badge');
-      badge.textContent = STATUS_LABEL[d.status] || d.status;
-      badge.className = 'status-badge ' + (STATUS_CLASS[d.status] || 's-available');
+      if (d.type === 'borrow') {
+        badge.textContent = STATUS_LABEL[d.status] || d.status;
+        badge.className = 'status-badge ' + (STATUS_CLASS[d.status] || 's-available');
+      } else {
+        badge.style.display = 'none';
+      }
     }
 
     const actionSection = document.getElementById('action-section');
