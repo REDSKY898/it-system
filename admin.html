@@ -7,10 +7,7 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Sarabun', sans-serif; background: #f0f4f8; }
-    .navbar {
-      background: #1a1a2e; padding: 14px 24px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
+    .navbar { background: #1a1a2e; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
     .navbar-brand { color: white; font-size: 18px; font-weight: 600; }
     .btn-back { background: rgba(255,255,255,0.1); color: white; border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; }
     .container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
@@ -21,12 +18,14 @@
     .card-title { font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 0.5px solid #eee; display: flex; align-items: center; justify-content: space-between; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
     .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-    .form-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
     .form-group { margin-bottom: 12px; }
     .form-label { font-size: 12px; font-weight: 500; color: #444; margin-bottom: 4px; display: block; }
     .form-input { width: 100%; padding: 9px 12px; border: 0.5px solid #ddd; border-radius: 8px; font-size: 13px; outline: none; font-family: inherit; }
     .form-input:focus { border-color: #1a1a2e; }
     select.form-input { background: white; }
+    .form-input[readonly] { background: #f8f9fa; color: #555; }
+    .name-preview { background: #f0f4f8; border-radius: 8px; padding: 10px 12px; font-size: 13px; color: #1a1a2e; font-weight: 500; margin-bottom: 12px; }
+    .name-preview span { color: #999; font-size: 11px; font-weight: 400; }
     .btn-primary { padding: 9px 18px; background: #1a1a2e; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; font-family: inherit; }
     .btn-primary:hover { background: #2d2d4e; }
     .btn-warning { padding: 6px 10px; background: #FAEEDA; color: #633806; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; }
@@ -64,8 +63,6 @@
     .owner-box .form-label { color: #712B13; }
     .owner-note { font-size: 11px; color: #D85A30; margin-top: 4px; }
     .toggle-inactive { font-size: 12px; color: #7F77DD; cursor: pointer; background: none; border: none; font-family: inherit; }
-
-    /* Modal */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: center; justify-content: center; }
     .modal-overlay.show { display: flex; }
     .modal { background: white; border-radius: 16px; padding: 24px; width: 480px; max-width: 95vw; box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
@@ -89,7 +86,7 @@
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">ชื่อ-นามสกุล *</label>
-          <input type="text" class="form-input" id="edit-name" placeholder="ชื่อ นามสกุล"/>
+          <input type="text" class="form-input" id="edit-name"/>
         </div>
         <div class="form-group">
           <label class="form-label">Role</label>
@@ -102,21 +99,21 @@
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">แผนก</label>
-          <input type="text" class="form-input" id="edit-department" placeholder="เช่น คณะเศรษฐศาสตร์"/>
+          <input type="text" class="form-input" id="edit-department"/>
         </div>
         <div class="form-group">
           <label class="form-label">ตำแหน่ง</label>
-          <input type="text" class="form-input" id="edit-position" placeholder="เช่น อาจารย์ เจ้าหน้าที่"/>
+          <input type="text" class="form-input" id="edit-position"/>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">เบอร์โทร</label>
-          <input type="text" class="form-input" id="edit-phone" placeholder="เช่น 081-234-5678"/>
+          <input type="text" class="form-input" id="edit-phone"/>
         </div>
         <div class="form-group">
           <label class="form-label">ช่องทางออนไลน์</label>
-          <input type="text" class="form-input" id="edit-online" placeholder="เช่น Line: @username, Teams"/>
+          <input type="text" class="form-input" id="edit-online"/>
         </div>
       </div>
       <div class="modal-footer">
@@ -167,7 +164,7 @@
           </div>
           <div class="form-group">
             <label class="form-label">เบอร์โทร</label>
-            <input type="text" class="form-input" id="new-phone" placeholder="081-234-5678"/>
+            <input type="text" class="form-input" id="new-phone" placeholder="0812345678"/>
           </div>
         </div>
         <div class="form-row">
@@ -198,13 +195,9 @@
         <div class="table-wrap">
           <table>
             <thead>
-              <tr>
-                <th>อีเมล</th><th>ชื่อ</th><th>แผนก/ตำแหน่ง</th><th>เบอร์/ออนไลน์</th><th>Role</th><th>สถานะ</th><th>จัดการ</th>
-              </tr>
+              <tr><th>อีเมล</th><th>ชื่อ</th><th>แผนก/ตำแหน่ง</th><th>เบอร์/ออนไลน์</th><th>Role</th><th>สถานะ</th><th>จัดการ</th></tr>
             </thead>
-            <tbody id="users-table">
-              <tr><td colspan="7" class="loading">⏳ กำลังโหลด...</td></tr>
-            </tbody>
+            <tbody id="users-table"><tr><td colspan="7" class="loading">⏳ กำลังโหลด...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -214,6 +207,7 @@
     <div class="panel" id="panel-devices">
       <div class="card">
         <p class="card-title">+ เพิ่มอุปกรณ์ใหม่</p>
+
         <p class="section-divider">ข้อมูลพื้นฐาน</p>
         <div class="form-row">
           <div class="form-group">
@@ -231,14 +225,8 @@
             <input type="text" class="form-input" id="dev-serial" placeholder="S/N"/>
           </div>
           <div class="form-group">
-            <label class="form-label">ชื่ออุปกรณ์ *</label>
-            <input type="text" class="form-input" id="dev-name" placeholder="เช่น Notebook Dell Latitude 5420"/>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
             <label class="form-label">หมวดหมู่ *</label>
-            <select class="form-input" id="dev-category">
+            <select class="form-input" id="dev-category" onchange="updateDeviceName()">
               <option value="Notebook">Notebook</option>
               <option value="AIO PC">AIO PC</option>
               <option value="PC">PC</option>
@@ -260,6 +248,25 @@
               <option value="Other">Other</option>
             </select>
           </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">ยี่ห้อ *</label>
+            <input type="text" class="form-input" id="dev-brand" placeholder="เช่น Dell, HP, Epson" oninput="updateDeviceName()"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">รุ่น *</label>
+            <input type="text" class="form-input" id="dev-model" placeholder="เช่น Latitude 5420" oninput="updateDeviceName()"/>
+          </div>
+        </div>
+
+        <!-- Preview ชื่ออุปกรณ์ -->
+        <div class="name-preview" id="name-preview">
+          <span>ชื่ออุปกรณ์ที่จะบันทึก: </span>
+          <span id="name-preview-text" style="color:#1a1a2e">— กรอกยี่ห้อและรุ่นเพื่อดูตัวอย่าง</span>
+        </div>
+
+        <div class="form-row">
           <div class="form-group">
             <label class="form-label">ประเภท *</label>
             <select class="form-input" id="dev-type" onchange="onTypeChange()">
@@ -268,15 +275,9 @@
               <option value="assigned">ประจำตัว (assigned)</option>
             </select>
           </div>
-        </div>
-        <div class="form-row">
           <div class="form-group">
-            <label class="form-label">ยี่ห้อ</label>
-            <input type="text" class="form-input" id="dev-brand" placeholder="เช่น Dell"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">รุ่น</label>
-            <input type="text" class="form-input" id="dev-model" placeholder="เช่น Latitude 5420"/>
+            <label class="form-label">ที่ตั้ง *</label>
+            <input type="text" class="form-input" id="dev-location" placeholder="เช่น ห้องไอที ชั้น 2"/>
           </div>
         </div>
         <div class="form-row">
@@ -289,11 +290,8 @@
             <input type="number" class="form-input" id="dev-price" placeholder="35000"/>
           </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">ที่ตั้ง *</label>
-          <input type="text" class="form-input" id="dev-location" placeholder="เช่น ห้องไอที ชั้น 2"/>
-        </div>
 
+        <!-- Owner box -->
         <div class="owner-box" id="owner-box">
           <div class="form-group" style="margin-bottom:4px">
             <label class="form-label">👤 ผู้ถือครอง *</label>
@@ -390,7 +388,6 @@
         if (dData.success) { allDevices = dData.devices; renderDevices(); }
         if (tData.success) { allTickets = tData.tickets; renderTickets(); }
         if (bData.success) { allBorrows = bData.borrows; renderBorrows(); }
-
         document.getElementById('stat-users').textContent = allUsers.filter(u => u.status === 'active').length;
         document.getElementById('stat-devices').textContent = allDevices.length;
         document.getElementById('stat-tickets').textContent = allTickets.filter(t => t.status === 'pending').length;
@@ -409,6 +406,23 @@
       });
     }
 
+    // Auto-generate ชื่ออุปกรณ์
+    function updateDeviceName() {
+      const category = document.getElementById('dev-category').value;
+      const brand = document.getElementById('dev-brand').value.trim();
+      const model = document.getElementById('dev-model').value.trim();
+      const parts = [category, brand, model].filter(Boolean);
+      const name = parts.join(' ');
+      document.getElementById('name-preview-text').textContent = name || '— กรอกยี่ห้อและรุ่นเพื่อดูตัวอย่าง';
+    }
+
+    function getDeviceName() {
+      const category = document.getElementById('dev-category').value;
+      const brand = document.getElementById('dev-brand').value.trim();
+      const model = document.getElementById('dev-model').value.trim();
+      return [category, brand, model].filter(Boolean).join(' ');
+    }
+
     function onTypeChange() {
       const type = document.getElementById('dev-type').value;
       document.getElementById('owner-box').style.display = type === 'assigned' ? 'block' : 'none';
@@ -423,30 +437,20 @@
     function renderUsers() {
       const tbody = document.getElementById('users-table');
       let users = showInactive ? allUsers : allUsers.filter(u => u.status === 'active');
-      if (!users.length) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>';
-        return;
-      }
+      if (!users.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>'; return; }
       tbody.innerHTML = users.map(u => `
         <tr class="${u.status === 'inactive' ? 'inactive-row' : ''}">
           <td style="font-size:12px">${u.email}</td>
           <td>${u.name || '-'}</td>
-          <td style="font-size:11px;color:#666">
-            ${u.department || '-'}<br>
-            <span style="color:#999">${u.position || ''}</span>
-          </td>
-          <td style="font-size:11px;color:#666">
-            ${u.phone || '-'}<br>
-            <span style="color:#999">${u.online_contact || ''}</span>
-          </td>
+          <td style="font-size:11px;color:#666">${u.department || '-'}<br><span style="color:#999">${u.position || ''}</span></td>
+          <td style="font-size:11px;color:#666">${u.phone || '-'}<br><span style="color:#999">${u.online_contact || ''}</span></td>
           <td><span class="badge badge-${u.role}">${u.role}</span></td>
           <td><span class="badge badge-${u.status}">${u.status}</span></td>
           <td style="white-space:nowrap;display:flex;gap:4px">
             <button class="btn-info" onclick="openEditModal('${u.email}')">✏️ แก้ไข</button>
             ${u.status === 'active'
               ? `<button class="btn-danger" onclick="toggleUserStatus('${u.email}','inactive')">🔴 บล็อก</button>`
-              : `<button class="btn-success" onclick="toggleUserStatus('${u.email}','active')">🟢 ปลดบล็อก</button>`
-            }
+              : `<button class="btn-success" onclick="toggleUserStatus('${u.email}','active')">🟢 ปลดบล็อก</button>`}
           </td>
         </tr>`).join('');
     }
@@ -512,14 +516,12 @@
         const data = await res.json();
         if (data.success) {
           showMsg('✅ เพิ่มผู้ใช้สำเร็จ', 'success');
-          ['new-email','new-name','new-phone','new-department','new-position','new-online']
-            .forEach(id => document.getElementById(id).value = '');
+          ['new-email','new-name','new-phone','new-department','new-position','new-online'].forEach(id => document.getElementById(id).value = '');
           loadAll();
         } else { showMsg('❌ ' + data.message, 'error'); }
       } catch(e) { showMsg('❌ เกิดข้อผิดพลาด', 'error'); }
     }
 
-    // Modal แก้ไข
     function openEditModal(email) {
       const u = allUsers.find(u => u.email === email);
       if (!u) return;
@@ -555,11 +557,8 @@
           })
         });
         const data = await res.json();
-        if (data.success) {
-          closeEditModal();
-          showMsg('✅ แก้ไขข้อมูลสำเร็จ', 'success');
-          loadAll();
-        } else { showEditMsg('❌ ' + data.message, 'error'); }
+        if (data.success) { closeEditModal(); showMsg('✅ แก้ไขข้อมูลสำเร็จ', 'success'); loadAll(); }
+        else { showEditMsg('❌ ' + data.message, 'error'); }
       } catch(e) { showEditMsg('❌ เกิดข้อผิดพลาด', 'error'); }
     }
 
@@ -567,10 +566,7 @@
       const action = status === 'inactive' ? 'บล็อก' : 'ปลดบล็อก';
       if (!confirm(action + ' ' + email + ' ?')) return;
       try {
-        const res = await fetch(GAS_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: 'toggleUserStatus', email, status })
-        });
+        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'toggleUserStatus', email, status }) });
         const data = await res.json();
         if (data.success) { showMsg('✅ ' + action + 'สำเร็จ', 'success'); loadAll(); }
         else showMsg('❌ ' + data.message, 'error');
@@ -581,12 +577,21 @@
       const devId = document.getElementById('dev-id').value.trim();
       const krupha = document.getElementById('dev-krupha').value.trim();
       const serial = document.getElementById('dev-serial').value.trim();
-      const name = document.getElementById('dev-name').value.trim();
+      const brand = document.getElementById('dev-brand').value.trim();
+      const model = document.getElementById('dev-model').value.trim();
       const location = document.getElementById('dev-location').value.trim();
       const type = document.getElementById('dev-type').value;
       const ownerEmail = document.getElementById('dev-owner').value;
-      if (!devId || !krupha || !serial || !name || !location) { showDeviceMsg('กรุณากรอกข้อมูลที่มี * ให้ครบ', 'error'); return; }
-      if (type === 'assigned' && !ownerEmail) { showDeviceMsg('กรุณาเลือกผู้ถือครอง', 'error'); return; }
+
+      if (!devId || !krupha || !serial || !brand || !model || !location) {
+        showDeviceMsg('กรุณากรอกข้อมูลที่มี * ให้ครบ', 'error'); return;
+      }
+      if (type === 'assigned' && !ownerEmail) {
+        showDeviceMsg('กรุณาเลือกผู้ถือครอง', 'error'); return;
+      }
+
+      const deviceName = getDeviceName();
+
       try {
         const res = await fetch(GAS_URL, {
           method: 'POST',
@@ -596,9 +601,9 @@
             mac_ethernet: document.getElementById('dev-mac').value.trim(),
             mac_wifi: document.getElementById('dev-macwifi').value.trim(),
             mac_bluetooth: document.getElementById('dev-macbt').value.trim(),
-            name, category: document.getElementById('dev-category').value,
-            brand: document.getElementById('dev-brand').value.trim(),
-            model: document.getElementById('dev-model').value.trim(),
+            name: deviceName,
+            category: document.getElementById('dev-category').value,
+            brand, model,
             purchase_date: document.getElementById('dev-date').value,
             purchase_price: document.getElementById('dev-price').value,
             type, status: type === 'assigned' ? 'assigned' : 'available',
@@ -607,13 +612,13 @@
         });
         const data = await res.json();
         if (data.success) {
-          showDeviceMsg('✅ เพิ่มอุปกรณ์สำเร็จ' + (ownerEmail ? ' — มอบให้ ' + ownerEmail : ''), 'success');
-          ['dev-id','dev-krupha','dev-serial','dev-mac','dev-macwifi','dev-macbt',
-           'dev-name','dev-brand','dev-model','dev-date','dev-price','dev-location']
+          showDeviceMsg('✅ เพิ่ม ' + deviceName + ' สำเร็จ' + (ownerEmail ? ' — มอบให้ ' + ownerEmail : ''), 'success');
+          ['dev-id','dev-krupha','dev-serial','dev-brand','dev-model','dev-mac','dev-macwifi','dev-macbt','dev-date','dev-price','dev-location']
             .forEach(id => document.getElementById(id).value = '');
           document.getElementById('dev-owner').value = '';
           document.getElementById('owner-box').style.display = 'none';
           document.getElementById('dev-type').value = 'borrow';
+          document.getElementById('name-preview-text').textContent = '— กรอกยี่ห้อและรุ่นเพื่อดูตัวอย่าง';
           loadAll();
         } else { showDeviceMsg('❌ ' + data.message, 'error'); }
       } catch(e) { showDeviceMsg('❌ เกิดข้อผิดพลาด', 'error'); }
@@ -656,25 +661,17 @@
 
     function showMsg(text, type) {
       const el = document.getElementById('msg-admin');
-      el.style.display = 'block';
-      el.className = type === 'success' ? 'msg-success' : 'msg-error';
-      el.textContent = text;
+      el.style.display = 'block'; el.className = type === 'success' ? 'msg-success' : 'msg-error'; el.textContent = text;
       setTimeout(() => el.style.display = 'none', 3000);
     }
-
     function showDeviceMsg(text, type) {
       const el = document.getElementById('msg-device');
-      el.style.display = 'block';
-      el.className = type === 'success' ? 'msg-success' : 'msg-error';
-      el.textContent = text;
+      el.style.display = 'block'; el.className = type === 'success' ? 'msg-success' : 'msg-error'; el.textContent = text;
       setTimeout(() => el.style.display = 'none', 3000);
     }
-
     function showEditMsg(text, type) {
       const el = document.getElementById('msg-edit');
-      el.style.display = 'block';
-      el.className = type === 'success' ? 'msg-success' : 'msg-error';
-      el.textContent = text;
+      el.style.display = 'block'; el.className = type === 'success' ? 'msg-success' : 'msg-error'; el.textContent = text;
     }
 
     loadAll();
