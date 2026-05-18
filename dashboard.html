@@ -7,124 +7,44 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Sarabun', sans-serif; background: #f0f4f8; }
-
-    /* Navbar */
     .navbar {
-      background: #1D9E75;
-      padding: 14px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      background: #1D9E75; padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
     }
     .navbar-brand { color: white; font-size: 18px; font-weight: 600; }
     .navbar-user { color: white; font-size: 14px; display: flex; align-items: center; gap: 12px; }
     .btn-logout {
-      background: rgba(255,255,255,0.2);
-      color: white;
-      border: none;
-      padding: 6px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 13px;
+      background: rgba(255,255,255,0.2); color: white; border: none;
+      padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 13px;
     }
     .btn-logout:hover { background: rgba(255,255,255,0.3); }
-
-    /* Content */
-    .container { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
-
-    /* Welcome */
-    .welcome { margin-bottom: 24px; }
-    .welcome h2 { font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
+    .container { max-width: 700px; margin: 0 auto; padding: 24px 16px; }
+    .welcome { margin-bottom: 28px; }
+    .welcome h2 { font-size: 22px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
     .welcome p { font-size: 14px; color: #666; }
-
-    /* Menu Grid */
     .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      display: grid; grid-template-columns: repeat(2, 1fr);
       gap: 14px;
-      margin-bottom: 28px;
     }
     .menu-card {
-      background: white;
-      border-radius: 14px;
-      padding: 20px;
-      cursor: pointer;
-      border: 1.5px solid transparent;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      background: white; border-radius: 16px; padding: 20px;
+      cursor: pointer; border: 1.5px solid transparent;
+      transition: all 0.2s; display: flex; align-items: center;
+      gap: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
     .menu-card:hover { border-color: #1D9E75; transform: translateY(-2px); }
+    .menu-card.admin-card:hover { border-color: #1a1a2e; }
     .menu-icon {
-      width: 48px; height: 48px;
-      border-radius: 12px;
+      width: 52px; height: 52px; border-radius: 14px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 22px; flex-shrink: 0;
+      font-size: 24px; flex-shrink: 0;
     }
     .menu-info h3 { font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 2px; }
     .menu-info p { font-size: 13px; color: #888; }
-
-    /* Section */
-    .section-title {
-      font-size: 15px; font-weight: 600;
-      color: #1a1a1a; margin-bottom: 12px;
-    }
-
-    /* Device Cards */
-    .device-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 28px; }
-    .device-card {
-      background: white; border-radius: 12px;
-      overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-    .device-thumb {
-      height: 80px; background: #f0f4f8;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 32px;
-    }
-    .device-body { padding: 10px 12px; }
-    .device-name { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 2px; }
-    .device-code { font-size: 11px; color: #999; font-family: monospace; margin-bottom: 8px; }
-    .badge {
-      font-size: 10px; padding: 2px 8px;
-      border-radius: 20px; font-weight: 500;
-    }
-    .badge-assigned { background: #FAECE7; color: #712B13; }
-    .badge-borrow { background: #EEEDFE; color: #3C3489; }
-    .btn-repair {
-      width: 100%; margin-top: 8px; padding: 6px;
-      border: 1px solid #ddd; border-radius: 6px;
-      background: transparent; font-size: 12px;
-      color: #555; cursor: pointer;
-    }
-    .btn-repair:hover { background: #f0f4f8; }
-
-    /* History */
-    .history-list { display: grid; gap: 8px; }
-    .history-row {
-      background: white; border-radius: 10px;
-      padding: 12px 16px; display: flex;
-      align-items: center; gap: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    }
-    .h-icon {
-      width: 36px; height: 36px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px; flex-shrink: 0;
-    }
-    .h-body { flex: 1; }
-    .h-title { font-size: 13px; font-weight: 500; color: #1a1a1a; margin-bottom: 2px; }
-    .h-meta { font-size: 12px; color: #888; }
-    .h-status { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
-    .s-prog { background: #E6F1FB; color: #0C447C; }
-    .s-done { background: #E1F5EE; color: #085041; }
-    .s-wait { background: #FAEEDA; color: #633806; }
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
   <div class="navbar">
     <span class="navbar-brand">🖥️ IT Helpdesk</span>
     <div class="navbar-user">
@@ -134,74 +54,35 @@
   </div>
 
   <div class="container">
-
-    <!-- Welcome -->
     <div class="welcome">
       <h2 id="welcome-text">สวัสดี!</h2>
       <p id="welcome-date"></p>
     </div>
-
-    <!-- Menu -->
     <div class="menu-grid" id="menu-grid"></div>
-
-    <!-- อุปกรณ์ของฉัน -->
-    <p class="section-title">อุปกรณ์ของฉัน</p>
-    <div class="device-grid" id="device-grid">
-      <div class="device-card">
-        <div class="device-thumb">💻</div>
-        <div class="device-body">
-          <p class="device-name">กำลังโหลด...</p>
-          <p class="device-code">-</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- ประวัติงาน -->
-    <p class="section-title">งานล่าสุด</p>
-    <div class="history-list" id="history-list">
-      <div class="history-row">
-        <div class="h-icon" style="background:#E1F5EE">🔧</div>
-        <div class="h-body">
-          <p class="h-title">กำลังโหลดประวัติ...</p>
-          <p class="h-meta">-</p>
-        </div>
-      </div>
-    </div>
-
   </div>
 
   <script>
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwRwYG6zliBbpSrQQzgTIVhFODMbe6Nfb5zG-AV_APAIuC-2HP2QJAb98FfKEYVC3vY/exec';
-
-    // ตรวจสอบ login
     const userStr = localStorage.getItem('user');
     if (!userStr) { location.href = 'index.html'; }
     const user = JSON.parse(userStr);
 
-    // แสดงชื่อ
     document.getElementById('user-name').textContent = user.name;
     document.getElementById('welcome-text').textContent = 'สวัสดี, ' + user.name;
+    document.getElementById('welcome-date').textContent = new Date().toLocaleDateString('th-TH', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
 
-    // แสดงวันที่
-    const now = new Date();
-    document.getElementById('welcome-date').textContent =
-      now.toLocaleDateString('th-TH', {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-      });
-
-    // สร้างเมนูตาม role
     const isAdmin = user.role === 'admin';
     const menus = [
       { icon: '🔧', bg: '#E1F5EE', title: 'แจ้งซ่อม', desc: 'แจ้งปัญหาอุปกรณ์', url: 'repair.html', show: true },
-      { icon: '📦', bg: '#EEEDFE', title: 'ยืมอุปกรณ์', desc: 'ยืม-คืนอุปกรณ์', url: 'borrow.html', show: true },
-      { icon: '💻', bg: '#E6F1FB', title: 'อุปกรณ์ของฉัน', desc: 'อุปกรณ์และการยืมของฉัน', url: 'mydevices.html', show: true },
+      { icon: '📦', bg: '#EEEDFE', title: 'ยืม-คืนอุปกรณ์', desc: 'ยืมหรือคืนอุปกรณ์', url: 'borrow.html', show: true },
+      { icon: '💻', bg: '#E6F1FB', title: 'อุปกรณ์ของฉัน', desc: 'อุปกรณ์ประจำตัวของฉัน', url: 'mydevices.html', show: true },
       { icon: '🏃', bg: '#FAECE7', title: 'บันทึกงานหน้างาน', desc: 'Walk-in สำหรับทีม IT', url: 'walkin.html', show: isAdmin },
       { icon: '⚙️', bg: '#1a1a2e', title: 'Admin Panel', desc: 'จัดการระบบ', url: 'admin.html', show: isAdmin, light: true },
     ];
 
-    const grid = document.getElementById('menu-grid');
-    grid.innerHTML = menus.filter(m => m.show).map(m => `
-      <div class="menu-card" onclick="location.href='${m.url}'">
+    document.getElementById('menu-grid').innerHTML = menus.filter(m => m.show).map(m => `
+      <div class="menu-card ${m.light ? 'admin-card' : ''}" onclick="location.href='${m.url}'">
         <div class="menu-icon" style="background:${m.bg}">
           <span style="${m.light ? 'filter:invert(1)' : ''}">${m.icon}</span>
         </div>
