@@ -182,23 +182,25 @@
         grid.innerHTML = '<div class="empty">ไม่พบอุปกรณ์ที่ตรงกัน</div>';
         return;
       }
-      grid.innerHTML = devices.map(d => `
-        <div class="device-card" onclick="selectDevice('${d.device_id}')">
-          <div class="device-thumb">
-            ${d.photo_front_url
-              ? `<img src="${d.photo_front_url}" alt="${d.name}"/>`
-              : (ICONS[d.category] || ICONS.default)}
-            <span class="status-dot ${STATUS_CLASS[d.status] || 's-available'}">
-              ${STATUS_LABEL[d.status] || d.status}
-            </span>
-          </div>
-          <div class="device-body">
-            <p class="device-name">${d.name}</p>
-            <p class="device-code">${d.device_id} · ${d.krupha_no}</p>
-            <p class="device-loc">📍 ${d.location}</p>
-          </div>
-        </div>
-      `).join('');
+      grid.innerHTML = devices.map(d => {
+        const showBadge = d.type === 'borrow';
+        const badgeHtml = showBadge
+          ? `<span class="status-dot ${STATUS_CLASS[d.status] || 's-available'}">${STATUS_LABEL[d.status] || d.status}</span>`
+          : (d.type === 'room'
+              ? `<span class="status-dot s-room">ประจำห้อง</span>`
+              : `<span class="status-dot s-assigned">ประจำตัว</span>`);
+        return `
+          <div class="device-card" onclick="selectDevice('${d.device_id}')">
+            <div class="device-thumb">
+              ${d.photo_front_url ? `<img src="${d.photo_front_url}" alt="${d.name}"/>` : (ICONS[d.category] || ICONS.default)}
+              ${badgeHtml}
+            </div>
+            <div class="device-body">
+              <p class="device-name">${d.name}</p>
+              <p class="device-code">${d.krupha_no || d.device_id}</p>
+            </div>
+          </div>`;
+      }).join('');
     }
 
     function filterDevices() {
