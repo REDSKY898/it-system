@@ -222,9 +222,10 @@
     if (d.type === 'assigned' && d.owner_email) {
       document.getElementById('owner-section').style.display = 'block';
       document.getElementById('owner-email').textContent = d.owner_email;
-      // ดึงชื่อจาก allUsers ถ้ามี ไม่งั้นแสดง email
       document.getElementById('owner-name').textContent = d.owner_name || d.owner_email;
     }
+
+    if (d.photo_front_url) {
       const badgeHtml = d.type === 'borrow'
         ? `<span class="status-badge ${STATUS_CLASS[d.status]}">${STATUS_LABEL[d.status]}</span>` : '';
       document.getElementById('device-image').innerHTML =
