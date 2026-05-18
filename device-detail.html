@@ -124,7 +124,21 @@
 
     <div id="action-section"></div>
 
-    <div class="section">
+    <!-- เจ้าของอุปกรณ์ (แสดงเฉพาะ assigned) -->
+    <div class="section" id="owner-section" style="display:none">
+      <p class="section-title">👤 ผู้ถือครองอุปกรณ์</p>
+      <div class="spec-row">
+        <span class="spec-label">ชื่อผู้ถือครอง</span>
+        <span class="spec-val normal" id="owner-name">-</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-label">อีเมล</span>
+        <span class="spec-val" id="owner-email">-</span>
+      </div>
+    </div>
+
+    <!-- ข้อมูลอุปกรณ์ (admin เท่านั้น) -->
+    <div class="section" id="tech-section" style="display:none">
       <p class="section-title">🔧 ข้อมูลอุปกรณ์</p>
       <div class="spec-row">
         <span class="spec-label">ยี่ห้อ / รุ่น</span>
@@ -151,7 +165,6 @@
         <span class="spec-val normal" id="purchase-price">-</span>
       </div>
     </div>
-  </div>
 
   <script>
     const ICONS = {
@@ -172,6 +185,8 @@
     const deviceStr = localStorage.getItem('selectedDevice');
     if (!deviceStr) { location.href = 'devices.html'; }
     const d = JSON.parse(deviceStr);
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const isAdmin = user.role === 'admin';
 
     document.getElementById('nav-title').textContent = d.name;
     document.getElementById('device-name').textContent = d.name;
@@ -197,7 +212,18 @@
         Number(d.purchase_price).toLocaleString() + ' บาท';
     }
 
-    if (d.photo_front_url) {
+    // แสดงข้อมูลเทคนิคเฉพาะ admin
+    if (isAdmin) {
+      document.getElementById('tech-section').style.display = 'block';
+    }
+
+    // แสดงเจ้าของเฉพาะ assigned
+    if (d.type === 'assigned' && d.owner_email) {
+      document.getElementById('owner-section').style.display = 'block';
+      document.getElementById('owner-email').textContent = d.owner_email;
+      // ดึงชื่อจาก allUsers ถ้ามี ไม่งั้นแสดง email
+      document.getElementById('owner-name').textContent = d.owner_name || d.owner_email;
+    }
       const badgeHtml = d.type === 'borrow'
         ? `<span class="status-badge ${STATUS_CLASS[d.status]}">${STATUS_LABEL[d.status]}</span>` : '';
       document.getElementById('device-image').innerHTML =
