@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IT Helpdesk — Asset Lifecycle</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Sarabun', sans-serif; background: #f0f4f8; }
+    .navbar {
+      background: #E24B4A; padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .navbar-brand { color: white; font-size: 18px; font-weight: 600; }
+    .btn-back {
+      background: rgba(255,255,255,0.2); color: white;
+      border: none; padding: 6px 14px; border-radius: 8px;
+      cursor: pointer; font-size: 13px;
+    }
+    .container { max-width: 650px; margin: 0 auto; padding: 24px 16px; }
+    .card {
+      background: white; border-radius: 16px; padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 15px; font-weight: 600; color: #1a1a1a;
+      margin-bottom: 16px; padding-bottom: 10px;
+      border-bottom: 0.5px solid #eee;
+    }
+    .form-group { margin-bottom: 14px; }
+    .form-label { font-size: 13px; font-weight: 500; color: #444; margin-bottom: 6px; display: block; }
+    .form-label span { color: #e53e3e; }
+    .form-input {
+      width: 100%; padding: 10px 14px; border: 0.5px solid #ddd;
+      border-radius: 10px; font-size: 14px; outline: none;
+      font-family: inherit; background: white;
+    }
+    .form-input:focus { border-color: #E24B4A; }
+    textarea.form-input { height: 80px; resize: none; }
+    select.form-input { background: white; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .device-selected {
+      display: flex; align-items: center; gap: 12px;
+      background: #f0f4f8; border-radius: 10px; padding: 12px;
+      margin-bottom: 16px;
+    }
+    .device-icon { font-size: 28px; }
+    .device-info-name { font-size: 14px; font-weight: 500; color: #1a1a1a; }
+    .device-info-code { font-size: 12px; color: #999; font-family: monospace; }
+    .btn-change {
+      margin-left: auto; font-size: 12px; color: #E24B4A;
+      background: none; border: none; cursor: pointer;
+    }
+    .photo-grid {
+      display: grid; grid-template-columns: repeat(5,1fr); gap: 8px;
+    }
+    .photo-slot {
+      aspect-ratio: 1; border: 1.5px dashed #ddd; border-radius: 10px;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; cursor: pointer; font-size: 20px;
+      background: #fafafa; position: relative; overflow: hidden;
+    }
+    .photo-slot:hover { border-color: #E24B4A; background: #fff5f5; }
+    .photo-slot img { width: 100%; height: 100%; object-fit: cover; position: absolute; }
+    .photo-slot input { display: none; }
+    .photo-label { font-size: 10px; color: #999; margin-top: 4px; }
+    .btn-submit {
+      width: 100%; padding: 14px; background: #E24B4A; color: white;
+      border: none; border-radius: 12px; font-size: 16px; font-weight: 500;
+      cursor: pointer; margin-top: 8px;
+    }
+    .btn-submit:hover { background: #c93c3b; }
+    .btn-submit:disabled { background: #aaa; cursor: not-allowed; }
+    #msg {
+      padding: 12px; border-radius: 10px; font-size: 14px;
+      text-align: center; display: none; margin-top: 12px;
+    }
+    .msg-success { background: #E1F5EE; color: #085041; }
+    .msg-error { background: #FCEBEB; color: #791F1F; }
+    .tab-row { display: flex; gap: 4px; margin-bottom: 20px; background: white;
+      border-radius: 12px; padding: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .tab { flex: 1; padding: 10px; border: none; background: transparent;
+      border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;
+      color: #666; font-family: inherit; }
+    .tab.active { background: #E24B4A; color: white; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <span class="navbar-brand">⚠️ Asset Lifecycle</span>
+    <button class="btn-back" onclick="location.href='admin.html'">← กลับ</button>
+  </div>
+
+  <div class="container">
+
+    <div class="tab-row">
+      <button class="tab active" onclick="switchTab('degraded')">🔴 บันทึกเสื่อมสภาพ</button>
+      <button class="tab" onclick="switchTab('retire')">🗑️ ตัดจำหน่าย</button>
+      <button class="tab" onclick="switchTab('retired-list')">📋 รายการตัดจำหน่าย</button>
+    </div>
+
+    <!-- Panel: บันทึกเสื่อมสภาพ -->
+    <div class="panel active" id="panel-degraded">
+      <div class="card">
+        <p class="card-title">🔴 บันทึกอุปกรณ์เสื่อมสภาพ</p>
+
+        <div class="form-group">
+          <label class="form-label">เลือกอุปกรณ์ <span>*</span></label>
+          <select class="form-input" id="deg-device">
+            <option value="">-- เลือกอุปกรณ์ --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">สาเหตุที่เสื่อมสภาพ <span>*</span></label>
+          <textarea class="form-input" id="deg-reason"
+            placeholder="เช่น จอแตก แบตเตอรี่เสื่อม บอร์ดไหม้..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">รูปภาพหลักฐาน (สูงสุด 5 รูป)</label>
+          <div class="photo-grid">
+            <div class="photo-slot" onclick="document.getElementById('dp1').click()">
+              📷<span class="photo-label">รูปที่ 1</span>
+              <input type="file" id="dp1" accept="image/*" onchange="previewPhoto(this,0,'deg')"/>
+            </div>
+            <div class="photo-slot" onclick="document.getElementById('dp2').click()">
+              📷<span class="photo-label">รูปที่ 2</span>
+              <input type="file" id="dp2" accept="image/*" onchange="previewPhoto(this,1,'deg')"/>
+            </div>
+            <div class="photo-slot" onclick="document.getElementById('dp3').click()">
+              📷<span class="photo-label">รูปที่ 3</span>
+              <input type="file" id="dp3" accept="image/*" onchange="previewPhoto(this,2,'deg')"/>
+            </div>
+            <div class="photo-slot" onclick="document.getElementById('dp4').click()">
+              📷<span class="photo-label">รูปที่ 4</span>
+              <input type="file" id="dp4" accept="image/*" onchange="previewPhoto(this,3,'deg')"/>
+            </div>
+            <div class="photo-slot" onclick="document.getElementById('dp5').click()">
+              📷<span class="photo-label">รูปที่ 5</span>
+              <input type="file" id="dp5" accept="image/*" onchange="previewPhoto(this,4,'deg')"/>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-submit" onclick="submitDegraded()">
+          🔴 บันทึกเสื่อมสภาพ
+        </button>
+        <div id="msg-deg"></div>
+      </div>
+    </div>
+
+    <!-- Panel: ตัดจำหน่าย -->
+    <div class="panel" id="panel-retire">
+      <div class="card">
+        <p class="card-title">🗑️ ตัดจำหน่ายอุปกรณ์</p>
+
+        <div class="form-group">
+          <label class="form-label">เลือกอุปกรณ์ <span>*</span></label>
+          <select class="form-input" id="ret-device">
+            <option value="">-- เลือกอุปกรณ์ --</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">ปลายทาง <span>*</span></label>
+            <select class="form-input" id="ret-dest">
+              <option value="ทิ้ง">ทิ้ง</option>
+              <option value="ขาย">ขาย</option>
+              <option value="บริจาค">บริจาค</option>
+              <option value="ทำลาย">ทำลาย</option>
+              <option value="ส่งคืนผู้ผลิต">ส่งคืนผู้ผลิต</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">วันที่ตัดจำหน่าย <span>*</span></label>
+            <input type="date" class="form-input" id="ret-date"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">เหตุผล <span>*</span></label>
+          <textarea class="form-input" id="ret-reason"
+            placeholder="เช่น อุปกรณ์เสื่อมสภาพเกินซ่อมได้ ใช้งานมาเกิน 10 ปี..."></textarea>
+        </div>
+
+        <button class="btn-submit" onclick="submitRetire()">
+          🗑️ ยืนยันตัดจำหน่าย
+        </button>
+        <div id="msg-ret"></div>
+      </div>
+    </div>
+
+    <!-- Panel: รายการตัดจำหน่าย -->
+    <div class="panel" id="panel-retired-list">
+      <div class="card">
+        <p class="card-title">📋 รายการอุปกรณ์ที่ตัดจำหน่ายแล้ว</p>
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:13px">
+            <thead>
+              <tr style="border-bottom:0.5px solid #eee">
+                <th style="padding:8px;text-align:left;color:#666;font-size:11px">รหัส</th>
+                <th style="padding:8px;text-align:left;color:#666;font-size:11px">ชื่อ</th>
+                <th style="padding:8px;text-align:left;color:#666;font-size:11px">ปลายทาง</th>
+                <th style="padding:8px;text-align:left;color:#666;font-size:11px">วันที่</th>
+                <th style="padding:8px;text-align:left;color:#666;font-size:11px">เหตุผล</th>
+              </tr>
+            </thead>
+            <tbody id="retired-table">
+              <tr><td colspan="5" style="text-align:center;padding:20px;color:#999">⏳ กำลังโหลด...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwRwYG6zliBbpSrQQzgTIVhFODMbe6Nfb5zG-AV_APAIuC-2HP2QJAb98FfKEYVC3vY/exec';
+
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user.email) { location.href = 'index.html'; }
+    if (user.role !== 'admin') {
+      alert('คุณไม่มีสิทธิ์เข้าถึงหน้านี้');
+      location.href = 'dashboard.html';
+    }
+
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('ret-date').value = today;
+
+    // โหลดอุปกรณ์
+    fetch(GAS_URL + '?action=getDevices')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          const selDeg = document.getElementById('deg-device');
+          const selRet = document.getElementById('ret-device');
+          data.devices.forEach(d => {
+            const opt1 = document.createElement('option');
+            opt1.value = d.device_id;
+            opt1.textContent = d.device_id + ' — ' + d.name + ' (' + d.status + ')';
+            selDeg.appendChild(opt1);
+
+            const opt2 = document.createElement('option');
+            opt2.value = d.device_id;
+            opt2.textContent = d.device_id + ' — ' + d.name + ' (' + d.status + ')';
+            selRet.appendChild(opt2);
+          });
+        }
+      });
+
+    // โหลดรายการตัดจำหน่าย
+    function loadRetired() {
+      fetch(GAS_URL + '?action=getRetiredDevices')
+        .then(res => res.json())
+        .then(data => {
+          const tbody = document.getElementById('retired-table');
+          if (data.success && data.retired.length) {
+            tbody.innerHTML = data.retired.map(r => `
+              <tr style="border-bottom:0.5px solid #f5f5f5">
+                <td style="padding:10px 8px;font-family:monospace;font-size:12px">${r.device_id}</td>
+                <td style="padding:10px 8px">${r.name}</td>
+                <td style="padding:10px 8px">${r.retire_dest}</td>
+                <td style="padding:10px 8px">${r.retire_date}</td>
+                <td style="padding:10px 8px;color:#666">${r.retire_reason}</td>
+              </tr>`).join('');
+          } else {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:#999">ยังไม่มีรายการตัดจำหน่าย</td></tr>';
+          }
+        });
+    }
+
+    function previewPhoto(input, index, prefix) {
+      if (!input.files[0]) return;
+      const slots = document.querySelectorAll('#panel-' + (prefix === 'deg' ? 'degraded' : 'retire') + ' .photo-slot');
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        slots[index].innerHTML = '';
+        slots[index].appendChild(img);
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+
+    async function submitDegraded() {
+      const deviceId = document.getElementById('deg-device').value;
+      const reason = document.getElementById('deg-reason').value.trim();
+
+      if (!deviceId) { showMsg('กรุณาเลือกอุปกรณ์', 'error', 'deg'); return; }
+      if (!reason) { showMsg('กรุณากรอกสาเหตุ', 'error', 'deg'); return; }
+
+      const btn = document.querySelector('#panel-degraded .btn-submit');
+      btn.disabled = true;
+      btn.textContent = '⏳ กำลังบันทึก...';
+
+      try {
+        const res = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'markDegraded',
+            device_id: deviceId,
+            reason: reason,
+            marked_by: user.email
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showMsg('✅ บันทึกเสื่อมสภาพสำเร็จ สถานะเปลี่ยนเป็น degraded', 'success', 'deg');
+          btn.textContent = '✅ บันทึกแล้ว';
+        } else {
+          showMsg('❌ ' + data.message, 'error', 'deg');
+          btn.disabled = false;
+          btn.textContent = '🔴 บันทึกเสื่อมสภาพ';
+        }
+      } catch(e) {
+        showMsg('❌ เกิดข้อผิดพลาด', 'error', 'deg');
+        btn.disabled = false;
+        btn.textContent = '🔴 บันทึกเสื่อมสภาพ';
+      }
+    }
+
+    async function submitRetire() {
+      const deviceId = document.getElementById('ret-device').value;
+      const dest = document.getElementById('ret-dest').value;
+      const date = document.getElementById('ret-date').value;
+      const reason = document.getElementById('ret-reason').value.trim();
+
+      if (!deviceId) { showMsg('กรุณาเลือกอุปกรณ์', 'error', 'ret'); return; }
+      if (!reason) { showMsg('กรุณากรอกเหตุผล', 'error', 'ret'); return; }
+
+      if (!confirm('ยืนยันตัดจำหน่าย ' + deviceId + ' ?\nการดำเนินการนี้ไม่สามารถยกเลิกได้')) return;
+
+      const btn = document.querySelector('#panel-retire .btn-submit');
+      btn.disabled = true;
+      btn.textContent = '⏳ กำลังดำเนินการ...';
+
+      try {
+        const res = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'retireDevice',
+            device_id: deviceId,
+            retire_dest: dest,
+            retire_date: date,
+            retire_reason: reason,
+            retire_by: user.email
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showMsg('✅ ตัดจำหน่ายสำเร็จ บันทึกลง RetiredDevices Sheet แล้ว', 'success', 'ret');
+          btn.textContent = '✅ ดำเนินการแล้ว';
+        } else {
+          showMsg('❌ ' + data.message, 'error', 'ret');
+          btn.disabled = false;
+          btn.textContent = '🗑️ ยืนยันตัดจำหน่าย';
+        }
+      } catch(e) {
+        showMsg('❌ เกิดข้อผิดพลาด', 'error', 'ret');
+        btn.disabled = false;
+        btn.textContent = '🗑️ ยืนยันตัดจำหน่าย';
+      }
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab').forEach((t,i) => {
+        t.classList.toggle('active', ['degraded','retire','retired-list'][i] === tab);
+      });
+      document.querySelectorAll('.panel').forEach((p,i) => {
+        p.classList.toggle('active', ['panel-degraded','panel-retire','panel-retired-list'][i] === 'panel-'+tab);
+      });
+      if (tab === 'retired-list') loadRetired();
+    }
+
+    function showMsg(text, type, prefix) {
+      const el = document.getElementById('msg-' + prefix);
+      el.style.display = 'block';
+      el.className = type === 'success' ? 'msg-success' : 'msg-error';
+      el.textContent = text;
+    }
+  </script>
+
+</body>
+</html>
