@@ -49,6 +49,8 @@
     .badge-room { background: #EEEDFE; color: #3C3489; }
     .badge-assigned { background: #FAECE7; color: #712B13; }
     .badge-degraded { background: #FAEEDA; color: #633806; }
+    .badge-returning { background: #E6F1FB; color: #0C447C; }
+    .badge-returned { background: #f0f4f8; color: #666; }
     .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 20px; }
     .stat-card { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center; }
     .stat-num { font-size: 28px; font-weight: 600; color: #1a1a2e; margin: 0; }
@@ -121,6 +123,39 @@
         <button class="btn-primary" onclick="saveEditUser()">💾 บันทึก</button>
       </div>
       <div id="msg-edit" style="padding:8px;border-radius:8px;font-size:12px;display:none;margin-top:8px;text-align:center"></div>
+    </div>
+  </div>
+
+  <!-- Modal ยืนยันคืน -->
+  <div class="modal-overlay" id="confirm-return-modal">
+    <div class="modal">
+      <p class="modal-title">✅ ยืนยันรับคืนอุปกรณ์</p>
+      <input type="hidden" id="cr-borrow-id"/>
+      <div class="form-group">
+        <label class="form-label">สภาพอุปกรณ์ *</label>
+        <select class="form-input" id="cr-condition">
+          <option value="ปกติ">ปกติ ไม่มีความเสียหาย</option>
+          <option value="มีรอยขีดข่วน">มีรอยขีดข่วนเล็กน้อย</option>
+          <option value="เสียหาย">เสียหาย ต้องซ่อม</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">สถานะหลังคืน *</label>
+        <select class="form-input" id="cr-next-status">
+          <option value="available">พร้อมใช้งาน (available)</option>
+          <option value="prep">รอเตรียมพร้อม (prep)</option>
+          <option value="degraded">เสื่อมสภาพ (degraded)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">หมายเหตุ</label>
+        <textarea class="form-input" id="cr-note" style="height:60px;resize:none" placeholder="หมายเหตุเพิ่มเติม..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeConfirmReturnModal()">ยกเลิก</button>
+        <button class="btn-primary" onclick="submitConfirmReturn()">✅ ยืนยันรับคืน</button>
+      </div>
+      <div id="msg-cr" style="padding:8px;border-radius:8px;font-size:12px;display:none;margin-top:8px;text-align:center"></div>
     </div>
   </div>
 
@@ -354,8 +389,8 @@
         <p class="card-title">รายการยืมอุปกรณ์</p>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Borrow ID</th><th>อุปกรณ์</th><th>ผู้ยืม</th><th>วันยืม</th><th>วันคืน</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
-            <tbody id="borrows-table"><tr><td colspan="7" class="loading">⏳ กำลังโหลด...</td></tr></tbody>
+            <thead><tr><th>Borrow ID</th><th>อุปกรณ์</th><th>ผู้ยืม</th><th>วันยืม</th><th>กำหนดคืน</th><th>วันคืนจริง</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+            <tbody id="borrows-table"><tr><td colspan="8" class="loading">⏳ กำลังโหลด...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -482,16 +517,32 @@
         </tr>`).join('');
     }
 
+    const BORROW_STATUS_LABEL = {
+      'pending': 'รออนุมัติ', 'approved': 'กำลังยืม',
+      'returning': '📬 แจ้งคืนแล้ว', 'returned': 'คืนแล้ว'
+    };
+    const BORROW_BADGE = {
+      'pending': 'borrowed', 'approved': 'available',
+      'returning': 'returning', 'returned': 'inactive'
+    };
+
     function renderBorrows() {
       const tbody = document.getElementById('borrows-table');
-      if (!allBorrows.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>'; return; }
+      if (!allBorrows.length) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>'; return; }
       tbody.innerHTML = allBorrows.map(b => `
         <tr>
           <td><span style="font-family:monospace;font-size:12px">${b.borrow_id}</span></td>
-          <td>${b.device_id}</td><td>${b.borrower_email}</td>
-          <td>${b.borrow_date}</td><td>${b.due_date}</td>
-          <td><span class="badge badge-${b.status === 'pending' ? 'borrowed' : 'available'}">${b.status}</span></td>
-          <td>${b.status === 'pending' ? `<button class="btn-success" onclick="approveBorrow('${b.borrow_id}')">อนุมัติ</button>` : '-'}</td>
+          <td>${b.device_id}</td>
+          <td style="font-size:12px">${b.borrower_email}</td>
+          <td style="font-size:12px">${b.borrow_date || '-'}</td>
+          <td style="font-size:12px">${b.due_date || '-'}</td>
+          <td style="font-size:12px">${b.return_date || '-'}</td>
+          <td><span class="badge badge-${BORROW_BADGE[b.status] || 'available'}">${BORROW_STATUS_LABEL[b.status] || b.status}</span></td>
+          <td style="white-space:nowrap;display:flex;gap:4px">
+            ${b.status === 'pending' ? `<button class="btn-success" onclick="approveBorrow('${b.borrow_id}')">✅ อนุมัติ</button>` : ''}
+            ${b.status === 'returning' ? `<button class="btn-info" onclick="openConfirmReturn('${b.borrow_id}')">📦 ยืนยันรับคืน</button>` : ''}
+            ${b.status === 'returned' || b.status === 'approved' ? '-' : ''}
+          </td>
         </tr>`).join('');
     }
 
@@ -648,6 +699,56 @@
         const data = await res.json();
         if (data.success) { loadAll(); }
       } catch(e) { alert('เกิดข้อผิดพลาด'); }
+    }
+
+    function openConfirmReturn(borrowId) {
+      document.getElementById('cr-borrow-id').value = borrowId;
+      document.getElementById('cr-note').value = '';
+      document.getElementById('cr-condition').value = 'ปกติ';
+      document.getElementById('cr-next-status').value = 'available';
+      document.getElementById('msg-cr').style.display = 'none';
+      document.getElementById('confirm-return-modal').classList.add('show');
+    }
+
+    function closeConfirmReturnModal() {
+      document.getElementById('confirm-return-modal').classList.remove('show');
+    }
+
+    async function submitConfirmReturn() {
+      const borrowId = document.getElementById('cr-borrow-id').value;
+      const condition = document.getElementById('cr-condition').value;
+      const nextStatus = document.getElementById('cr-next-status').value;
+      const note = document.getElementById('cr-note').value.trim();
+      const btn = document.querySelector('#confirm-return-modal .btn-primary');
+      btn.disabled = true;
+      btn.textContent = '⏳ กำลังบันทึก...';
+      try {
+        const res = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'confirmReturn',
+            borrow_id: borrowId,
+            condition, next_status: nextStatus,
+            note, confirmed_by: user.email
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          closeConfirmReturnModal();
+          loadAll();
+        } else {
+          document.getElementById('msg-cr').style.display = 'block';
+          document.getElementById('msg-cr').className = 'msg-error';
+          document.getElementById('msg-cr').textContent = '❌ ' + data.message;
+          btn.disabled = false;
+          btn.textContent = '✅ ยืนยันรับคืน';
+        }
+      } catch(e) {
+        document.getElementById('msg-cr').style.display = 'block';
+        document.getElementById('msg-cr').textContent = '❌ เกิดข้อผิดพลาด';
+        btn.disabled = false;
+        btn.textContent = '✅ ยืนยันรับคืน';
+      }
     }
 
     function switchTab(tab) {
