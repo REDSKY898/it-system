@@ -78,7 +78,8 @@
       { icon: '📦', bg: '#EEEDFE', title: 'ยืม-คืนอุปกรณ์', desc: 'ยืมหรือคืนอุปกรณ์', url: 'borrow.html', show: true },
       { icon: '💻', bg: '#E6F1FB', title: 'อุปกรณ์ของฉัน', desc: 'อุปกรณ์ประจำตัวของฉัน', url: 'mydevices.html', show: true },
       { icon: '🏃', bg: '#FAECE7', title: 'บันทึกงานหน้างาน', desc: 'Walk-in สำหรับทีม IT', url: 'walkin.html', show: isAdmin },
-      { icon: '⚙️', bg: '#1a1a2e', title: 'Admin Panel', desc: 'จัดการระบบ', url: 'admin.html', show: isAdmin, light: true },
+      { icon: '⚙️', bg: '#e36132', title: 'Admin Panel', desc: 'จัดการระบบ', url: 'admin.html', show: isAdmin, light: true },
+      { icon: '📄', bg: '#e36132', title: 'EXPORT', desc: 'Logs User & Devices', url: 'export.html', show: isAdmin, light: true },
     ];
 
     document.getElementById('menu-grid').innerHTML = menus.filter(m => m.show).map(m => `
