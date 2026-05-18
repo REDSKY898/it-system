@@ -12,47 +12,34 @@
       display: flex; align-items: center; justify-content: space-between;
     }
     .navbar-brand { color: white; font-size: 18px; font-weight: 600; }
-    .navbar-right { display: flex; align-items: center; gap: 12px; }
-    .btn-back {
-      background: rgba(255,255,255,0.1); color: white;
-      border: none; padding: 6px 14px; border-radius: 8px;
-      cursor: pointer; font-size: 13px;
-    }
-    .container { max-width: 900px; margin: 0 auto; padding: 24px 16px; }
-    .tabs { display: flex; gap: 4px; margin-bottom: 20px; background: white;
-      border-radius: 12px; padding: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-    .tab { flex: 1; padding: 10px; border: none; background: transparent;
-      border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500;
-      color: #666; font-family: inherit; }
+    .btn-back { background: rgba(255,255,255,0.1); color: white; border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; }
+    .container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+    .tabs { display: flex; gap: 4px; margin-bottom: 20px; background: white; border-radius: 12px; padding: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .tab { flex: 1; padding: 10px; border: none; background: transparent; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; color: #666; font-family: inherit; }
     .tab.active { background: #1a1a2e; color: white; }
-    .card { background: white; border-radius: 16px; padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 16px; }
-    .card-title { font-size: 15px; font-weight: 600; color: #1a1a1a;
-      margin-bottom: 16px; padding-bottom: 10px; border-bottom: 0.5px solid #eee;
-      display: flex; align-items: center; justify-content: space-between; }
+    .card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 16px; }
+    .card-title { font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 0.5px solid #eee; display: flex; align-items: center; justify-content: space-between; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
     .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .form-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px; }
     .form-group { margin-bottom: 12px; }
     .form-label { font-size: 12px; font-weight: 500; color: #444; margin-bottom: 4px; display: block; }
-    .form-input { width: 100%; padding: 9px 12px; border: 0.5px solid #ddd;
-      border-radius: 8px; font-size: 13px; outline: none; font-family: inherit; }
+    .form-input { width: 100%; padding: 9px 12px; border: 0.5px solid #ddd; border-radius: 8px; font-size: 13px; outline: none; font-family: inherit; }
     .form-input:focus { border-color: #1a1a2e; }
     select.form-input { background: white; }
-    .btn-primary { padding: 9px 18px; background: #1a1a2e; color: white;
-      border: none; border-radius: 8px; cursor: pointer; font-size: 13px;
-      font-weight: 500; font-family: inherit; }
+    .btn-primary { padding: 9px 18px; background: #1a1a2e; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; font-family: inherit; }
     .btn-primary:hover { background: #2d2d4e; }
-    .btn-danger { padding: 6px 12px; background: #FCEBEB; color: #791F1F;
-      border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-family: inherit; }
-    .btn-success { padding: 6px 12px; background: #E1F5EE; color: #085041;
-      border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-family: inherit; }
+    .btn-warning { padding: 6px 10px; background: #FAEEDA; color: #633806; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; }
+    .btn-danger { padding: 6px 10px; background: #FCEBEB; color: #791F1F; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; }
+    .btn-success { padding: 6px 10px; background: #E1F5EE; color: #085041; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; }
+    .btn-info { padding: 6px 10px; background: #E6F1FB; color: #0C447C; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; }
     .table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th { font-size: 11px; font-weight: 500; color: #666; padding: 8px 12px;
-      border-bottom: 0.5px solid #eee; text-align: left; background: #fafafa; }
-    td { padding: 10px 12px; border-bottom: 0.5px solid #f5f5f5; color: #1a1a1a; }
+    th { font-size: 11px; font-weight: 500; color: #666; padding: 8px 12px; border-bottom: 0.5px solid #eee; text-align: left; background: #fafafa; white-space: nowrap; }
+    td { padding: 8px 12px; border-bottom: 0.5px solid #f5f5f5; color: #1a1a1a; }
     tr:hover td { background: #fafafa; }
     tr:last-child td { border-bottom: none; }
+    tr.inactive-row td { opacity: 0.5; }
     .badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
     .badge-admin { background: #1a1a2e; color: white; }
     .badge-user { background: #f0f4f8; color: #666; }
@@ -64,8 +51,7 @@
     .badge-assigned { background: #FAECE7; color: #712B13; }
     .badge-degraded { background: #FAEEDA; color: #633806; }
     .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 20px; }
-    .stat-card { background: white; border-radius: 12px; padding: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center; }
+    .stat-card { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center; }
     .stat-num { font-size: 28px; font-weight: 600; color: #1a1a2e; margin: 0; }
     .stat-label { font-size: 12px; color: #666; margin: 4px 0 0; }
     .msg-success { background: #E1F5EE; color: #085041; }
@@ -73,26 +59,71 @@
     .panel { display: none; }
     .panel.active { display: block; }
     .loading { text-align: center; padding: 20px; color: #666; font-size: 14px; }
-    .section-divider {
-      font-size: 11px; font-weight: 600; color: #999; text-transform: uppercase;
-      letter-spacing: .5px; margin: 16px 0 10px; padding-bottom: 6px;
-      border-bottom: 0.5px solid #eee;
-    }
-    .owner-box {
-      background: #FAECE7; border: 1.5px solid #D85A30;
-      border-radius: 10px; padding: 14px; margin-bottom: 12px; display: none;
-    }
+    .section-divider { font-size: 11px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: .5px; margin: 16px 0 10px; padding-bottom: 6px; border-bottom: 0.5px solid #eee; }
+    .owner-box { background: #FAECE7; border: 1.5px solid #D85A30; border-radius: 10px; padding: 14px; margin-bottom: 12px; display: none; }
     .owner-box .form-label { color: #712B13; }
-    .owner-box .form-input:focus { border-color: #D85A30; }
     .owner-note { font-size: 11px; color: #D85A30; margin-top: 4px; }
+    .toggle-inactive { font-size: 12px; color: #7F77DD; cursor: pointer; background: none; border: none; font-family: inherit; }
+
+    /* Modal */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: center; justify-content: center; }
+    .modal-overlay.show { display: flex; }
+    .modal { background: white; border-radius: 16px; padding: 24px; width: 480px; max-width: 95vw; box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
+    .modal-title { font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 0.5px solid #eee; }
+    .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+    .btn-cancel { padding: 9px 18px; background: #f0f4f8; color: #666; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; }
   </style>
 </head>
 <body>
 
   <div class="navbar">
     <span class="navbar-brand">⚙️ Admin Panel</span>
-    <div class="navbar-right">
-      <button class="btn-back" onclick="location.href='dashboard.html'">← กลับ</button>
+    <button class="btn-back" onclick="location.href='dashboard.html'">← กลับ</button>
+  </div>
+
+  <!-- Modal แก้ไขผู้ใช้ -->
+  <div class="modal-overlay" id="edit-modal">
+    <div class="modal">
+      <p class="modal-title">✏️ แก้ไขข้อมูลผู้ใช้</p>
+      <input type="hidden" id="edit-email"/>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">ชื่อ-นามสกุล *</label>
+          <input type="text" class="form-input" id="edit-name" placeholder="ชื่อ นามสกุล"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Role</label>
+          <select class="form-input" id="edit-role">
+            <option value="user">user</option>
+            <option value="admin">admin</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">แผนก</label>
+          <input type="text" class="form-input" id="edit-department" placeholder="เช่น คณะเศรษฐศาสตร์"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ตำแหน่ง</label>
+          <input type="text" class="form-input" id="edit-position" placeholder="เช่น อาจารย์ เจ้าหน้าที่"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">เบอร์โทร</label>
+          <input type="text" class="form-input" id="edit-phone" placeholder="เช่น 081-234-5678"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ช่องทางออนไลน์</label>
+          <input type="text" class="form-input" id="edit-online" placeholder="เช่น Line: @username, Teams"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeEditModal()">ยกเลิก</button>
+        <button class="btn-primary" onclick="saveEditUser()">💾 บันทึก</button>
+      </div>
+      <div id="msg-edit" style="padding:8px;border-radius:8px;font-size:12px;display:none;margin-top:8px;text-align:center"></div>
     </div>
   </div>
 
@@ -118,11 +149,11 @@
         <p class="card-title">เพิ่มผู้ใช้ใหม่</p>
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">อีเมล @ku.th</label>
+            <label class="form-label">อีเมล @ku.th *</label>
             <input type="email" class="form-input" id="new-email" placeholder="xxxx@ku.th"/>
           </div>
           <div class="form-group">
-            <label class="form-label">ชื่อ-นามสกุล</label>
+            <label class="form-label">ชื่อ-นามสกุล *</label>
             <input type="text" class="form-input" id="new-name" placeholder="ชื่อ นามสกุล"/>
           </div>
         </div>
@@ -134,16 +165,46 @@
               <option value="admin">admin</option>
             </select>
           </div>
+          <div class="form-group">
+            <label class="form-label">เบอร์โทร</label>
+            <input type="text" class="form-input" id="new-phone" placeholder="081-234-5678"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">แผนก</label>
+            <input type="text" class="form-input" id="new-department" placeholder="เช่น คณะเศรษฐศาสตร์"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ตำแหน่ง</label>
+            <input type="text" class="form-input" id="new-position" placeholder="เช่น อาจารย์ เจ้าหน้าที่"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ช่องทางออนไลน์</label>
+          <input type="text" class="form-input" id="new-online" placeholder="เช่น Line: @username, Teams: ชื่อ"/>
         </div>
         <button class="btn-primary" onclick="addUser()">+ เพิ่มผู้ใช้</button>
         <div id="msg-admin" style="padding:10px;border-radius:8px;font-size:13px;display:none;margin-top:10px;text-align:center"></div>
       </div>
+
       <div class="card">
-        <p class="card-title">รายชื่อผู้ใช้ทั้งหมด</p>
+        <p class="card-title">
+          รายชื่อผู้ใช้ทั้งหมด
+          <button class="toggle-inactive" onclick="toggleInactive()">
+            <span id="toggle-label">👁 แสดง inactive</span>
+          </button>
+        </p>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>อีเมล</th><th>ชื่อ</th><th>Role</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
-            <tbody id="users-table"><tr><td colspan="5" class="loading">⏳ กำลังโหลด...</td></tr></tbody>
+            <thead>
+              <tr>
+                <th>อีเมล</th><th>ชื่อ</th><th>แผนก/ตำแหน่ง</th><th>เบอร์/ออนไลน์</th><th>Role</th><th>สถานะ</th><th>จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="users-table">
+              <tr><td colspan="7" class="loading">⏳ กำลังโหลด...</td></tr>
+            </tbody>
           </table>
         </div>
       </div>
@@ -153,7 +214,6 @@
     <div class="panel" id="panel-devices">
       <div class="card">
         <p class="card-title">+ เพิ่มอุปกรณ์ใหม่</p>
-
         <p class="section-divider">ข้อมูลพื้นฐาน</p>
         <div class="form-row">
           <div class="form-group">
@@ -234,15 +294,14 @@
           <input type="text" class="form-input" id="dev-location" placeholder="เช่น ห้องไอที ชั้น 2"/>
         </div>
 
-        <!-- Owner box — แสดงเมื่อเลือก assigned -->
         <div class="owner-box" id="owner-box">
           <div class="form-group" style="margin-bottom:4px">
-            <label class="form-label">👤 ผู้ถือครอง (เจ้าของอุปกรณ์) *</label>
+            <label class="form-label">👤 ผู้ถือครอง *</label>
             <select class="form-input" id="dev-owner">
               <option value="">-- เลือกผู้ถือครอง --</option>
             </select>
           </div>
-          <p class="owner-note">* อุปกรณ์ประจำตัวจะถูกกำหนดให้บุคคลนี้ทันที และสถานะจะเป็น "assigned"</p>
+          <p class="owner-note">* อุปกรณ์ประจำตัวจะถูกกำหนดให้บุคคลนี้ทันที สถานะจะเป็น "assigned"</p>
         </div>
 
         <p class="section-divider">MAC Address (optional)</p>
@@ -311,12 +370,10 @@
 
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     if (!user.email) { location.href = 'index.html'; }
-    if (user.role !== 'admin') {
-      alert('คุณไม่มีสิทธิ์เข้าถึงหน้านี้');
-      location.href = 'dashboard.html';
-    }
+    if (user.role !== 'admin') { alert('คุณไม่มีสิทธิ์เข้าถึงหน้านี้'); location.href = 'dashboard.html'; }
 
     let allUsers = [], allDevices = [], allTickets = [], allBorrows = [];
+    let showInactive = false;
 
     async function loadAll() {
       try {
@@ -329,17 +386,15 @@
         const [uData, dData, tData, bData] = await Promise.all([
           uRes.json(), dRes.json(), tRes.json(), bRes.json()
         ]);
-
         if (uData.success) { allUsers = uData.users; renderUsers(); populateOwnerDropdown(); }
         if (dData.success) { allDevices = dData.devices; renderDevices(); }
         if (tData.success) { allTickets = tData.tickets; renderTickets(); }
         if (bData.success) { allBorrows = bData.borrows; renderBorrows(); }
 
-        document.getElementById('stat-users').textContent = allUsers.length;
+        document.getElementById('stat-users').textContent = allUsers.filter(u => u.status === 'active').length;
         document.getElementById('stat-devices').textContent = allDevices.length;
         document.getElementById('stat-tickets').textContent = allTickets.filter(t => t.status === 'pending').length;
         document.getElementById('stat-borrows').textContent = allBorrows.filter(b => b.status === 'approved').length;
-
       } catch(e) { console.error('Load error:', e); }
     }
 
@@ -359,15 +414,40 @@
       document.getElementById('owner-box').style.display = type === 'assigned' ? 'block' : 'none';
     }
 
+    function toggleInactive() {
+      showInactive = !showInactive;
+      document.getElementById('toggle-label').textContent = showInactive ? '🙈 ซ่อน inactive' : '👁 แสดง inactive';
+      renderUsers();
+    }
+
     function renderUsers() {
       const tbody = document.getElementById('users-table');
-      if (!allUsers.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>'; return; }
-      tbody.innerHTML = allUsers.map(u => `
-        <tr>
-          <td>${u.email}</td><td>${u.name}</td>
+      let users = showInactive ? allUsers : allUsers.filter(u => u.status === 'active');
+      if (!users.length) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>';
+        return;
+      }
+      tbody.innerHTML = users.map(u => `
+        <tr class="${u.status === 'inactive' ? 'inactive-row' : ''}">
+          <td style="font-size:12px">${u.email}</td>
+          <td>${u.name || '-'}</td>
+          <td style="font-size:11px;color:#666">
+            ${u.department || '-'}<br>
+            <span style="color:#999">${u.position || ''}</span>
+          </td>
+          <td style="font-size:11px;color:#666">
+            ${u.phone || '-'}<br>
+            <span style="color:#999">${u.online_contact || ''}</span>
+          </td>
           <td><span class="badge badge-${u.role}">${u.role}</span></td>
           <td><span class="badge badge-${u.status}">${u.status}</span></td>
-          <td><button class="btn-danger" onclick="deleteUser('${u.email}')">ลบ</button></td>
+          <td style="white-space:nowrap;display:flex;gap:4px">
+            <button class="btn-info" onclick="openEditModal('${u.email}')">✏️ แก้ไข</button>
+            ${u.status === 'active'
+              ? `<button class="btn-danger" onclick="toggleUserStatus('${u.email}','inactive')">🔴 บล็อก</button>`
+              : `<button class="btn-success" onclick="toggleUserStatus('${u.email}','active')">🟢 ปลดบล็อก</button>`
+            }
+          </td>
         </tr>`).join('');
     }
 
@@ -415,17 +495,85 @@
       const email = document.getElementById('new-email').value.trim();
       const name = document.getElementById('new-name').value.trim();
       const role = document.getElementById('new-role').value;
-      if (!email || !name) { showMsg('กรุณากรอกข้อมูลให้ครบ', 'error'); return; }
+      if (!email || !name) { showMsg('กรุณากรอกอีเมลและชื่อ', 'error'); return; }
       if (!email.endsWith('@ku.th')) { showMsg('อีเมลต้องเป็น @ku.th', 'error'); return; }
       try {
-        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'addUser', email, name, role, added_by: user.email }) });
+        const res = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'addUser', email, name, role,
+            phone: document.getElementById('new-phone').value.trim(),
+            department: document.getElementById('new-department').value.trim(),
+            position: document.getElementById('new-position').value.trim(),
+            online_contact: document.getElementById('new-online').value.trim(),
+            added_by: user.email
+          })
+        });
         const data = await res.json();
         if (data.success) {
           showMsg('✅ เพิ่มผู้ใช้สำเร็จ', 'success');
-          document.getElementById('new-email').value = '';
-          document.getElementById('new-name').value = '';
+          ['new-email','new-name','new-phone','new-department','new-position','new-online']
+            .forEach(id => document.getElementById(id).value = '');
           loadAll();
         } else { showMsg('❌ ' + data.message, 'error'); }
+      } catch(e) { showMsg('❌ เกิดข้อผิดพลาด', 'error'); }
+    }
+
+    // Modal แก้ไข
+    function openEditModal(email) {
+      const u = allUsers.find(u => u.email === email);
+      if (!u) return;
+      document.getElementById('edit-email').value = u.email;
+      document.getElementById('edit-name').value = u.name || '';
+      document.getElementById('edit-role').value = u.role || 'user';
+      document.getElementById('edit-department').value = u.department || '';
+      document.getElementById('edit-position').value = u.position || '';
+      document.getElementById('edit-phone').value = u.phone || '';
+      document.getElementById('edit-online').value = u.online_contact || '';
+      document.getElementById('edit-modal').classList.add('show');
+    }
+
+    function closeEditModal() {
+      document.getElementById('edit-modal').classList.remove('show');
+      document.getElementById('msg-edit').style.display = 'none';
+    }
+
+    async function saveEditUser() {
+      const email = document.getElementById('edit-email').value;
+      const name = document.getElementById('edit-name').value.trim();
+      if (!name) { showEditMsg('กรุณากรอกชื่อ', 'error'); return; }
+      try {
+        const res = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'updateUser', email, name,
+            role: document.getElementById('edit-role').value,
+            department: document.getElementById('edit-department').value.trim(),
+            position: document.getElementById('edit-position').value.trim(),
+            phone: document.getElementById('edit-phone').value.trim(),
+            online_contact: document.getElementById('edit-online').value.trim()
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          closeEditModal();
+          showMsg('✅ แก้ไขข้อมูลสำเร็จ', 'success');
+          loadAll();
+        } else { showEditMsg('❌ ' + data.message, 'error'); }
+      } catch(e) { showEditMsg('❌ เกิดข้อผิดพลาด', 'error'); }
+    }
+
+    async function toggleUserStatus(email, status) {
+      const action = status === 'inactive' ? 'บล็อก' : 'ปลดบล็อก';
+      if (!confirm(action + ' ' + email + ' ?')) return;
+      try {
+        const res = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'toggleUserStatus', email, status })
+        });
+        const data = await res.json();
+        if (data.success) { showMsg('✅ ' + action + 'สำเร็จ', 'success'); loadAll(); }
+        else showMsg('❌ ' + data.message, 'error');
       } catch(e) { showMsg('❌ เกิดข้อผิดพลาด', 'error'); }
     }
 
@@ -437,14 +585,8 @@
       const location = document.getElementById('dev-location').value.trim();
       const type = document.getElementById('dev-type').value;
       const ownerEmail = document.getElementById('dev-owner').value;
-
-      if (!devId || !krupha || !serial || !name || !location) {
-        showDeviceMsg('กรุณากรอกข้อมูลที่มี * ให้ครบ', 'error'); return;
-      }
-      if (type === 'assigned' && !ownerEmail) {
-        showDeviceMsg('กรุณาเลือกผู้ถือครองสำหรับอุปกรณ์ประจำตัว', 'error'); return;
-      }
-
+      if (!devId || !krupha || !serial || !name || !location) { showDeviceMsg('กรุณากรอกข้อมูลที่มี * ให้ครบ', 'error'); return; }
+      if (type === 'assigned' && !ownerEmail) { showDeviceMsg('กรุณาเลือกผู้ถือครอง', 'error'); return; }
       try {
         const res = await fetch(GAS_URL, {
           method: 'POST',
@@ -454,17 +596,13 @@
             mac_ethernet: document.getElementById('dev-mac').value.trim(),
             mac_wifi: document.getElementById('dev-macwifi').value.trim(),
             mac_bluetooth: document.getElementById('dev-macbt').value.trim(),
-            name: name,
-            category: document.getElementById('dev-category').value,
+            name, category: document.getElementById('dev-category').value,
             brand: document.getElementById('dev-brand').value.trim(),
             model: document.getElementById('dev-model').value.trim(),
             purchase_date: document.getElementById('dev-date').value,
             purchase_price: document.getElementById('dev-price').value,
-            type: type,
-            status: type === 'assigned' ? 'assigned' : 'available',
-            owner_email: ownerEmail,
-            location: location,
-            added_by: user.email
+            type, status: type === 'assigned' ? 'assigned' : 'available',
+            owner_email: ownerEmail, location, added_by: user.email
           })
         });
         const data = await res.json();
@@ -479,16 +617,6 @@
           loadAll();
         } else { showDeviceMsg('❌ ' + data.message, 'error'); }
       } catch(e) { showDeviceMsg('❌ เกิดข้อผิดพลาด', 'error'); }
-    }
-
-    async function deleteUser(email) {
-      if (!confirm('ต้องการลบ ' + email + ' ออกจากระบบ?')) return;
-      try {
-        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'deleteUser', email }) });
-        const data = await res.json();
-        if (data.success) { showMsg('✅ ลบผู้ใช้สำเร็จ', 'success'); loadAll(); }
-        else showMsg('❌ ' + data.message, 'error');
-      } catch(e) { showMsg('❌ เกิดข้อผิดพลาด', 'error'); }
     }
 
     async function updateStatus(deviceId, status) {
@@ -540,6 +668,13 @@
       el.className = type === 'success' ? 'msg-success' : 'msg-error';
       el.textContent = text;
       setTimeout(() => el.style.display = 'none', 3000);
+    }
+
+    function showEditMsg(text, type) {
+      const el = document.getElementById('msg-edit');
+      el.style.display = 'block';
+      el.className = type === 'success' ? 'msg-success' : 'msg-error';
+      el.textContent = text;
     }
 
     loadAll();
