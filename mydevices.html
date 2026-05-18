@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IT Helpdesk — อุปกรณ์ของฉัน</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Sarabun', sans-serif; background: #f0f4f8; }
+    .navbar { background: #1D9E75; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .navbar-brand { color: white; font-size: 18px; font-weight: 600; }
+    .btn-back { background: rgba(255,255,255,0.2); color: white; border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; }
+    .container { max-width: 700px; margin: 0 auto; padding: 24px 16px; }
+    .card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 16px; }
+    .card-title { font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 0.5px solid #eee; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 4px; margin-bottom: 20px; background: white; border-radius: 12px; padding: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .tab { flex: 1; padding: 10px; border: none; background: transparent; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; color: #666; font-family: inherit; }
+    .tab.active { background: #1D9E75; color: white; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* Device card */
+    .device-item { border: 0.5px solid #eee; border-radius: 12px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 14px; }
+    .device-item:last-child { margin-bottom: 0; }
+    .device-emoji { font-size: 32px; }
+    .device-body { flex: 1; }
+    .device-name { font-size: 14px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
+    .device-meta { font-size: 12px; color: #666; display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-repair-small { padding: 6px 14px; background: #E1F5EE; color: #085041; border: none; border-radius: 8px; font-size: 12px; cursor: pointer; font-family: inherit; white-space: nowrap; }
+
+    /* Borrow item */
+    .borrow-item { border: 0.5px solid #eee; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+    .borrow-item:last-child { margin-bottom: 0; }
+    .borrow-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .borrow-id { font-family: monospace; font-size: 12px; color: #999; }
+    .borrow-device { font-size: 14px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; }
+    .borrow-info { font-size: 12px; color: #666; display: flex; gap: 14px; flex-wrap: wrap; }
+
+    .badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
+    .badge-pending { background: #FAEEDA; color: #633806; }
+    .badge-approved { background: #E1F5EE; color: #085041; }
+    .badge-returning { background: #E6F1FB; color: #0C447C; }
+    .badge-returned { background: #f0f4f8; color: #666; }
+
+    .btn-return { margin-top: 12px; width: 100%; padding: 10px; background: #E6F1FB; color: #0C447C; border: none; border-radius: 10px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; }
+    .btn-return:hover { background: #cde0f5; }
+    .returning-note { margin-top: 10px; padding: 8px 12px; background: #E6F1FB; border-radius: 8px; font-size: 12px; color: #0C447C; }
+
+    .empty { text-align: center; padding: 40px 20px; color: #999; font-size: 14px; }
+    .loading { text-align: center; padding: 30px; color: #666; }
+
+    /* Modal */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: center; justify-content: center; }
+    .modal-overlay.show { display: flex; }
+    .modal { background: white; border-radius: 16px; padding: 24px; width: 420px; max-width: 95vw; }
+    .modal-title { font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 0.5px solid #eee; }
+    .form-group { margin-bottom: 14px; }
+    .form-label { font-size: 12px; font-weight: 500; color: #444; margin-bottom: 4px; display: block; }
+    .form-input { width: 100%; padding: 9px 12px; border: 0.5px solid #ddd; border-radius: 8px; font-size: 13px; outline: none; font-family: inherit; }
+    .form-input:focus { border-color: #1D9E75; }
+    textarea.form-input { height: 70px; resize: none; }
+    .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+    .btn-cancel { padding: 9px 16px; background: #f0f4f8; color: #666; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; }
+    .btn-confirm { padding: 9px 16px; background: #1D9E75; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; }
+    #msg-modal { padding: 8px; border-radius: 8px; font-size: 12px; display: none; margin-top: 8px; text-align: center; }
+    .msg-success { background: #E1F5EE; color: #085041; }
+    .msg-error { background: #FCEBEB; color: #791F1F; }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <span class="navbar-brand">💻 อุปกรณ์ของฉัน</span>
+    <button class="btn-back" onclick="location.href='dashboard.html'">← กลับ</button>
+  </div>
+
+  <!-- Modal แจ้งคืน -->
+  <div class="modal-overlay" id="return-modal">
+    <div class="modal">
+      <p class="modal-title">📬 แจ้งความต้องการคืนอุปกรณ์</p>
+      <input type="hidden" id="return-borrow-id"/>
+      <div class="form-group">
+        <label class="form-label">วันที่จะนำมาคืน *</label>
+        <input type="date" class="form-input" id="return-plan-date"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">หมายเหตุ</label>
+        <textarea class="form-input" id="return-note" placeholder="เช่น อุปกรณ์ปกติดี ไม่มีรอยขีดข่วน..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeReturnModal()">ยกเลิก</button>
+        <button class="btn-confirm" onclick="submitReturn()">📬 แจ้งคืน</button>
+      </div>
+      <div id="msg-modal"></div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('assigned')">🖥️ อุปกรณ์ประจำตัว</button>
+      <button class="tab" onclick="switchTab('borrows')">📦 การยืมของฉัน</button>
+    </div>
+
+    <!-- Panel: อุปกรณ์ประจำตัว -->
+    <div class="panel active" id="panel-assigned">
+      <div class="card">
+        <p class="card-title">อุปกรณ์ที่ได้รับมอบหมาย</p>
+        <div id="assigned-list"><div class="loading">⏳ กำลังโหลด...</div></div>
+      </div>
+    </div>
+
+    <!-- Panel: การยืมของฉัน -->
+    <div class="panel" id="panel-borrows">
+      <div class="card">
+        <p class="card-title">รายการยืมอุปกรณ์</p>
+        <div id="borrow-list"><div class="loading">⏳ กำลังโหลด...</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwRwYG6zliBbpSrQQzgTIVhFODMbe6Nfb5zG-AV_APAIuC-2HP2QJAb98FfKEYVC3vY/exec';
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user.email) { location.href = 'index.html'; }
+
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('return-plan-date').value = today;
+
+    const ICONS = { 'Notebook':'💻','Projector':'📽️','PC':'🖥️','Printer':'🖨️','Adapter':'🔌','Camera':'📷','Mouse':'🖱️','default':'📦' };
+    const BORROW_STATUS = { 'pending':'รออนุมัติ','approved':'กำลังยืมอยู่','returning':'แจ้งคืนแล้ว รอ IT','returned':'คืนแล้ว' };
+    const BORROW_BADGE = { 'pending':'pending','approved':'approved','returning':'returning','returned':'returned' };
+
+    async function loadAll() {
+      try {
+        const [dRes, bRes] = await Promise.all([
+          fetch(GAS_URL + '?action=getDevices'),
+          fetch(GAS_URL + '?action=getBorrows')
+        ]);
+        const [dData, bData] = await Promise.all([dRes.json(), bRes.json()]);
+
+        // อุปกรณ์ประจำตัว
+        if (dData.success) {
+          const myDevices = dData.devices.filter(d => d.owner_email === user.email);
+          renderAssigned(myDevices);
+        }
+
+        // การยืม
+        if (bData.success) {
+          const myBorrows = bData.borrows.filter(b => b.borrower_email === user.email).reverse();
+          renderBorrows(myBorrows);
+        }
+      } catch(e) {
+        document.getElementById('assigned-list').innerHTML = '<div class="empty">❌ เกิดข้อผิดพลาด</div>';
+        document.getElementById('borrow-list').innerHTML = '<div class="empty">❌ เกิดข้อผิดพลาด</div>';
+      }
+    }
+
+    function renderAssigned(devices) {
+      const el = document.getElementById('assigned-list');
+      if (!devices.length) {
+        el.innerHTML = '<div class="empty">ไม่มีอุปกรณ์ประจำตัว</div>';
+        return;
+      }
+      el.innerHTML = devices.map(d => `
+        <div class="device-item">
+          <span class="device-emoji">${ICONS[d.category] || ICONS.default}</span>
+          <div class="device-body">
+            <p class="device-name">${d.name}</p>
+            <div class="device-meta">
+              <span>🔑 ${d.device_id}</span>
+              <span>📋 ${d.krupha_no || '-'}</span>
+              <span>📍 ${d.location || '-'}</span>
+            </div>
+          </div>
+          <button class="btn-repair-small" onclick="goRepair('${d.device_id}', '${d.name}')">🔧 แจ้งซ่อม</button>
+        </div>`).join('');
+    }
+
+    function renderBorrows(borrows) {
+      const el = document.getElementById('borrow-list');
+      if (!borrows.length) {
+        el.innerHTML = '<div class="empty">ไม่มีรายการยืม</div>';
+        return;
+      }
+      el.innerHTML = borrows.map(b => {
+        const canReturn = b.status === 'approved';
+        const isReturning = b.status === 'returning';
+        return `
+          <div class="borrow-item">
+            <div class="borrow-header">
+              <span class="borrow-id">${b.borrow_id}</span>
+              <span class="badge badge-${BORROW_BADGE[b.status] || 'pending'}">${BORROW_STATUS[b.status] || b.status}</span>
+            </div>
+            <p class="borrow-device">💻 ${b.device_id}</p>
+            <div class="borrow-info">
+              <span>📅 ยืม: ${formatDate(b.borrow_date)}</span>
+              <span>📅 กำหนดคืน: ${formatDate(b.due_date)}</span>
+              ${b.purpose ? `<span>📝 ${b.purpose}</span>` : ''}
+            </div>
+            ${canReturn ? `<button class="btn-return" onclick="openReturnModal('${b.borrow_id}')">📬 แจ้งความต้องการคืนอุปกรณ์</button>` : ''}
+            ${isReturning ? `<div class="returning-note">⏳ แจ้งคืนแล้ว กำลังรอ IT รับอุปกรณ์</div>` : ''}
+          </div>`;
+      }).join('');
+    }
+
+    function goRepair(deviceId, deviceName) {
+      // เก็บ device แล้วไปหน้าแจ้งซ่อม
+      localStorage.setItem('selectedDevice', JSON.stringify({ device_id: deviceId, name: deviceName, type: 'assigned' }));
+      location.href = 'repair.html';
+    }
+
+    function formatDate(dateVal) {
+      if (!dateVal) return '-';
+      try { return new Date(dateVal).toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' }); }
+      catch(e) { return dateVal; }
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab').forEach((t,i) => {
+        t.classList.toggle('active', ['assigned','borrows'][i] === tab);
+      });
+      document.querySelectorAll('.panel').forEach((p,i) => {
+        p.classList.toggle('active', ['panel-assigned','panel-borrows'][i] === 'panel-'+tab);
+      });
+    }
+
+    function openReturnModal(borrowId) {
+      document.getElementById('return-borrow-id').value = borrowId;
+      document.getElementById('return-note').value = '';
+      document.getElementById('return-plan-date').value = today;
+      document.getElementById('msg-modal').style.display = 'none';
+      document.getElementById('return-modal').classList.add('show');
+    }
+
+    function closeReturnModal() {
+      document.getElementById('return-modal').classList.remove('show');
+    }
+
+    async function submitReturn() {
+      const borrowId = document.getElementById('return-borrow-id').value;
+      const planDate = document.getElementById('return-plan-date').value;
+      const note = document.getElementById('return-note').value.trim();
+      if (!planDate) { showModalMsg('กรุณาเลือกวันที่จะนำมาคืน', 'error'); return; }
+
+      const btn = document.querySelector('#return-modal .btn-confirm');
+      btn.disabled = true;
+      btn.textContent = '⏳ กำลังส่ง...';
+
+      try {
+        const res = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'requestReturn',
+            borrow_id: borrowId,
+            return_plan_date: planDate,
+            note: note,
+            borrower_email: user.email
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showModalMsg('✅ แจ้งคืนสำเร็จ IT จะติดต่อกลับเร็วๆ นี้', 'success');
+          btn.textContent = '✅ ส่งแล้ว';
+          setTimeout(() => { closeReturnModal(); loadAll(); }, 1500);
+        } else {
+          showModalMsg('❌ ' + data.message, 'error');
+          btn.disabled = false;
+          btn.textContent = '📬 แจ้งคืน';
+        }
+      } catch(e) {
+        showModalMsg('❌ เกิดข้อผิดพลาด', 'error');
+        btn.disabled = false;
+        btn.textContent = '📬 แจ้งคืน';
+      }
+    }
+
+    function showModalMsg(text, type) {
+      const el = document.getElementById('msg-modal');
+      el.style.display = 'block';
+      el.className = type === 'success' ? 'msg-success' : 'msg-error';
+      el.textContent = text;
+    }
+
+    loadAll();
+  </script>
+
+</body>
+</html>
