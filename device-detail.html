@@ -183,9 +183,10 @@
     };
 
     const deviceStr = localStorage.getItem('selectedDevice');
-    if (!deviceStr) { location.href = 'devices.html'; }
+    if (!deviceStr) { location.href = 'devices.html'; throw ''; }
     const d = JSON.parse(deviceStr);
     const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user.email) { location.href = 'index.html'; throw ''; }
     const isAdmin = user.role === 'admin';
 
     document.getElementById('nav-title').textContent = d.name;
