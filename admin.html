@@ -159,6 +159,107 @@
     </div>
   </div>
 
+  <!-- Modal แก้ไขอุปกรณ์ -->
+  <div class="modal-overlay" id="edit-device-modal">
+    <div class="modal" style="width:560px">
+      <p class="modal-title">✏️ แก้ไขข้อมูลอุปกรณ์</p>
+      <input type="hidden" id="ed-device-id"/>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">รหัสอุปกรณ์</label>
+          <input type="text" class="form-input" id="ed-id" readonly style="background:#f8f9fa"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">เลขครุภัณฑ์</label>
+          <input type="text" class="form-input" id="ed-krupha"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Serial Number</label>
+          <input type="text" class="form-input" id="ed-serial" placeholder="S/N (ถ้ามี)"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">หมวดหมู่</label>
+          <select class="form-input" id="ed-category" onchange="updateEditDeviceName()">
+            <option value="Notebook">Notebook</option>
+            <option value="AIO PC">AIO PC</option>
+            <option value="PC">PC</option>
+            <option value="Projector">Projector</option>
+            <option value="Printer">Printer</option>
+            <option value="Monitor">Monitor</option>
+            <option value="Camera">Camera</option>
+            <option value="Adapter">Adapter</option>
+            <option value="Mouse">Mouse</option>
+            <option value="Keyboard">Keyboard</option>
+            <option value="TABLET">TABLET</option>
+            <option value="Scanner">Scanner</option>
+            <option value="UPS">UPS</option>
+            <option value="SWITCH">SWITCH</option>
+            <option value="AP">AP</option>
+            <option value="Router">Router</option>
+            <option value="Lightning Display">Lightning Display</option>
+            <option value="HUB">HUB</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">ยี่ห้อ *</label>
+          <input type="text" class="form-input" id="ed-brand" oninput="updateEditDeviceName()"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">รุ่น *</label>
+          <input type="text" class="form-input" id="ed-model" oninput="updateEditDeviceName()"/>
+        </div>
+      </div>
+      <div class="name-preview" style="margin-bottom:12px">
+        <span>ชื่ออุปกรณ์: </span>
+        <span id="ed-name-preview" style="color:#1a1a2e">-</span>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">ประเภท</label>
+          <select class="form-input" id="ed-type">
+            <option value="borrow">ยืมได้ (borrow)</option>
+            <option value="room">ประจำห้อง (room)</option>
+            <option value="assigned">ประจำตัว (assigned)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ที่ตั้ง</label>
+          <input type="text" class="form-input" id="ed-location"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">วันที่ซื้อ</label>
+          <input type="date" class="form-input" id="ed-date"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ราคา (บาท)</label>
+          <input type="number" class="form-input" id="ed-price"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">MAC Ethernet</label>
+          <input type="text" class="form-input" id="ed-mac"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">MAC WiFi</label>
+          <input type="text" class="form-input" id="ed-macwifi"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeEditDeviceModal()">ยกเลิก</button>
+        <button class="btn-primary" onclick="saveEditDevice()">💾 บันทึก</button>
+      </div>
+      <div id="msg-ed" style="padding:8px;border-radius:8px;font-size:12px;display:none;margin-top:8px;text-align:center"></div>
+    </div>
+  </div>
+
   <div class="container">
 
     <div class="stats-grid">
@@ -500,7 +601,10 @@
           <td><span class="badge badge-${d.status}">${d.status}</span></td>
           <td style="font-size:12px;color:#666">${d.owner_email || '-'}</td>
           <td>${d.location}</td>
-          <td><button class="btn-success" onclick="updateStatus('${d.device_id}','available')">พร้อม</button></td>
+          <td style="white-space:nowrap;display:flex;gap:4px">
+            <button class="btn-info" onclick="openEditDeviceModal('${d.device_id}')">✏️ แก้ไข</button>
+            <button class="btn-success" onclick="updateStatus('${d.device_id}','available')">พร้อม</button>
+          </td>
         </tr>`).join('');
     }
 
@@ -634,7 +738,7 @@
       const type = document.getElementById('dev-type').value;
       const ownerEmail = document.getElementById('dev-owner').value;
 
-      if (!devId || !krupha || !serial || !brand || !model || !location) {
+      if (!devId || !krupha || !brand || !model || !location) {
         showDeviceMsg('กรุณากรอกข้อมูลที่มี * ให้ครบ', 'error'); return;
       }
       if (type === 'assigned' && !ownerEmail) {
@@ -772,6 +876,75 @@
     }
     function showEditMsg(text, type) {
       const el = document.getElementById('msg-edit');
+      el.style.display = 'block'; el.className = type === 'success' ? 'msg-success' : 'msg-error'; el.textContent = text;
+    }
+
+    function openEditDeviceModal(deviceId) {
+      const d = allDevices.find(d => d.device_id === deviceId);
+      if (!d) return;
+      document.getElementById('ed-device-id').value = d.device_id;
+      document.getElementById('ed-id').value = d.device_id;
+      document.getElementById('ed-krupha').value = d.krupha_no || '';
+      document.getElementById('ed-serial').value = d.serial_no || '';
+      document.getElementById('ed-category').value = d.category || 'Other';
+      document.getElementById('ed-brand').value = d.brand || '';
+      document.getElementById('ed-model').value = d.model || '';
+      document.getElementById('ed-type').value = d.type || 'borrow';
+      document.getElementById('ed-location').value = d.location || '';
+      document.getElementById('ed-date').value = d.purchase_date ? String(d.purchase_date).split('T')[0] : '';
+      document.getElementById('ed-price').value = d.purchase_price || '';
+      document.getElementById('ed-mac').value = d.mac_ethernet || '';
+      document.getElementById('ed-macwifi').value = d.mac_wifi || '';
+      document.getElementById('ed-name-preview').textContent = d.name || '-';
+      document.getElementById('msg-ed').style.display = 'none';
+      document.getElementById('edit-device-modal').classList.add('show');
+    }
+
+    function updateEditDeviceName() {
+      const cat = document.getElementById('ed-category').value;
+      const brand = document.getElementById('ed-brand').value.trim();
+      const model = document.getElementById('ed-model').value.trim();
+      document.getElementById('ed-name-preview').textContent = [cat, brand, model].filter(Boolean).join(' ') || '-';
+    }
+
+    function closeEditDeviceModal() {
+      document.getElementById('edit-device-modal').classList.remove('show');
+    }
+
+    async function saveEditDevice() {
+      const deviceId = document.getElementById('ed-device-id').value;
+      const brand = document.getElementById('ed-brand').value.trim();
+      const model = document.getElementById('ed-model').value.trim();
+      const category = document.getElementById('ed-category').value;
+      if (!brand || !model) { showEdMsg('กรุณากรอกยี่ห้อและรุ่น', 'error'); return; }
+      const name = [category, brand, model].filter(Boolean).join(' ');
+      const btn = document.querySelector('#edit-device-modal .btn-primary');
+      btn.disabled = true; btn.textContent = '⏳ กำลังบันทึก...';
+      try {
+        const res = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'updateDevice',
+            device_id: deviceId,
+            krupha_no: document.getElementById('ed-krupha').value.trim(),
+            serial_no: document.getElementById('ed-serial').value.trim(),
+            name, category, brand, model,
+            type: document.getElementById('ed-type').value,
+            location: document.getElementById('ed-location').value.trim(),
+            purchase_date: document.getElementById('ed-date').value,
+            purchase_price: document.getElementById('ed-price').value,
+            mac_ethernet: document.getElementById('ed-mac').value.trim(),
+            mac_wifi: document.getElementById('ed-macwifi').value.trim()
+          })
+        });
+        const data = await res.json();
+        if (data.success) { closeEditDeviceModal(); loadAll(); }
+        else { showEdMsg('❌ ' + data.message, 'error'); btn.disabled = false; btn.textContent = '💾 บันทึก'; }
+      } catch(e) { showEdMsg('❌ เกิดข้อผิดพลาด', 'error'); btn.disabled = false; btn.textContent = '💾 บันทึก'; }
+    }
+
+    function showEdMsg(text, type) {
+      const el = document.getElementById('msg-ed');
       el.style.display = 'block'; el.className = type === 'success' ? 'msg-success' : 'msg-error'; el.textContent = text;
     }
 
