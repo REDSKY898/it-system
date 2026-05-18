@@ -199,6 +199,10 @@
 
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     if (!user.email) { location.href = 'index.html'; }
+    if (user.role !== 'admin') {
+      alert('หน้านี้สำหรับเจ้าหน้าที่ IT เท่านั้น');
+      location.href = 'dashboard.html';
+    }
 
     // โหลดอุปกรณ์ที่เลือกไว้ (ถ้ามี)
     const deviceStr = localStorage.getItem('selectedDevice');
