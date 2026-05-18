@@ -142,36 +142,7 @@
     </div>
 
     <!-- Menu -->
-    <div class="menu-grid">
-      <div class="menu-card" onclick="location.href='repair.html'">
-        <div class="menu-icon" style="background:#E1F5EE">🔧</div>
-        <div class="menu-info">
-          <h3>แจ้งซ่อม</h3>
-          <p>แจ้งปัญหาอุปกรณ์</p>
-        </div>
-      </div>
-      <div class="menu-card" onclick="location.href='borrow.html'">
-        <div class="menu-icon" style="background:#EEEDFE">📦</div>
-        <div class="menu-info">
-          <h3>ยืมอุปกรณ์</h3>
-          <p>ยืม-คืนอุปกรณ์</p>
-        </div>
-      </div>
-      <div class="menu-card" onclick="location.href='walkin.html'">
-        <div class="menu-icon" style="background:#FAECE7">🏃</div>
-        <div class="menu-info">
-          <h3>บันทึกงานหน้างาน</h3>
-          <p>สำหรับทีม IT</p>
-        </div>
-      </div>
-      <div class="menu-card" onclick="location.href='devices.html'">
-        <div class="menu-icon" style="background:#E6F1FB">💻</div>
-        <div class="menu-info">
-          <h3>อุปกรณ์ของฉัน</h3>
-          <p>ดูอุปกรณ์ทั้งหมด</p>
-        </div>
-      </div>
-    </div>
+    <div class="menu-grid" id="menu-grid"></div>
 
     <!-- อุปกรณ์ของฉัน -->
     <p class="section-title">อุปกรณ์ของฉัน</p>
@@ -204,9 +175,7 @@
 
     // ตรวจสอบ login
     const userStr = localStorage.getItem('user');
-    if (!userStr) {
-      location.href = 'index.html';
-    }
+    if (!userStr) { location.href = 'index.html'; }
     const user = JSON.parse(userStr);
 
     // แสดงชื่อ
@@ -217,9 +186,30 @@
     const now = new Date();
     document.getElementById('welcome-date').textContent =
       now.toLocaleDateString('th-TH', {
-        weekday: 'long', year: 'numeric',
-        month: 'long', day: 'numeric'
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
       });
+
+    // สร้างเมนูตาม role
+    const isAdmin = user.role === 'admin';
+    const menus = [
+      { icon: '🔧', bg: '#E1F5EE', title: 'แจ้งซ่อม', desc: 'แจ้งปัญหาอุปกรณ์', url: 'repair.html', show: true },
+      { icon: '📦', bg: '#EEEDFE', title: 'ยืมอุปกรณ์', desc: 'ยืม-คืนอุปกรณ์', url: 'borrow.html', show: true },
+      { icon: '💻', bg: '#E6F1FB', title: 'อุปกรณ์ของฉัน', desc: 'อุปกรณ์และการยืมของฉัน', url: 'mydevices.html', show: true },
+      { icon: '🏃', bg: '#FAECE7', title: 'บันทึกงานหน้างาน', desc: 'Walk-in สำหรับทีม IT', url: 'walkin.html', show: isAdmin },
+      { icon: '⚙️', bg: '#1a1a2e', title: 'Admin Panel', desc: 'จัดการระบบ', url: 'admin.html', show: isAdmin, light: true },
+    ];
+
+    const grid = document.getElementById('menu-grid');
+    grid.innerHTML = menus.filter(m => m.show).map(m => `
+      <div class="menu-card" onclick="location.href='${m.url}'">
+        <div class="menu-icon" style="background:${m.bg}">
+          <span style="${m.light ? 'filter:invert(1)' : ''}">${m.icon}</span>
+        </div>
+        <div class="menu-info">
+          <h3>${m.title}</h3>
+          <p>${m.desc}</p>
+        </div>
+      </div>`).join('');
 
     function logout() {
       localStorage.removeItem('user');
