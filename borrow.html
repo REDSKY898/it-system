@@ -605,12 +605,12 @@
       // คืนแล้ว — กรอกข้อมูล
       const senderName = returnData.borrower_name || returnData.borrower_email || '';
       document.getElementById('pd-ret-sender').textContent = '( ' + senderName + ' )';
-      // ดึงตำแหน่ง/สังกัดจาก localStorage ถ้าเป็น user เดียวกัน
+      // ดึงตำแหน่ง/สังกัด
       const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
-      if (returnData.borrower_email === userInfo.email) {
-        const role = (userInfo.position || '') + (userInfo.department ? ' — ' + userInfo.department : '');
-        document.getElementById('pd-ret-role').textContent = role;
-      }
+      const retPosition = returnData.borrower_position || (returnData.borrower_email === userInfo.email ? userInfo.position || '' : '');
+      const retDepartment = returnData.borrower_department || (returnData.borrower_email === userInfo.email ? userInfo.department || '' : '');
+      const retRole = retPosition + (retDepartment ? ' — ' + retDepartment : '');
+      document.getElementById('pd-ret-role').textContent = retRole;
       document.getElementById('pd-ret-date').textContent = formatDate(returnData.return_date);
       document.getElementById('pd-ret-by').textContent = '( ' + (returnData.confirmed_by || '') + ' )';
       document.getElementById('pd-ret-by-date').textContent = formatDate(returnData.return_date);
