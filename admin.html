@@ -641,9 +641,9 @@
           <td><span style="font-family:monospace;font-size:12px">${b.borrow_id}</span></td>
           <td>${b.device_id}</td>
           <td style="font-size:12px">${b.borrower_email}</td>
-          <td style="font-size:12px">${b.borrow_date || '-'}</td>
-          <td style="font-size:12px">${b.due_date || '-'}</td>
-          <td style="font-size:12px">${b.return_date || '-'}</td>
+          <td style="font-size:12px">${formatDate(b.borrow_date)}</td>
+          <td style="font-size:12px">${formatDate(b.due_date)}</td>
+          <td style="font-size:12px">${formatDate(b.return_date)}</td>
           <td><span class="badge badge-${BORROW_BADGE[b.status] || 'available'}">${BORROW_STATUS_LABEL[b.status] || b.status}</span></td>
           <td style="white-space:nowrap;display:flex;gap:4px">
             ${b.status === 'pending' ? `<button class="btn-success" onclick="approveBorrow('${b.borrow_id}')">✅ อนุมัติ</button>` : ''}
@@ -865,6 +865,12 @@
       document.querySelectorAll('.panel').forEach((p,i) => {
         p.classList.toggle('active', ['panel-users','panel-devices','panel-tickets','panel-borrows'][i] === 'panel-'+tab);
       });
+    }
+
+    function formatDate(v) {
+      if (!v) return '-';
+      try { return new Date(v).toLocaleDateString('th-TH', {year:'numeric',month:'short',day:'numeric'}); }
+      catch(e) { return String(v); }
     }
 
     function showMsg(text, type) {
