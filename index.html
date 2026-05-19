@@ -73,12 +73,12 @@
   <div class="card">
     <div class="logo">🖥️</div>
     <h1>IT Helpdesk</h1>
-    <p class="subtitle">มหาวิทยาลัยเกษตรศาสตร์<br>เข้าสู่ระบบด้วยอีเมล @ku.th เท่านั้น</p>
+    <p class="subtitle">คณะเศรษฐศาสตร์ ศรีราชา มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตศรีราชา <br>เข้าสู่ระบบด้วยอีเมล @ku.th เท่านั้น</p>
 
     <div id="g_signin"></div>
     <div class="loading" id="loading">⏳ กำลังตรวจสอบ...</div>
     <div id="msg"></div>
-    <p class="note">เฉพาะบุคลากรที่ได้รับสิทธิ์เท่านั้น</p>
+    <p class="note">เฉพาะบุคลากร คณะเศรษฐศาสตร์ ศรีราชา เท่านั้น</p>
   </div>
 
   <script>
@@ -114,9 +114,13 @@
           document.getElementById('loading').style.display = 'none';
           if (data.success) {
             localStorage.setItem('user', JSON.stringify({
-              email: email,
-              name: name,
-              role: data.role
+              email: data.email,
+              name: data.name,
+              role: data.role,
+              phone: data.phone || '',
+              department: data.department || '',
+              position: data.position || '',
+              online_contact: data.online_contact || ''
             }));
             location.href = 'dashboard.html';
           } else {
