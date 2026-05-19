@@ -78,8 +78,8 @@
   <div class="navbar">
     <span class="navbar-brand">⚙️ Admin Panel</span>
     <div style="display:flex;gap:8px">
-  <button class="btn-back" onclick="history.back()">← กลับ</button>
-  <button class="btn-back" onclick="location.href='dashboard.html'">🏠 หน้าแรก</button>
+      <button class="btn-back" onclick="history.back()">← กลับ</button>
+      <button class="btn-back" onclick="location.href='dashboard.html'">🏠 หน้าแรก</button>
     </div>
   </div>
 
@@ -367,7 +367,6 @@
     <div class="panel" id="panel-devices">
       <div class="card">
         <p class="card-title">+ เพิ่มอุปกรณ์ใหม่</p>
-
         <p class="section-divider">ข้อมูลพื้นฐาน</p>
         <div class="form-row">
           <div class="form-group">
@@ -419,13 +418,10 @@
             <input type="text" class="form-input" id="dev-model" placeholder="เช่น Latitude 5420" oninput="updateDeviceName()"/>
           </div>
         </div>
-
-        <!-- Preview ชื่ออุปกรณ์ -->
         <div class="name-preview" id="name-preview">
           <span>ชื่ออุปกรณ์ที่จะบันทึก: </span>
           <span id="name-preview-text" style="color:#1a1a2e">— กรอกยี่ห้อและรุ่นเพื่อดูตัวอย่าง</span>
         </div>
-
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">ประเภท *</label>
@@ -450,8 +446,6 @@
             <input type="number" class="form-input" id="dev-price" placeholder="35000"/>
           </div>
         </div>
-
-        <!-- Owner box -->
         <div class="owner-box" id="owner-box">
           <div class="form-group" style="margin-bottom:4px">
             <label class="form-label">👤 ผู้ถือครอง *</label>
@@ -461,7 +455,6 @@
           </div>
           <p class="owner-note">* อุปกรณ์ประจำตัวจะถูกกำหนดให้บุคคลนี้ทันที สถานะจะเป็น "assigned"</p>
         </div>
-
         <p class="section-divider">MAC Address (optional)</p>
         <div class="form-row-3">
           <div class="form-group">
@@ -477,7 +470,6 @@
             <input type="text" class="form-input" id="dev-macbt" placeholder="optional"/>
           </div>
         </div>
-
         <button class="btn-primary" onclick="addDevice()">+ เพิ่มอุปกรณ์</button>
         <div id="msg-device" style="padding:10px;border-radius:8px;font-size:13px;display:none;margin-top:10px;text-align:center"></div>
       </div>
@@ -566,13 +558,11 @@
       });
     }
 
-    // Auto-generate ชื่ออุปกรณ์
     function updateDeviceName() {
       const category = document.getElementById('dev-category').value;
       const brand = document.getElementById('dev-brand').value.trim();
       const model = document.getElementById('dev-model').value.trim();
-      const parts = [category, brand, model].filter(Boolean);
-      const name = parts.join(' ');
+      const name = [category, brand, model].filter(Boolean).join(' ');
       document.getElementById('name-preview-text').textContent = name || '— กรอกยี่ห้อและรุ่นเพื่อดูตัวอย่าง';
     }
 
@@ -669,7 +659,7 @@
           <td style="white-space:nowrap;display:flex;gap:4px">
             ${b.status === 'pending' ? `<button class="btn-success" onclick="openApproveModal('${b.borrow_id}')">✅ อนุมัติ</button><button class="btn-danger" onclick="rejectBorrow('${b.borrow_id}')">❌ ไม่อนุมัติ</button>` : ''}
             ${b.status === 'returning' ? `<button class="btn-info" onclick="openConfirmReturn('${b.borrow_id}')">📦 ยืนยันรับคืน</button>` : ''}
-            ${b.status === 'returned' || b.status === 'approved' ? '-' : ''}
+            ${(b.status === 'returned' || b.status === 'approved') ? '-' : ''}
           </td>
         </tr>`).join('');
     }
@@ -761,16 +751,9 @@
       const location = document.getElementById('dev-location').value.trim();
       const type = document.getElementById('dev-type').value;
       const ownerEmail = document.getElementById('dev-owner').value;
-
-      if (!devId || !krupha || !brand || !model || !location) {
-        showDeviceMsg('กรุณากรอกข้อมูลที่มี * ให้ครบ', 'error'); return;
-      }
-      if (type === 'assigned' && !ownerEmail) {
-        showDeviceMsg('กรุณาเลือกผู้ถือครอง', 'error'); return;
-      }
-
+      if (!devId || !krupha || !brand || !model || !location) { showDeviceMsg('กรุณากรอกข้อมูลที่มี * ให้ครบ', 'error'); return; }
+      if (type === 'assigned' && !ownerEmail) { showDeviceMsg('กรุณาเลือกผู้ถือครอง', 'error'); return; }
       const deviceName = getDeviceName();
-
       try {
         const res = await fetch(GAS_URL, {
           method: 'POST',
@@ -780,8 +763,7 @@
             mac_ethernet: document.getElementById('dev-mac').value.trim(),
             mac_wifi: document.getElementById('dev-macwifi').value.trim(),
             mac_bluetooth: document.getElementById('dev-macbt').value.trim(),
-            name: deviceName,
-            category: document.getElementById('dev-category').value,
+            name: deviceName, category: document.getElementById('dev-category').value,
             brand, model,
             purchase_date: document.getElementById('dev-date').value,
             purchase_price: document.getElementById('dev-price').value,
@@ -863,8 +845,6 @@
       } catch(e) { btn.disabled = false; btn.textContent = 'ยืนยันอนุมัติ'; }
     }
 
-
-
     function onConditionChange() {
       const cond = document.getElementById('cr-condition').value;
       const group = document.getElementById('cr-detail-group');
@@ -900,11 +880,17 @@
       document.getElementById('confirm-return-modal').classList.remove('show');
     }
 
+    // =====================================================
+    // submitConfirmReturn — แก้ไขหลัก
+    // ส่ง condition_detail แยกออกมา ไม่รวมเข้า note
+    // =====================================================
     async function submitConfirmReturn() {
       const borrowId = document.getElementById('cr-borrow-id').value;
       const condition = document.getElementById('cr-condition').value;
       const nextStatus = document.getElementById('cr-next-status').value;
       const detail = document.getElementById('cr-detail').value.trim();
+      const noteExtra = document.getElementById('cr-note').value.trim();
+
       // ถ้าเลือกข้อ 2 หรือ 3 ต้องกรอกรายละเอียด
       if ((condition === 'ขาดอุปกรณ์' || condition === 'เสียหาย') && !detail) {
         const el = document.getElementById('msg-cr');
@@ -912,20 +898,22 @@
         el.textContent = 'กรุณาระบุรายละเอียดสภาพอุปกรณ์';
         return;
       }
-      // รวม detail เข้ากับ note
-      const noteExtra = document.getElementById('cr-note').value.trim();
-      const note = detail ? (condition + ': ' + detail + (noteExtra ? ' | ' + noteExtra : '')) : noteExtra;
+
       const btn = document.querySelector('#confirm-return-modal .btn-primary');
       btn.disabled = true;
       btn.textContent = '⏳ กำลังบันทึก...';
+
       try {
         const res = await fetch(GAS_URL, {
           method: 'POST',
           body: JSON.stringify({
             action: 'confirmReturn',
             borrow_id: borrowId,
-            condition, next_status: nextStatus,
-            note, confirmed_by: user.email
+            condition,           // "ปกติ" | "ขาดอุปกรณ์" | "เสียหาย"
+            condition_detail: detail,  // <-- ส่งแยก ให้ borrow.html นำไปใส่ช่องข้อความ
+            next_status: nextStatus,
+            note: noteExtra,     // หมายเหตุเพิ่มเติมล้วนๆ ไม่ปนกัน
+            confirmed_by: user.email
           })
         });
         const data = await res.json();
@@ -1022,8 +1010,7 @@
         const res = await fetch(GAS_URL, {
           method: 'POST',
           body: JSON.stringify({
-            action: 'updateDevice',
-            device_id: deviceId,
+            action: 'updateDevice', device_id: deviceId,
             krupha_no: document.getElementById('ed-krupha').value.trim(),
             serial_no: document.getElementById('ed-serial').value.trim(),
             name, category, brand, model,
