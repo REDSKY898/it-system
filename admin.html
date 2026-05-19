@@ -263,6 +263,23 @@
     </div>
   </div>
 
+  <!-- Modal อนุมัติพร้อมหมายเหตุ -->
+  <div class="modal-overlay" id="approve-modal">
+    <div class="modal">
+      <p class="modal-title">อนุมัติการยืม</p>
+      <input type="hidden" id="approve-borrow-id"/>
+      <div class="form-group">
+        <label class="form-label">หมายเหตุ (ไม่บังคับ)</label>
+        <textarea class="form-input" id="approve-note" style="height:80px;resize:none" placeholder="เช่น กรุณาคืนก่อนวันที่กำหนด..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeApproveModal()">ยกเลิก</button>
+        <button class="btn-primary" onclick="submitApproveBorrow()">ยืนยันอนุมัติ</button>
+      </div>
+      <div id="msg-approve" style="padding:8px;border-radius:8px;font-size:12px;display:none;margin-top:8px;text-align:center"></div>
+    </div>
+  </div>
+
   <div class="container">
 
     <div class="stats-grid">
@@ -646,7 +663,7 @@
           <td style="font-size:12px">${formatDate(b.return_date)}</td>
           <td><span class="badge badge-${BORROW_BADGE[b.status] || 'available'}">${BORROW_STATUS_LABEL[b.status] || b.status}</span></td>
           <td style="white-space:nowrap;display:flex;gap:4px">
-            ${b.status === 'pending' ? `<button class="btn-success" onclick="approveBorrow('${b.borrow_id}')">✅ อนุมัติ</button><button class="btn-danger" onclick="rejectBorrow('${b.borrow_id}')">❌ ไม่อนุมัติ</button>` : ''}
+            ${b.status === 'pending' ? `<button class="btn-success" onclick="openApproveModal('${b.borrow_id}')">✅ อนุมัติ</button><button class="btn-danger" onclick="rejectBorrow('${b.borrow_id}')">❌ ไม่อนุมัติ</button>` : ''}
             ${b.status === 'returning' ? `<button class="btn-info" onclick="openConfirmReturn('${b.borrow_id}')">📦 ยืนยันรับคืน</button>` : ''}
             ${b.status === 'returned' || b.status === 'approved' ? '-' : ''}
           </td>
@@ -809,6 +826,37 @@
         if (data.success) { loadAll(); }
         else alert('❌ ' + data.message);
       } catch(e) { alert('เกิดข้อผิดพลาด'); }
+    }
+
+    function openApproveModal(borrowId) {
+      document.getElementById('approve-borrow-id').value = borrowId;
+      document.getElementById('approve-note').value = '';
+      document.getElementById('msg-approve').style.display = 'none';
+      document.getElementById('approve-modal').classList.add('show');
+    }
+
+    function closeApproveModal() {
+      document.getElementById('approve-modal').classList.remove('show');
+    }
+
+    async function submitApproveBorrow() {
+      const borrowId = document.getElementById('approve-borrow-id').value;
+      const note = document.getElementById('approve-note').value.trim();
+      const btn = document.querySelector('#approve-modal .btn-primary');
+      btn.disabled = true; btn.textContent = 'กำลังบันทึก...';
+      try {
+        const res = await fetch(GAS_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'approveBorrow', borrow_id: borrowId, approved_by: user.email, note })
+        });
+        const data = await res.json();
+        if (data.success) { closeApproveModal(); loadAll(); }
+        else {
+          const el = document.getElementById('msg-approve');
+          el.style.display = 'block'; el.className = 'msg-error'; el.textContent = data.message;
+          btn.disabled = false; btn.textContent = 'ยืนยันอนุมัติ';
+        }
+      } catch(e) { btn.disabled = false; btn.textContent = 'ยืนยันอนุมัติ'; }
     }
 
     async function approveBorrow(borrowId) {
