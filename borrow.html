@@ -36,30 +36,30 @@
     .btn-print-action { padding: 10px 20px; background: #7F77DD; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; font-family: inherit; }
     .btn-close-print { background: rgba(255,255,255,0.2); color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; }
     .doc-wrap { font-family: "TH Sarabun New","Sarabun",serif; font-size: 13px; color: #1a1a1a; line-height: 1.5; }
-    .doc-header { text-align: center; margin-bottom: 12px; border-bottom: 1px solid #1D9E75; padding-bottom: 8px; }
-    .doc-org { font-size: 15px; color: #1a1a1a; font-weight: 600; }
-    .doc-title { font-size: 13px; font-weight: 600; color: #1a1a1a; margin: 4px 0; }
-    .sec-label { font-size: 11px; font-weight: 700; color: white; background: #1D9E75; padding: 2px 8px; border-radius: 3px; display: inline-block; margin: 10px 0 6px; }
+    .doc-header { text-align: center; margin-bottom: 12px; border-bottom: 1.5px solid #1a1a1a; padding-bottom: 8px; }
+    .doc-org { font-size: 17px; color: #1a1a1a; font-weight: 600; }
+    .doc-title { font-size: 15px; font-weight: 600; color: #1a1a1a; margin: 4px 0; }
+    .sec-label { font-size: 13px; font-weight: 700; color: white; background: #1a1a1a; padding: 3px 10px; border-radius: 3px; display: inline-block; margin: 10px 0 6px; }
     .f-row { display: flex; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
     .f-item { display: flex; align-items: baseline; gap: 4px; flex: 1; min-width: 120px; }
-    .f-lbl { font-size: 12px; color: #1a1a1a; white-space: nowrap; }
-    .f-val { flex: 1; border-bottom: 1px solid #bbb; font-size: 13px; color: #0C447C; font-weight: 500; min-width: 60px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .f-lbl { font-size: 14px; color: #1a1a1a; white-space: nowrap; }
+    .f-val { flex: 1; border-bottom: 1px solid #1a1a1a; font-size: 15px; color: #1a1a1a; font-weight: 500; min-width: 60px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .doc-table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 6px 0; table-layout: fixed; }
-    .doc-table th { background: #f0f4f8; padding: 4px 6px; border: 1px solid #ccc; font-weight: 600; text-align: center; }
-    .doc-table td { padding: 4px 6px; border: 1px solid #ccc; text-align: center; }
-    .doc-table td.tl { text-align: left; color: #0C447C; }
-    .doc-note { font-size: 11px; color: #555; line-height: 1.6; margin: 8px 0; }
+    .doc-table th { background: #f0f4f8; padding: 5px 8px; border: 1px solid #1a1a1a; font-weight: 600; text-align: center; font-size: 14px; }
+    .doc-table td { padding: 5px 8px; border: 1px solid #1a1a1a; text-align: center; font-size: 14px; }
+    .doc-table td.tl { text-align: left; color: #1a1a1a; }
+    .doc-note { font-size: 13px; color: #1a1a1a; line-height: 1.6; margin: 8px 0; }
     .sign-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-    .sign-box { border: 0.5px solid #ccc; border-radius: 5px; padding: 10px; text-align: center; }
-    .sign-line { border-bottom: 1px solid #999; min-height: 40px; margin-bottom: 4px; }
-    .sign-name { font-weight: 600; font-size: 12px; color: #1a1a1a; }
-    .sign-role { color: #1a1a1a; font-size: 11px; }
-    .sign-date { color: #999; font-size: 10px; margin-top: 3px; }
+    .sign-box { border: 0.5px solid #1a1a1a; border-radius: 5px; padding: 10px; text-align: center; }
+    .sign-line { border-bottom: 1px solid #1a1a1a; min-height: 40px; margin-bottom: 4px; }
+    .sign-name { font-weight: 600; font-size: 14px; color: #1a1a1a; }
+    .sign-role { color: #1a1a1a; font-size: 13px; }
+    .sign-date { color: #1a1a1a; font-size: 12px; margin-top: 3px; }
     .ret-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
-    .ret-box { border: 0.5px solid #ccc; border-radius: 5px; padding: 10px; font-size: 11px; }
-    .chk-row { display: flex; align-items: center; gap: 5px; margin: 2px 0; color: #555; }
-    .chk-box { width: 10px; height: 10px; border: 1px solid #999; display: inline-block; flex-shrink: 0; }
-    @media print { body * { visibility: hidden; } #print-doc, #print-doc * { visibility: visible; } #print-doc { position: absolute; inset: 0; padding: 15mm 20mm; } }
+    .ret-box { border: 0.5px solid #1a1a1a; border-radius: 5px; padding: 10px; font-size: 13px; }
+    .chk-row { display: flex; align-items: center; gap: 5px; margin: 2px 0; color: #1a1a1a; }
+    .chk-box { width: 11px; height: 11px; border: 1px solid #1a1a1a; display: inline-block; flex-shrink: 0; }
+    @page { margin: 15mm 20mm; size: A4; } @media print { body * { visibility: hidden; } #print-doc, #print-doc * { visibility: visible; } #print-doc { position: absolute; inset: 0; } header, footer { display: none !important; } }
 
     .panel { display: none; }
     .panel.active { display: block; }
@@ -135,9 +135,9 @@
         <div id="print-doc" class="doc-wrap">
           <div class="doc-header">
             <div class="doc-org">คณะเศรษฐศาสตร์ ศรีราชา มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตศรีราชา</div>
-            <div class="doc-title">แบบฟอร์มการยืม-คืน อุปกรณ์สารสนเทศ คณะเศรษฐศาสตร์ ศรีราชา</div>
+            <div class="doc-title">แบบฟอร์มขอใช้อุปกรณ์สารสนเทศ คณะเศรษฐศาสตร์ ศรีราชา</div>
           </div>
-          <div style="text-align:right;font-size:12px;color:#555;margin-bottom:8px">เลขที่ <span id="pd-id" style="color:#1D9E75;font-weight:600"></span></div>
+          <div style="text-align:right;font-size:12px;color:#555;margin-bottom:8px">เลขที่ <span id="pd-id" style="color:#1a1a1a;font-weight:600"></span></div>
 
           <span class="sec-label">ส่วนที่ 1 ข้อมูลผู้ขอใช้บริการ</span>
           <div class="f-row">
@@ -149,7 +149,7 @@
             <div class="f-item"><span class="f-lbl">โทรศัพท์</span><span class="f-val" id="pd-phone"></span></div>
             <div class="f-item" style="flex:2"><span class="f-lbl">อีเมล</span><span class="f-val" id="pd-email"></span></div>
           </div>
-          <div style="margin:6px 0 3px;font-size:13px">มีความประสงค์ขอยืมอุปกรณ์สารสนเทศ คณะเศรษฐศาสตร์ ศรีราชา</div>
+          <div style="margin:6px 0 3px;font-size:13px">มีความประสงค์ขอใช้บริการอุปกรณ์สารสนเทศ คณะเศรษฐศาสตร์ ศรีราชา</div>
           <div class="f-row">
             <div class="f-item"><span class="f-lbl">เหตุผลในการขอใช้งาน</span><span class="f-val" id="pd-purpose" style="white-space:normal"></span></div>
           </div>
@@ -162,7 +162,7 @@
           <table class="doc-table">
             <thead><tr><th>รายการ</th><th style="width:180px">เลขครุภัณฑ์</th><th style="width:160px">หมายเหตุ</th></tr></thead>
             <tbody>
-              <tr><td class="tl" id="pd-devname"></td><td id="pd-krupha" style="color:#0C447C"></td><td id="pd-note" style="font-size:11px;color:#555;text-align:left"></td></tr>
+              <tr><td class="tl" id="pd-devname"></td><td id="pd-krupha" style="color:#1a1a1a"></td><td id="pd-note" style="font-size:11px;color:#555;text-align:left"></td></tr>
             </tbody>
           </table>
 
@@ -177,7 +177,7 @@
               <div class="sign-role" id="pd-sign-role"></div>
               <div class="sign-date" id="pd-sign-date"></div>
             </div>
-            <div class="sign-box" style="border-color:#1D9E75">
+            <div class="sign-box">
               <div style="font-size:10px;color:#555;margin-bottom:4px">เจ้าหน้าที่สารสนเทศ</div>
               <div class="sign-line"></div>
               <div class="sign-name">(นายคุณากร ส่งเสริม)</div>
