@@ -190,20 +190,20 @@
           <div class="ret-grid">
             <div class="ret-box" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
               <div style="font-weight:700;margin-bottom:16px">ผู้ส่งคืน</div>
-              <div style="border-bottom:1px solid #999;width:80%;height:40px;margin-bottom:6px"></div>
-              <div>( ................................................ )</div>
-              <div style="color:#777;margin-top:2px">ผู้ส่งคืน</div>
-              <div style="color:#999;margin-top:2px">......./......./.......</div>
+              <div style="border-bottom:1px solid #1a1a1a;width:80%;height:40px;margin-bottom:6px"></div>
+              <div id="pd-ret-sender">( ................................................ )</div>
+              <div style="margin-top:2px">ผู้ส่งคืน</div>
+              <div id="pd-ret-date" style="margin-top:2px">......./......./.......</div>
             </div>
             <div class="ret-box">
               <div style="font-weight:700;margin-bottom:6px">เจ้าหน้าที่ผู้รับคืน</div>
-              <div class="chk-row"><span class="chk-box"></span>ได้รับคืนครบถ้วนสภาพสมบูรณ์</div>
-              <div class="chk-row"><span class="chk-box"></span>ได้รับคืนแต่ยังขาดอุปกรณ์ ดังนี้ .....</div>
-              <div class="chk-row"><span class="chk-box"></span>ได้รับคืนสภาพชำรุดเสียหาย ดังนี้ .....</div>
-              <div style="border-bottom:1px solid #999;height:26px;margin:6px 0 4px"></div>
-              <div style="text-align:center">( ................................................ )</div>
-              <div style="text-align:center;color:#777">เจ้าหน้าที่ผู้รับคืน</div>
-              <div style="text-align:center;color:#999">......./......./.......</div>
+              <div class="chk-row"><span class="chk-box" id="chk-normal"></span>ได้รับคืนครบถ้วนสภาพสมบูรณ์</div>
+              <div class="chk-row"><span class="chk-box" id="chk-missing"></span>ได้รับคืนแต่ยังขาดอุปกรณ์ ดังนี้ .....</div>
+              <div class="chk-row"><span class="chk-box" id="chk-damaged"></span>ได้รับคืนสภาพชำรุดเสียหาย ดังนี้ .....</div>
+              <div style="border-bottom:1px solid #1a1a1a;height:26px;margin:8px 0 4px"></div>
+              <div id="pd-ret-by" style="text-align:center">( ................................................ )</div>
+              <div style="text-align:center">เจ้าหน้าที่ผู้รับคืน</div>
+              <div id="pd-ret-by-date" style="text-align:center">......./......./.......</div>
             </div>
           </div>
         </div>
@@ -312,6 +312,23 @@
     // ตรวจสอบ URL param — ถ้ามี id ให้ไปโหมดยืม
     const urlParams = new URLSearchParams(window.location.search);
     const deviceId = urlParams.get('id');
+
+    // ถ้ามาจาก Admin ยืนยันคืน — เปิด print modal อัตโนมัติ
+    if (urlParams.get('print') === '1') {
+      const borrowId = urlParams.get('borrow_id');
+      const borrowDate = urlParams.get('borrow_date');
+      const dueDate = urlParams.get('due_date');
+      const purpose = urlParams.get('purpose');
+      const note = urlParams.get('note');
+      const returnDataStr = urlParams.get('returnData');
+      const returnData = returnDataStr ? JSON.parse(returnDataStr) : null;
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          openPrintModal(borrowId, borrowDate, dueDate, purpose, returnData);
+          if (note) document.getElementById('pd-note').textContent = note;
+        }, 500);
+      });
+    }
 
     // โหลดอุปกรณ์สำหรับโหมดยืม
     if (deviceId) {
@@ -455,7 +472,7 @@
             </div>
             <div style="display:flex;gap:8px;margin-top:10px">
               ${b.status === 'pending' ? `<button class="btn-cancel-borrow" style="margin-top:0;flex:1" onclick="cancelBorrow('${b.borrow_id}')">✕ ยกเลิกคำขอยืม</button>` : ''}
-              <button style="flex:1;padding:10px;background:#f5f4ff;color:#7F77DD;border:1.5px solid #7F77DD;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit" onclick="openPrintModalFromHistory('${b.borrow_id}','${b.borrow_date}','${b.due_date}','${b.purpose||''}','${b.note||''}')">📄 ดูเอกสาร</button>
+              <button style="flex:1;padding:10px;background:#f5f4ff;color:#7F77DD;border:1.5px solid #7F77DD;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit" onclick="openPrintModalFromHistory('${b.borrow_id}','${b.borrow_date}','${b.due_date}','${b.purpose||''}','${b.note||''}','${b.status==='returned' ? encodeURIComponent(JSON.stringify({returned:true,borrower_email:b.borrower_email,return_date:b.return_date,condition:b.return_condition,confirmed_by:b.return_by})) : ''}')">📄 ดูเอกสาร</button>
             </div>
             ${b.status === 'approved' ? `
               <button class="btn-return" onclick="openReturnModal('${b.borrow_id}')">
@@ -475,12 +492,36 @@
       openPrintModal(lb.id, lb.borrowDate, lb.returnDate, lb.purpose);
     }
 
-    function openPrintModalFromHistory(borrowId, borrowDate, dueDate, purpose, note) {
-      openPrintModal(borrowId, borrowDate, dueDate, purpose);
+    function openPrintModalFromHistory(borrowId, borrowDate, dueDate, purpose, note, returnData) {
+      openPrintModal(borrowId, borrowDate, dueDate, purpose, returnData ? JSON.parse(decodeURIComponent(returnData)) : null);
       setTimeout(() => { document.getElementById('pd-note').textContent = note || ''; }, 100);
     }
 
-    function openPrintModal(borrowId, borrowDate, dueDate, purpose) {
+    function fillReturnSection(returnData) {
+      if (!returnData || !returnData.returned) {
+        // ยังไม่คืน — แสดงช่องว่าง
+        document.getElementById('pd-ret-sender').textContent = '( ................................................ )';
+        document.getElementById('pd-ret-date').textContent = '......./......./.......'
+        document.getElementById('pd-ret-by').textContent = '( ................................................ )';
+        document.getElementById('pd-ret-by-date').textContent = '......./......./.......';
+        ['chk-normal','chk-missing','chk-damaged'].forEach(id => {
+          document.getElementById(id).textContent = '';
+        });
+        return;
+      }
+      // คืนแล้ว — กรอกข้อมูล
+      document.getElementById('pd-ret-sender').textContent = '( ' + (returnData.borrower_name || returnData.borrower_email || '') + ' )';
+      document.getElementById('pd-ret-date').textContent = formatDate(returnData.return_date);
+      document.getElementById('pd-ret-by').textContent = '( ' + (returnData.confirmed_by || '') + ' )';
+      document.getElementById('pd-ret-by-date').textContent = formatDate(returnData.return_date);
+      // ติ๊ก checkbox ตามสภาพ
+      const condition = returnData.condition || 'ปกติ';
+      document.getElementById('chk-normal').textContent = condition === 'ปกติ' ? '✓' : '';
+      document.getElementById('chk-missing').textContent = condition === 'มีรอยขีดข่วน' ? '✓' : '';
+      document.getElementById('chk-damaged').textContent = condition === 'เสียหาย' ? '✓' : '';
+    }
+
+    function openPrintModal(borrowId, borrowDate, dueDate, purpose, returnData) {
       const d = window.currentDevice || {};
       const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
       document.getElementById('pd-id').textContent = borrowId;
@@ -498,6 +539,7 @@
       document.getElementById('pd-sign-name').textContent = userInfo.name || userInfo.email || '';
       document.getElementById('pd-sign-role').textContent = (userInfo.position || '') + (userInfo.department ? ' — ' + userInfo.department : '');
       document.getElementById('pd-sign-date').textContent = formatDate(borrowDate);
+      fillReturnSection(returnData || null);
       document.getElementById('print-overlay').classList.add('show');
     }
 
