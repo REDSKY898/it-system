@@ -28,6 +28,7 @@
     .mode-btn .mode-title { font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
     .mode-btn .mode-desc { font-size: 12px; color: #888; }
 
+    /* Print overlay */
     .print-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 16px; }
     .print-overlay.show { display: flex; }
     .print-modal { background: white; border-radius: 16px; width: 100%; max-width: 800px; margin: auto; overflow: hidden; }
@@ -35,6 +36,8 @@
     .print-modal-header span { color: white; font-size: 15px; font-weight: 600; }
     .btn-print-action { padding: 10px 20px; background: #7F77DD; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; font-family: inherit; }
     .btn-close-print { background: rgba(255,255,255,0.2); color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; }
+
+    /* Document */
     .doc-wrap { font-family: "TH Sarabun New","Sarabun",serif; font-size: 13px; color: #1a1a1a; line-height: 1.5; }
     .doc-header { text-align: center; margin-bottom: 12px; border-bottom: 1.5px solid #1a1a1a; padding-bottom: 8px; }
     .doc-org { font-size: 17px; color: #1a1a1a; font-weight: 600; }
@@ -57,9 +60,15 @@
     .sign-date { color: #1a1a1a; font-size: 12px; margin-top: 3px; }
     .ret-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
     .ret-box { border: 0.5px solid #1a1a1a; border-radius: 5px; padding: 10px; font-size: 13px; }
-    .chk-row { display: flex; align-items: center; gap: 5px; margin: 2px 0; color: #1a1a1a; }
-    .chk-box { width: 11px; height: 11px; border: 1px solid #1a1a1a; display: inline-block; flex-shrink: 0; }
-    @page { margin: 15mm 20mm; size: A4; } @media print { body * { visibility: hidden; } #print-doc, #print-doc * { visibility: visible; } #print-doc { position: absolute; inset: 0; } header, footer { display: none !important; } }
+    .chk-box { width: 11px; height: 11px; border: 1px solid #1a1a1a; display: inline-block; flex-shrink: 0; text-align: center; line-height: 11px; font-size: 10px; }
+
+    @page { margin: 15mm 20mm; size: A4; }
+    @media print {
+      body * { visibility: hidden; }
+      #print-doc, #print-doc * { visibility: visible; }
+      #print-doc { position: absolute; inset: 0; }
+      header, footer { display: none !important; }
+    }
 
     .panel { display: none; }
     .panel.active { display: block; }
@@ -94,7 +103,6 @@
     .msg-error { background: #FCEBEB; color: #791F1F; }
     .no-device { text-align: center; padding: 20px; color: #999; font-size: 14px; }
     .loading { text-align: center; padding: 20px; color: #666; font-size: 14px; }
-
 
     /* Document shortcuts */
     .doc-shortcuts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
@@ -131,7 +139,7 @@
 </head>
 <body>
 
-  <!-- Print Modal -->
+  <!-- ===== Print Modal ===== -->
   <div class="print-overlay" id="print-overlay">
     <div class="print-modal">
       <div class="print-modal-header">
@@ -143,12 +151,15 @@
       </div>
       <div class="print-modal-body" style="padding:20px;">
         <div id="print-doc" class="doc-wrap">
+
+          <!-- Header -->
           <div class="doc-header">
             <div class="doc-org">คณะเศรษฐศาสตร์ ศรีราชา มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตศรีราชา</div>
             <div class="doc-title">แบบฟอร์มขอใช้อุปกรณ์สารสนเทศ คณะเศรษฐศาสตร์ ศรีราชา</div>
           </div>
           <div style="text-align:right;font-size:12px;color:#555;margin-bottom:8px">เลขที่ <span id="pd-id" style="color:#1a1a1a;font-weight:600"></span></div>
 
+          <!-- ส่วนที่ 1 -->
           <span class="sec-label">ส่วนที่ 1 ข้อมูลผู้ขอใช้บริการ</span>
           <div class="f-row">
             <div class="f-item" style="flex:2"><span class="f-lbl">ชื่อ/สกุล</span><span class="f-val" id="pd-name"></span></div>
@@ -168,6 +179,7 @@
             <div class="f-item"><span class="f-lbl">กำหนดส่งคืนวันที่</span><span class="f-val" id="pd-ddate"></span></div>
           </div>
 
+          <!-- ส่วนที่ 2 -->
           <span class="sec-label">ส่วนที่ 2 รายการอุปกรณ์</span>
           <table class="doc-table">
             <thead><tr><th>รายการ</th><th style="width:180px">เลขครุภัณฑ์</th><th style="width:160px">หมายเหตุ</th></tr></thead>
@@ -178,9 +190,10 @@
 
           <div class="doc-note">ในการนี้ หากมีการชำรุดเสียหายเนื่องมาจากการใช้งานผิดประเภท ทำตก ประมาท ฯลฯ ระหว่างการใช้งาน ข้าพเจ้ายินดีชดใช้ค่าเสียหายและซ่อมแซมให้อยู่ในสภาพปกติทุกประการตามมูลค่าจริง</div>
 
+          <!-- ส่วนที่ 3 -->
           <span class="sec-label">ส่วนที่ 3 ลงนาม</span>
           <div class="sign-grid">
-              <div class="sign-box">
+            <div class="sign-box">
               <div style="font-size:10px;color:#555;margin-bottom:4px">ผู้ขอใช้บริการ</div>
               <div class="sign-line"></div>
               <div class="sign-name">(<span id="pd-sign-name"></span>)</div>
@@ -196,39 +209,77 @@
             </div>
           </div>
 
-          <span class="sec-label" style="background:#666;margin-top:12px">ส่วนที่ 4 การคืนอุปกรณ์ (กรอกเมื่อคืน)</span>
-          <div class="sign-grid">
-            <div class="sign-box">
-              <div style="font-size:10px;color:#555;margin-bottom:4px">ผู้ส่งคืน</div>
+          <!-- ===== ส่วนที่ 4 ===== -->
+          <span class="sec-label" style="background:#555;margin-top:14px">ส่วนที่ 4 การคืนอุปกรณ์ (กรอกเมื่อคืน)</span>
+          <div class="ret-grid">
+
+            <!-- ฝั่งซ้าย: ผู้ส่งคืน -->
+            <div class="ret-box" style="text-align:center">
+              <div style="font-size:10px;color:#555;margin-bottom:6px">ผู้ส่งคืน</div>
               <div class="sign-line"></div>
               <div class="sign-name" id="pd-ret-sender">( ................................................ )</div>
-              <div class="sign-role" id="pd-ret-role"></div>
+              <div class="sign-role" id="pd-ret-role" style="font-size:12px;color:#555;margin-top:3px"></div>
               <div class="sign-date" id="pd-ret-date">......./......./.......</div>
             </div>
-            <div class="sign-box">
-              <div style="font-size:10px;color:#555;margin-bottom:4px">เจ้าหน้าที่ผู้รับคืน</div>
-              <div style="display:flex;gap:12px;margin-bottom:6px;font-size:11px">
-                <span><span class="chk-box" id="chk-normal"></span> ได้รับคืนอุปกรณ์ครบสภาพสมบูรณ์</span>
-                <span><span class="chk-box" id="chk-missing"></span> ได้รับอุปกรณ์คืนแต่ยังขาดอุปกรณ์ ดังนี้( ................................................ )</span>
-                <span><span class="chk-box" id="chk-damaged"></span> ได้รับอุปกรณ์สภาพคืนสภาพชำรุด ดังนี้( ................................................ )</span>
+
+            <!-- ฝั่งขวา: เจ้าหน้าที่ผู้รับคืน (ตายตัว) -->
+            <div class="ret-box">
+              <div style="font-size:10px;color:#555;margin-bottom:8px;text-align:center">เจ้าหน้าที่ผู้รับคืน</div>
+
+              <!-- Checkbox ข้อ 1: ปกติ -->
+              <div style="margin-bottom:8px">
+                <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1a1a1a">
+                  <span class="chk-box" id="chk-normal"></span>
+                  <span>ได้รับคืนอุปกรณ์ครบสภาพสมบูรณ์</span>
+                </div>
               </div>
+
+              <!-- Checkbox ข้อ 2: ขาดอุปกรณ์ -->
+              <div style="margin-bottom:8px">
+                <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1a1a1a;margin-bottom:4px">
+                  <span class="chk-box" id="chk-missing"></span>
+                  <span>ได้รับคืนแต่ยังขาดอุปกรณ์ ดังนี้</span>
+                </div>
+                <div id="chk-missing-detail"
+                     style="min-height:32px;border-bottom:1px solid #ccc;margin-left:17px;
+                            font-size:12px;color:#1a1a1a;line-height:1.6;white-space:pre-wrap;
+                            padding-bottom:2px"></div>
+              </div>
+
+              <!-- Checkbox ข้อ 3: ชำรุด -->
+              <div style="margin-bottom:12px">
+                <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1a1a1a;margin-bottom:4px">
+                  <span class="chk-box" id="chk-damaged"></span>
+                  <span>ได้รับคืนสภาพชำรุดเสียหาย ดังนี้</span>
+                </div>
+                <div id="chk-damaged-detail"
+                     style="min-height:32px;border-bottom:1px solid #ccc;margin-left:17px;
+                            font-size:12px;color:#1a1a1a;line-height:1.6;white-space:pre-wrap;
+                            padding-bottom:2px"></div>
+              </div>
+
+              <!-- ลายเซ็น (ตายตัว) -->
               <div class="sign-line"></div>
-              <div class="sign-name" id="pd-ret-by">( ................................................ )</div>
-              <div class="sign-role">นักวิชาการคอมพิวเตอร์</div>
-              <div class="sign-date" id="pd-ret-by-date">......./......./.......</div>
+              <div class="sign-name" style="text-align:center">(นายคุณากร ส่งเสริม)</div>
+              <div class="sign-role" style="text-align:center;font-size:12px">นักวิชาการคอมพิวเตอร์ — สำนักงานเลขานุการ</div>
+              <div class="sign-date" style="text-align:center" id="pd-ret-by-date">......./......./.......</div>
             </div>
+
           </div>
-        </div>
+          <!-- ===== จบส่วนที่ 4 ===== -->
+
+        </div><!-- /print-doc -->
       </div>
     </div>
   </div>
 
+  <!-- Navbar -->
   <div class="navbar">
     <span class="navbar-brand">📦 ยืม-คืนอุปกรณ์</span>
     <div style="display:flex;gap:8px">
-  <button class="btn-back" onclick="history.back()">← กลับ</button>
-  <button class="btn-back" onclick="location.href='dashboard.html'">🏠 หน้าแรก</button>
-</div>
+      <button class="btn-back" onclick="history.back()">← กลับ</button>
+      <button class="btn-back" onclick="location.href='dashboard.html'">🏠 หน้าแรก</button>
+    </div>
   </div>
 
   <!-- Modal แจ้งคืน -->
@@ -335,11 +386,9 @@
     const nextWeek = new Date(Date.now() + 7*24*60*60*1000).toISOString().split('T')[0];
     document.getElementById('return-plan-date').value = today;
 
-    // ตรวจสอบ URL param — ถ้ามี id ให้ไปโหมดยืม
     const urlParams = new URLSearchParams(window.location.search);
     const deviceId = urlParams.get('id');
 
-    // ถ้ามาจาก Admin ยืนยันคืน — เปิด print modal อัตโนมัติ
     if (urlParams.get('print') === '1') {
       const borrowId = urlParams.get('borrow_id');
       const borrowDate = urlParams.get('borrow_date');
@@ -356,7 +405,6 @@
       });
     }
 
-    // โหลดอุปกรณ์สำหรับโหมดยืม
     if (deviceId) {
       fetch(GAS_URL + '?action=getDevices')
         .then(res => res.json())
@@ -371,7 +419,7 @@
       deviceStr ? showDevice(JSON.parse(deviceStr)) : showNoDevice();
     }
 
-    // Document Shortcuts
+    // ===== Document Shortcuts =====
     let dsLatestBorrow = null;
     let dsLatestReturn = null;
 
@@ -382,7 +430,6 @@
         if (!data.success) return;
         const myBorrows = data.borrows.filter(b => b.borrower_email === user.email);
 
-        // หาการยืมล่าสุด (ที่ไม่ใช่ cancelled/rejected)
         const activeBorrow = [...myBorrows].reverse().find(b =>
           ['pending','approved','returning'].includes(b.status)
         );
@@ -393,7 +440,6 @@
           document.getElementById('ds-borrow-btn').disabled = false;
         }
 
-        // หาการคืนล่าสุด
         const returnedBorrow = [...myBorrows].reverse().find(b => b.status === 'returned');
         if (returnedBorrow) {
           dsLatestReturn = returnedBorrow;
@@ -407,7 +453,6 @@
     function dsOpenBorrow() {
       if (!dsLatestBorrow) return;
       const b = dsLatestBorrow;
-      // ดึงอุปกรณ์จาก selectedDevice หรือ device_id
       openPrintModal(b.borrow_id, b.borrow_date, b.due_date, b.purpose || '', null);
       setTimeout(() => {
         document.getElementById('pd-devname').textContent = b.device_id;
@@ -421,10 +466,12 @@
       const b = dsLatestReturn;
       const returnData = {
         returned: true,
+        borrower_name: b.borrower_name || '',
         borrower_email: b.borrower_email,
         return_date: b.return_date,
         condition: b.return_condition || 'ปกติ',
-        confirmed_by: b.return_by || ''
+        confirmed_by: b.return_by || '',
+        condition_detail: b.condition_detail || ''
       };
       openPrintModal(b.borrow_id, b.borrow_date, b.due_date, b.purpose || '', returnData);
       setTimeout(() => {
@@ -434,7 +481,6 @@
       }, 100);
     }
 
-    // โหลด shortcuts ตอนเริ่ม
     loadDocShortcuts();
 
     function switchMode(mode) {
@@ -445,8 +491,7 @@
       if (mode === 'return') loadMyBorrows();
     }
 
-    // ==================== โหมดยืม ====================
-
+    // ===== โหมดยืม =====
     function showNoDevice() {
       document.getElementById('device-section').innerHTML = `
         <div class="no-device">
@@ -517,7 +562,7 @@
           if (type === 'borrow') {
             window.lastBorrow = { id, borrowDate, returnDate, purpose };
             document.getElementById('btn-view-doc').style.display = 'block';
-            setTimeout(() => openPrintModal(id, borrowDate, returnDate, purpose), 800);
+            setTimeout(() => openPrintModal(id, borrowDate, returnDate, purpose, null), 800);
           }
         } else {
           showMsg('❌ ' + data.message, 'error');
@@ -531,8 +576,7 @@
       }
     }
 
-    // ==================== โหมดคืน ====================
-
+    // ===== โหมดคืน =====
     async function loadMyBorrows() {
       const el = document.getElementById('return-list');
       el.innerHTML = '<div class="loading">⏳ กำลังโหลด...</div>';
@@ -564,7 +608,8 @@
             </div>
             <div style="display:flex;gap:8px;margin-top:10px">
               ${b.status === 'pending' ? `<button class="btn-cancel-borrow" style="margin-top:0;flex:1" onclick="cancelBorrow('${b.borrow_id}')">✕ ยกเลิกคำขอยืม</button>` : ''}
-              <button style="flex:1;padding:10px;background:#f5f4ff;color:#7F77DD;border:1.5px solid #7F77DD;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit" onclick="openPrintModalFromHistory('${b.borrow_id}','${b.borrow_date}','${b.due_date}','${b.purpose||''}','${b.note||''}','${b.status==='returned' ? encodeURIComponent(JSON.stringify({returned:true,borrower_email:b.borrower_email,return_date:b.return_date,condition:b.return_condition,confirmed_by:b.return_by})) : ''}')">📄 ดูเอกสาร</button>
+              <button style="flex:1;padding:10px;background:#f5f4ff;color:#7F77DD;border:1.5px solid #7F77DD;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit"
+                onclick="openPrintModalFromHistory('${b.borrow_id}','${b.borrow_date}','${b.due_date}','${encodeURIComponent(b.purpose||'')}','${encodeURIComponent(b.note||'')}','${b.status==='returned' ? encodeURIComponent(JSON.stringify({returned:true,borrower_name:b.borrower_name||'',borrower_email:b.borrower_email,return_date:b.return_date,condition:b.return_condition,condition_detail:b.condition_detail||'',confirmed_by:b.return_by})) : ''}')">📄 ดูเอกสาร</button>
             </div>
             ${b.status === 'approved' ? `
               <button class="btn-return" onclick="openReturnModal('${b.borrow_id}')">
@@ -581,44 +626,75 @@
     function reopenPrintModal() {
       if (!window.lastBorrow) return;
       const lb = window.lastBorrow;
-      openPrintModal(lb.id, lb.borrowDate, lb.returnDate, lb.purpose);
+      openPrintModal(lb.id, lb.borrowDate, lb.returnDate, lb.purpose, null);
     }
 
-    function openPrintModalFromHistory(borrowId, borrowDate, dueDate, purpose, note, returnData) {
-      openPrintModal(borrowId, borrowDate, dueDate, purpose, returnData ? JSON.parse(decodeURIComponent(returnData)) : null);
-      setTimeout(() => { document.getElementById('pd-note').textContent = note || ''; }, 100);
+    function openPrintModalFromHistory(borrowId, borrowDate, dueDate, purposeEnc, noteEnc, returnDataEnc) {
+      const purpose = decodeURIComponent(purposeEnc);
+      const note = decodeURIComponent(noteEnc);
+      const returnData = returnDataEnc ? JSON.parse(decodeURIComponent(returnDataEnc)) : null;
+      openPrintModal(borrowId, borrowDate, dueDate, purpose, returnData);
+      setTimeout(() => { document.getElementById('pd-note').textContent = note; }, 100);
     }
 
+    // ===== fillReturnSection — แก้ไขหลัก =====
     function fillReturnSection(returnData) {
+      // รีเซ็ต checkbox detail ก่อนทุกครั้ง
+      document.getElementById('chk-missing-detail').textContent = '';
+      document.getElementById('chk-damaged-detail').textContent = '';
+      document.getElementById('chk-normal').textContent = '';
+      document.getElementById('chk-missing').textContent = '';
+      document.getElementById('chk-damaged').textContent = '';
+
       if (!returnData || !returnData.returned) {
         // ยังไม่คืน — แสดงช่องว่าง
         document.getElementById('pd-ret-sender').textContent = '( ................................................ )';
-        if(document.getElementById('pd-ret-role')) document.getElementById('pd-ret-role').textContent = '';
+        document.getElementById('pd-ret-role').textContent = '';
         document.getElementById('pd-ret-date').textContent = '......./......./.......'
-        document.getElementById('pd-ret-by').textContent = '( ................................................ )';
         document.getElementById('pd-ret-by-date').textContent = '......./......./.......';
-        ['chk-normal','chk-missing','chk-damaged'].forEach(id => {
-          document.getElementById(id).textContent = '';
-        });
         return;
       }
-      // คืนแล้ว — กรอกข้อมูล
-      const senderName = returnData.borrower_name || returnData.borrower_email || '';
+
+      // คืนแล้ว — กรอกข้อมูลผู้ส่งคืน
+      // ดึงชื่อจริง: ลำดับความสำคัญ borrower_name > user.name (ถ้าเป็น email ตัวเอง) > borrower_email
+      let senderName = returnData.borrower_name || '';
+      if (!senderName) {
+        const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
+        senderName = (returnData.borrower_email === userInfo.email)
+          ? (userInfo.name || returnData.borrower_email)
+          : returnData.borrower_email;
+      }
       document.getElementById('pd-ret-sender').textContent = '( ' + senderName + ' )';
-      // ดึงตำแหน่ง/สังกัด
+
+      // ตำแหน่ง/สังกัดผู้ส่งคืน
       const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
-      const retPosition = returnData.borrower_position || (returnData.borrower_email === userInfo.email ? userInfo.position || '' : '');
-      const retDepartment = returnData.borrower_department || (returnData.borrower_email === userInfo.email ? userInfo.department || '' : '');
-      const retRole = retPosition + (retDepartment ? ' — ' + retDepartment : '');
-      document.getElementById('pd-ret-role').textContent = retRole;
+      const retPosition = returnData.borrower_position ||
+        (returnData.borrower_email === userInfo.email ? userInfo.position || '' : '');
+      const retDepartment = returnData.borrower_department ||
+        (returnData.borrower_email === userInfo.email ? userInfo.department || '' : '');
+      document.getElementById('pd-ret-role').textContent =
+        retPosition + (retDepartment ? ' — ' + retDepartment : '');
+
       document.getElementById('pd-ret-date').textContent = formatDate(returnData.return_date);
-      document.getElementById('pd-ret-by').textContent = '( ' + (returnData.confirmed_by || '') + ' )';
       document.getElementById('pd-ret-by-date').textContent = formatDate(returnData.return_date);
-      // ติ๊ก checkbox ตามสภาพ
+
+      // ติ๊ก checkbox ตามสภาพ + ใส่รายละเอียดในช่องข้อความ
       const condition = returnData.condition || 'ปกติ';
-      document.getElementById('chk-normal').textContent = condition === 'ปกติ' ? '✓' : '';
-      document.getElementById('chk-missing').textContent = condition === 'มีรอยขีดข่วน' ? '✓' : '';
-      document.getElementById('chk-damaged').textContent = condition === 'เสียหาย' ? '✓' : '';
+      const detail = returnData.condition_detail || '';
+
+      if (condition === 'ปกติ') {
+        document.getElementById('chk-normal').textContent = '✓';
+      } else if (condition === 'มีรอยขีดข่วน' || condition === 'ขาดอุปกรณ์') {
+        document.getElementById('chk-missing').textContent = '✓';
+        document.getElementById('chk-missing-detail').textContent = detail;
+      } else if (condition === 'เสียหาย' || condition === 'ชำรุด') {
+        document.getElementById('chk-damaged').textContent = '✓';
+        document.getElementById('chk-damaged-detail').textContent = detail;
+      } else {
+        // fallback: ถ้าไม่ตรงกับ 3 กลุ่ม → แสดงใน damaged
+        document.getElementById('chk-damaged').textContent = '✓';
+        document.getElementById('chk-damaged-detail').textContent = condition + (detail ? '\n' + detail : '');
+      }
     }
 
     function openPrintModal(borrowId, borrowDate, dueDate, purpose, returnData) {
@@ -637,7 +713,8 @@
       document.getElementById('pd-krupha').textContent = d.krupha_no || '';
       document.getElementById('pd-note').textContent = '';
       document.getElementById('pd-sign-name').textContent = userInfo.name || userInfo.email || '';
-      document.getElementById('pd-sign-role').textContent = (userInfo.position || '') + (userInfo.department ? ' — ' + userInfo.department : '');
+      document.getElementById('pd-sign-role').textContent =
+        (userInfo.position || '') + (userInfo.department ? ' — ' + userInfo.department : '');
       document.getElementById('pd-sign-date').textContent = formatDate(borrowDate);
       fillReturnSection(returnData || null);
       document.getElementById('print-overlay').classList.add('show');
