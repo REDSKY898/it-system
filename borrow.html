@@ -7,28 +7,17 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Sarabun', sans-serif; background: #f0f4f8; }
-    .navbar {
-      background: #7F77DD; padding: 14px 24px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
+    .navbar { background: #7F77DD; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
     .navbar-brand { color: white; font-size: 18px; font-weight: 600; }
     .btn-back { background: rgba(255,255,255,0.2); color: white; border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; }
     .container { max-width: 600px; margin: 0 auto; padding: 24px 16px; }
-
-    /* Mode selector */
     .mode-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-    .mode-btn {
-      background: white; border: 2px solid #eee; border-radius: 16px;
-      padding: 20px 16px; cursor: pointer; text-align: center;
-      transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
+    .mode-btn { background: white; border: 2px solid #eee; border-radius: 16px; padding: 20px 16px; cursor: pointer; text-align: center; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .mode-btn:hover { border-color: #7F77DD; transform: translateY(-2px); }
     .mode-btn.active { border-color: #7F77DD; background: #f5f4ff; }
     .mode-btn .mode-icon { font-size: 36px; margin-bottom: 8px; }
     .mode-btn .mode-title { font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
     .mode-btn .mode-desc { font-size: 12px; color: #888; }
-
-    /* Print overlay */
     .print-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 16px; }
     .print-overlay.show { display: flex; }
     .print-modal { background: white; border-radius: 16px; width: 100%; max-width: 800px; margin: auto; overflow: hidden; }
@@ -36,8 +25,6 @@
     .print-modal-header span { color: white; font-size: 15px; font-weight: 600; }
     .btn-print-action { padding: 10px 20px; background: #7F77DD; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; font-family: inherit; }
     .btn-close-print { background: rgba(255,255,255,0.2); color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; }
-
-    /* Document */
     .doc-wrap { font-family: "TH Sarabun New","Sarabun",serif; font-size: 13px; color: #1a1a1a; line-height: 1.5; }
     .doc-header { text-align: center; margin-bottom: 12px; border-bottom: 1.5px solid #1a1a1a; padding-bottom: 8px; }
     .doc-org { font-size: 17px; color: #1a1a1a; font-weight: 600; }
@@ -61,18 +48,10 @@
     .ret-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
     .ret-box { border: 0.5px solid #1a1a1a; border-radius: 5px; padding: 10px; font-size: 13px; }
     .chk-box { width: 11px; height: 11px; border: 1px solid #1a1a1a; display: inline-block; flex-shrink: 0; text-align: center; line-height: 11px; font-size: 10px; }
-
     @page { margin: 15mm 20mm; size: A4; }
-    @media print {
-      body * { visibility: hidden; }
-      #print-doc, #print-doc * { visibility: visible; }
-      #print-doc { position: absolute; inset: 0; }
-      header, footer { display: none !important; }
-    }
-
+    @media print { body * { visibility: hidden; } #print-doc, #print-doc * { visibility: visible; } #print-doc { position: absolute; inset: 0; } header, footer { display: none !important; } }
     .panel { display: none; }
     .panel.active { display: block; }
-
     .card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 16px; }
     .card-title { font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 0.5px solid #eee; }
     .device-selected { display: flex; align-items: center; gap: 12px; background: #f0f4f8; border-radius: 10px; padding: 12px; margin-bottom: 16px; }
@@ -95,25 +74,19 @@
     .btn-submit:hover { background: #6b63c9; }
     .btn-submit:disabled { background: #aaa; cursor: not-allowed; }
     .btn-queue { width: 100%; padding: 14px; background: #FAEEDA; color: #633806; border: none; border-radius: 12px; font-size: 16px; font-weight: 500; cursor: pointer; margin-top: 8px; }
-    .btn-queue:hover { background: #f0d9b5; }
     .btn-return { width: 100%; padding: 14px; background: #E6F1FB; color: #0C447C; border: none; border-radius: 12px; font-size: 16px; font-weight: 500; cursor: pointer; margin-top: 8px; }
-    .btn-return:hover { background: #cde0f5; }
-    #msg, #msg-return { padding: 12px; border-radius: 10px; font-size: 14px; text-align: center; display: none; margin-top: 12px; }
+    #msg { padding: 12px; border-radius: 10px; font-size: 14px; text-align: center; display: none; margin-top: 12px; }
     .msg-success { background: #E1F5EE; color: #085041; }
     .msg-error { background: #FCEBEB; color: #791F1F; }
     .no-device { text-align: center; padding: 20px; color: #999; font-size: 14px; }
     .loading { text-align: center; padding: 20px; color: #666; font-size: 14px; }
-
-    /* Document shortcuts */
     .doc-shortcuts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
     .doc-shortcut-card { background: white; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1.5px solid #eee; }
-    .doc-shortcut-title { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+    .doc-shortcut-title { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
     .doc-shortcut-meta { font-size: 11px; color: #888; margin-bottom: 10px; font-family: monospace; }
     .doc-shortcut-empty { font-size: 11px; color: #bbb; margin-bottom: 10px; }
     .btn-doc-view { width: 100%; padding: 8px; background: #f5f4ff; color: #7F77DD; border: 1.5px solid #7F77DD; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; font-family: inherit; }
     .btn-doc-view:disabled { background: #f5f5f5; color: #bbb; border-color: #eee; cursor: not-allowed; }
-
-    /* Borrow list */
     .borrow-item { border: 0.5px solid #eee; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
     .borrow-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
     .borrow-id { font-family: monospace; font-size: 12px; color: #999; }
@@ -125,8 +98,6 @@
     .badge-returning { background: #E6F1FB; color: #0C447C; }
     .btn-cancel-borrow { margin-top: 10px; width: 100%; padding: 10px; background: #FCEBEB; color: #791F1F; border: none; border-radius: 10px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; }
     .returning-note { margin-top: 10px; padding: 8px 12px; background: #E6F1FB; border-radius: 8px; font-size: 12px; color: #0C447C; }
-
-    /* Modal */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: center; justify-content: center; }
     .modal-overlay.show { display: flex; }
     .modal { background: white; border-radius: 16px; padding: 24px; width: 420px; max-width: 95vw; }
@@ -149,17 +120,15 @@
           <button class="btn-close-print" onclick="closePrintModal()">✕ ปิด</button>
         </div>
       </div>
-      <div class="print-modal-body" style="padding:20px;">
+      <div style="padding:20px;">
         <div id="print-doc" class="doc-wrap">
 
-          <!-- Header -->
           <div class="doc-header">
             <div class="doc-org">คณะเศรษฐศาสตร์ ศรีราชา มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตศรีราชา</div>
             <div class="doc-title">แบบฟอร์มขอใช้อุปกรณ์สารสนเทศ คณะเศรษฐศาสตร์ ศรีราชา</div>
           </div>
           <div style="text-align:right;font-size:12px;color:#555;margin-bottom:8px">เลขที่ <span id="pd-id" style="color:#1a1a1a;font-weight:600"></span></div>
 
-          <!-- ส่วนที่ 1 -->
           <span class="sec-label">ส่วนที่ 1 ข้อมูลผู้ขอใช้บริการ</span>
           <div class="f-row">
             <div class="f-item" style="flex:2"><span class="f-lbl">ชื่อ/สกุล</span><span class="f-val" id="pd-name"></span></div>
@@ -179,18 +148,15 @@
             <div class="f-item"><span class="f-lbl">กำหนดส่งคืนวันที่</span><span class="f-val" id="pd-ddate"></span></div>
           </div>
 
-          <!-- ส่วนที่ 2 -->
           <span class="sec-label">ส่วนที่ 2 รายการอุปกรณ์</span>
           <table class="doc-table">
             <thead><tr><th>รายการ</th><th style="width:180px">เลขครุภัณฑ์</th><th style="width:160px">หมายเหตุ</th></tr></thead>
             <tbody>
-              <tr><td class="tl" id="pd-devname"></td><td id="pd-krupha" style="color:#1a1a1a"></td><td id="pd-note" style="font-size:11px;color:#555;text-align:left"></td></tr>
+              <tr><td class="tl" id="pd-devname"></td><td id="pd-krupha"></td><td id="pd-note" style="font-size:11px;color:#555;text-align:left"></td></tr>
             </tbody>
           </table>
-
           <div class="doc-note">ในการนี้ หากมีการชำรุดเสียหายเนื่องมาจากการใช้งานผิดประเภท ทำตก ประมาท ฯลฯ ระหว่างการใช้งาน ข้าพเจ้ายินดีชดใช้ค่าเสียหายและซ่อมแซมให้อยู่ในสภาพปกติทุกประการตามมูลค่าจริง</div>
 
-          <!-- ส่วนที่ 3 -->
           <span class="sec-label">ส่วนที่ 3 ลงนาม</span>
           <div class="sign-grid">
             <div class="sign-box">
@@ -226,7 +192,7 @@
             <div class="ret-box">
               <div style="font-size:10px;color:#555;margin-bottom:8px;text-align:center">เจ้าหน้าที่ผู้รับคืน</div>
 
-              <!-- Checkbox ข้อ 1: ปกติ -->
+              <!-- Checkbox ข้อ 1 -->
               <div style="margin-bottom:8px">
                 <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1a1a1a">
                   <span class="chk-box" id="chk-normal"></span>
@@ -234,7 +200,7 @@
                 </div>
               </div>
 
-              <!-- Checkbox ข้อ 2: ขาดอุปกรณ์ -->
+              <!-- Checkbox ข้อ 2 -->
               <div style="margin-bottom:8px">
                 <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1a1a1a;margin-bottom:4px">
                   <span class="chk-box" id="chk-missing"></span>
@@ -242,11 +208,10 @@
                 </div>
                 <div id="chk-missing-detail"
                      style="min-height:32px;border-bottom:1px solid #ccc;margin-left:17px;
-                            font-size:12px;color:#1a1a1a;line-height:1.6;white-space:pre-wrap;
-                            padding-bottom:2px"></div>
+                            font-size:12px;color:#1a1a1a;line-height:1.6;white-space:pre-wrap;padding-bottom:2px"></div>
               </div>
 
-              <!-- Checkbox ข้อ 3: ชำรุด -->
+              <!-- Checkbox ข้อ 3 -->
               <div style="margin-bottom:12px">
                 <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1a1a1a;margin-bottom:4px">
                   <span class="chk-box" id="chk-damaged"></span>
@@ -254,11 +219,9 @@
                 </div>
                 <div id="chk-damaged-detail"
                      style="min-height:32px;border-bottom:1px solid #ccc;margin-left:17px;
-                            font-size:12px;color:#1a1a1a;line-height:1.6;white-space:pre-wrap;
-                            padding-bottom:2px"></div>
+                            font-size:12px;color:#1a1a1a;line-height:1.6;white-space:pre-wrap;padding-bottom:2px"></div>
               </div>
 
-              <!-- ลายเซ็น (ตายตัว) -->
               <div class="sign-line"></div>
               <div class="sign-name" style="text-align:center">(นายคุณากร ส่งเสริม)</div>
               <div class="sign-role" style="text-align:center;font-size:12px">นักวิชาการคอมพิวเตอร์ — สำนักงานเลขานุการ</div>
@@ -268,12 +231,11 @@
           </div>
           <!-- ===== จบส่วนที่ 4 ===== -->
 
-        </div><!-- /print-doc -->
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Navbar -->
   <div class="navbar">
     <span class="navbar-brand">📦 ยืม-คืนอุปกรณ์</span>
     <div style="display:flex;gap:8px">
@@ -305,21 +267,15 @@
 
   <div class="container">
 
-    <!-- เลือกโหมด -->
     <div class="mode-selector">
       <div class="mode-btn active" id="btn-borrow-mode" onclick="switchMode('borrow')">
-        <div class="mode-icon">📦</div>
-        <div class="mode-title">ยืมอุปกรณ์</div>
-        <div class="mode-desc">เลือกและยืมอุปกรณ์</div>
+        <div class="mode-icon">📦</div><div class="mode-title">ยืมอุปกรณ์</div><div class="mode-desc">เลือกและยืมอุปกรณ์</div>
       </div>
       <div class="mode-btn" id="btn-return-mode" onclick="switchMode('return')">
-        <div class="mode-icon">🔄</div>
-        <div class="mode-title">คืนอุปกรณ์</div>
-        <div class="mode-desc">แจ้งคืนที่ยืมอยู่</div>
+        <div class="mode-icon">🔄</div><div class="mode-title">คืนอุปกรณ์</div><div class="mode-desc">แจ้งคืนที่ยืมอยู่</div>
       </div>
     </div>
 
-    <!-- Document Shortcuts -->
     <div class="doc-shortcuts">
       <div class="doc-shortcut-card">
         <div class="doc-shortcut-title">📄 เอกสารการยืม</div>
@@ -333,13 +289,10 @@
       </div>
     </div>
 
-    <!-- Panel: ยืม -->
     <div class="panel active" id="panel-borrow">
       <div class="card">
         <p class="card-title">อุปกรณ์ที่ต้องการยืม</p>
-        <div id="device-section">
-          <div class="loading">⏳ กำลังโหลดข้อมูลอุปกรณ์...</div>
-        </div>
+        <div id="device-section"><div class="loading">⏳ กำลังโหลดข้อมูลอุปกรณ์...</div></div>
       </div>
       <div class="card" id="form-card" style="display:none">
         <p class="card-title">รายละเอียดการยืม</p>
@@ -363,7 +316,6 @@
       </div>
     </div>
 
-    <!-- Panel: คืน -->
     <div class="panel" id="panel-return">
       <div class="card">
         <p class="card-title">รายการที่กำลังยืมอยู่</p>
@@ -375,7 +327,6 @@
 
   <script>
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbwRwYG6zliBbpSrQQzgTIVhFODMbe6Nfb5zG-AV_APAIuC-2HP2QJAb98FfKEYVC3vY/exec';
-
     const ICONS = { 'Notebook':'💻','Projector':'📽️','PC':'🖥️','Adapter':'🔌','Camera':'📷','Mouse':'🖱️','default':'📦' };
     const STATUS_LABEL = { 'available':'พร้อมยืม','borrowed':'ถูกยืมอยู่','prep':'อยู่ระหว่างเตรียมพร้อม','assigned':'ประจำตัวบุคคล','room':'ประจำห้อง ยืมไม่ได้' };
 
@@ -390,38 +341,34 @@
     const deviceId = urlParams.get('id');
 
     if (urlParams.get('print') === '1') {
-      const borrowId = urlParams.get('borrow_id');
-      const borrowDate = urlParams.get('borrow_date');
-      const dueDate = urlParams.get('due_date');
-      const purpose = urlParams.get('purpose');
-      const note = urlParams.get('note');
       const returnDataStr = urlParams.get('returnData');
-      const returnData = returnDataStr ? JSON.parse(returnDataStr) : null;
       window.addEventListener('load', () => {
         setTimeout(() => {
-          openPrintModal(borrowId, borrowDate, dueDate, purpose, returnData);
+          openPrintModal(
+            urlParams.get('borrow_id'), urlParams.get('borrow_date'),
+            urlParams.get('due_date'), urlParams.get('purpose'),
+            returnDataStr ? JSON.parse(returnDataStr) : null
+          );
+          const note = urlParams.get('note');
           if (note) document.getElementById('pd-note').textContent = note;
         }, 500);
       });
     }
 
     if (deviceId) {
-      fetch(GAS_URL + '?action=getDevices')
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            const device = data.devices.find(d => d.device_id === deviceId);
-            device ? showDevice(device) : showNoDevice();
-          } else { showNoDevice(); }
-        }).catch(() => showNoDevice());
+      fetch(GAS_URL + '?action=getDevices').then(r => r.json()).then(data => {
+        if (data.success) {
+          const d = data.devices.find(d => d.device_id === deviceId);
+          d ? showDevice(d) : showNoDevice();
+        } else showNoDevice();
+      }).catch(showNoDevice);
     } else {
-      const deviceStr = localStorage.getItem('selectedDevice');
-      deviceStr ? showDevice(JSON.parse(deviceStr)) : showNoDevice();
+      const ds = localStorage.getItem('selectedDevice');
+      ds ? showDevice(JSON.parse(ds)) : showNoDevice();
     }
 
     // ===== Document Shortcuts =====
-    let dsLatestBorrow = null;
-    let dsLatestReturn = null;
+    let dsLatestBorrow = null, dsLatestReturn = null;
 
     async function loadDocShortcuts() {
       try {
@@ -429,17 +376,13 @@
         const data = await res.json();
         if (!data.success) return;
         const myBorrows = data.borrows.filter(b => b.borrower_email === user.email);
-
-        const activeBorrow = [...myBorrows].reverse().find(b =>
-          ['pending','approved','returning'].includes(b.status)
-        );
+        const activeBorrow = [...myBorrows].reverse().find(b => ['pending','approved','returning'].includes(b.status));
         if (activeBorrow) {
           dsLatestBorrow = activeBorrow;
           document.getElementById('ds-borrow-meta').className = 'doc-shortcut-meta';
           document.getElementById('ds-borrow-meta').textContent = activeBorrow.borrow_id + ' · ' + formatDate(activeBorrow.borrow_date);
           document.getElementById('ds-borrow-btn').disabled = false;
         }
-
         const returnedBorrow = [...myBorrows].reverse().find(b => b.status === 'returned');
         if (returnedBorrow) {
           dsLatestReturn = returnedBorrow;
@@ -454,69 +397,53 @@
       if (!dsLatestBorrow) return;
       const b = dsLatestBorrow;
       openPrintModal(b.borrow_id, b.borrow_date, b.due_date, b.purpose || '', null);
-      setTimeout(() => {
-        document.getElementById('pd-devname').textContent = b.device_id;
-        document.getElementById('pd-krupha').textContent = '';
-        document.getElementById('pd-note').textContent = b.note || '';
-      }, 100);
+      setTimeout(() => { document.getElementById('pd-devname').textContent = b.device_id; document.getElementById('pd-note').textContent = b.note || ''; }, 100);
     }
 
     function dsOpenReturn() {
       if (!dsLatestReturn) return;
       const b = dsLatestReturn;
-      const returnData = {
+      openPrintModal(b.borrow_id, b.borrow_date, b.due_date, b.purpose || '', buildReturnData(b));
+      setTimeout(() => { document.getElementById('pd-devname').textContent = b.device_id; }, 100);
+    }
+
+    // สร้าง returnData object จาก borrow record ของ sheet
+    function buildReturnData(b) {
+      return {
         returned: true,
-        borrower_name: b.borrower_name || '',
+        borrower_name: b.borrower_name || '',   // ถ้า sheet มี column นี้
         borrower_email: b.borrower_email,
         return_date: b.return_date,
         condition: b.return_condition || 'ปกติ',
-        confirmed_by: b.return_by || '',
-        condition_detail: b.condition_detail || ''
+        condition_detail: b.condition_detail || '', // ถ้า sheet มี column นี้
+        confirmed_by: b.return_by || ''
       };
-      openPrintModal(b.borrow_id, b.borrow_date, b.due_date, b.purpose || '', returnData);
-      setTimeout(() => {
-        document.getElementById('pd-devname').textContent = b.device_id;
-        document.getElementById('pd-krupha').textContent = '';
-        document.getElementById('pd-note').textContent = b.note || '';
-      }, 100);
     }
 
     loadDocShortcuts();
 
     function switchMode(mode) {
-      document.getElementById('btn-borrow-mode').classList.toggle('active', mode === 'borrow');
-      document.getElementById('btn-return-mode').classList.toggle('active', mode === 'return');
-      document.getElementById('panel-borrow').classList.toggle('active', mode === 'borrow');
-      document.getElementById('panel-return').classList.toggle('active', mode === 'return');
+      ['borrow','return'].forEach(m => {
+        document.getElementById('btn-' + m + '-mode').classList.toggle('active', m === mode);
+        document.getElementById('panel-' + m).classList.toggle('active', m === mode);
+      });
       if (mode === 'return') loadMyBorrows();
     }
 
-    // ===== โหมดยืม =====
     function showNoDevice() {
       document.getElementById('device-section').innerHTML = `
-        <div class="no-device">
-          กรุณาเลือกอุปกรณ์จากหน้ารายการก่อนครับ<br><br>
-          <button onclick="location.href='devices.html'"
-            style="padding:10px 20px;background:#7F77DD;color:white;border:none;border-radius:10px;cursor:pointer;font-size:14px">
-            เลือกอุปกรณ์
-          </button>
+        <div class="no-device">กรุณาเลือกอุปกรณ์จากหน้ารายการก่อนครับ<br><br>
+          <button onclick="location.href='devices.html'" style="padding:10px 20px;background:#7F77DD;color:white;border:none;border-radius:10px;cursor:pointer;font-size:14px">เลือกอุปกรณ์</button>
         </div>`;
     }
 
     function showDevice(d) {
       window.currentDevice = d;
-      const deviceSection = document.getElementById('device-section');
-      let statusClass = 'status-available';
-      if (d.status === 'borrowed' || d.status === 'prep') statusClass = 'status-unavailable';
-      if (d.type === 'room') statusClass = 'status-room';
-
-      deviceSection.innerHTML = `
+      let statusClass = d.type === 'room' ? 'status-room' : (d.status === 'available' ? 'status-available' : 'status-unavailable');
+      document.getElementById('device-section').innerHTML = `
         <div class="device-selected">
           <span class="device-icon">${ICONS[d.category] || ICONS.default}</span>
-          <div>
-            <p class="device-info-name">${d.name}</p>
-            <p class="device-info-code">${d.device_id} · ${d.krupha_no}</p>
-          </div>
+          <div><p class="device-info-name">${d.name}</p><p class="device-info-code">${d.device_id} · ${d.krupha_no}</p></div>
           <button class="btn-change" onclick="location.href='devices.html'">เปลี่ยน</button>
         </div>
         <div class="status-box ${statusClass}">
@@ -524,16 +451,13 @@
           ${STATUS_LABEL[d.status] || d.status}
           ${d.type === 'room' ? ' — อุปกรณ์ประจำห้องไม่สามารถยืมได้' : ''}
         </div>`;
-
       if (d.type !== 'room') {
         document.getElementById('form-card').style.display = 'block';
         document.getElementById('borrow-date').value = today;
         document.getElementById('return-date').value = nextWeek;
-        if (d.status === 'available') {
-          document.getElementById('action-btn').innerHTML = `<button class="btn-submit" onclick="submitBorrow('borrow')">📦 ส่งคำขอยืม</button>`;
-        } else {
-          document.getElementById('action-btn').innerHTML = `<button class="btn-queue" onclick="submitBorrow('queue')">⏳ ลงคิวรออุปกรณ์</button>`;
-        }
+        document.getElementById('action-btn').innerHTML = d.status === 'available'
+          ? `<button class="btn-submit" onclick="submitBorrow('borrow')">📦 ส่งคำขอยืม</button>`
+          : `<button class="btn-queue" onclick="submitBorrow('queue')">⏳ ลงคิวรออุปกรณ์</button>`;
       }
     }
 
@@ -541,19 +465,14 @@
       const borrowDate = document.getElementById('borrow-date').value;
       const returnDate = document.getElementById('return-date').value;
       const purpose = document.getElementById('purpose').value.trim();
-      if (!borrowDate) { showMsg('กรุณาเลือกวันที่ยืม', 'error'); return; }
-      if (!returnDate) { showMsg('กรุณาเลือกวันที่คืน', 'error'); return; }
-      if (!purpose) { showMsg('กรุณากรอกวัตถุประสงค์', 'error'); return; }
+      if (!borrowDate || !returnDate || !purpose) { showMsg('กรุณากรอกข้อมูลให้ครบ', 'error'); return; }
       if (returnDate < borrowDate) { showMsg('วันที่คืนต้องหลังวันที่ยืม', 'error'); return; }
       const d = window.currentDevice;
       if (!d) { showMsg('ไม่พบข้อมูลอุปกรณ์', 'error'); return; }
       const btn = document.querySelector('#panel-borrow .btn-submit, #panel-borrow .btn-queue');
       btn.disabled = true; btn.textContent = '⏳ กำลังส่ง...';
       try {
-        const res = await fetch(GAS_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: type === 'borrow' ? 'createBorrow' : 'createQueue', device_id: d.device_id, borrower_email: user.email, borrow_date: borrowDate, due_date: returnDate, purpose })
-        });
+        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: type === 'borrow' ? 'createBorrow' : 'createQueue', device_id: d.device_id, borrower_email: user.email, borrow_date: borrowDate, due_date: returnDate, purpose }) });
         const data = await res.json();
         if (data.success) {
           const id = data.borrow_id || data.queue_id;
@@ -564,19 +483,10 @@
             document.getElementById('btn-view-doc').style.display = 'block';
             setTimeout(() => openPrintModal(id, borrowDate, returnDate, purpose, null), 800);
           }
-        } else {
-          showMsg('❌ ' + data.message, 'error');
-          btn.disabled = false;
-          btn.textContent = type === 'borrow' ? '📦 ส่งคำขอยืม' : '⏳ ลงคิวรออุปกรณ์';
-        }
-      } catch(e) {
-        showMsg('❌ เกิดข้อผิดพลาด', 'error');
-        btn.disabled = false;
-        btn.textContent = type === 'borrow' ? '📦 ส่งคำขอยืม' : '⏳ ลงคิวรออุปกรณ์';
-      }
+        } else { showMsg('❌ ' + data.message, 'error'); btn.disabled = false; btn.textContent = type === 'borrow' ? '📦 ส่งคำขอยืม' : '⏳ ลงคิวรออุปกรณ์'; }
+      } catch(e) { showMsg('❌ เกิดข้อผิดพลาด', 'error'); btn.disabled = false; btn.textContent = type === 'borrow' ? '📦 ส่งคำขอยืม' : '⏳ ลงคิวรออุปกรณ์'; }
     }
 
-    // ===== โหมดคืน =====
     async function loadMyBorrows() {
       const el = document.getElementById('return-list');
       el.innerHTML = '<div class="loading">⏳ กำลังโหลด...</div>';
@@ -584,22 +494,13 @@
         const res = await fetch(GAS_URL + '?action=getBorrows');
         const data = await res.json();
         if (!data.success) { el.innerHTML = '<div class="no-device">ไม่สามารถโหลดข้อมูลได้</div>'; return; }
-
-        const myBorrows = data.borrows.filter(b =>
-          b.borrower_email === user.email &&
-          (b.status === 'approved' || b.status === 'returning' || b.status === 'pending')
-        ).reverse();
-
-        if (!myBorrows.length) {
-          el.innerHTML = '<div class="no-device" style="padding:30px">ไม่มีรายการที่ยืมอยู่</div>';
-          return;
-        }
-
+        const myBorrows = data.borrows.filter(b => b.borrower_email === user.email && ['approved','returning','pending'].includes(b.status)).reverse();
+        if (!myBorrows.length) { el.innerHTML = '<div class="no-device" style="padding:30px">ไม่มีรายการที่ยืมอยู่</div>'; return; }
         el.innerHTML = myBorrows.map(b => `
           <div class="borrow-item">
             <div class="borrow-header">
               <span class="borrow-id">${b.borrow_id}</span>
-              <span class="badge badge-${b.status}">${b.status === 'pending' ? 'รออนุมัติ' : b.status === 'approved' ? 'กำลังยืมอยู่' : '📬 แจ้งคืนแล้ว'}</span>
+              <span class="badge badge-${b.status}">${b.status==='pending'?'รออนุมัติ':b.status==='approved'?'กำลังยืมอยู่':'📬 แจ้งคืนแล้ว'}</span>
             </div>
             <p class="borrow-device">💻 ${b.device_id}</p>
             <div class="borrow-info">
@@ -607,20 +508,20 @@
               <span>📅 กำหนดคืน: ${formatDate(b.due_date)}</span>
             </div>
             <div style="display:flex;gap:8px;margin-top:10px">
-              ${b.status === 'pending' ? `<button class="btn-cancel-borrow" style="margin-top:0;flex:1" onclick="cancelBorrow('${b.borrow_id}')">✕ ยกเลิกคำขอยืม</button>` : ''}
+              ${b.status==='pending'?`<button class="btn-cancel-borrow" style="margin-top:0;flex:1" onclick="cancelBorrow('${b.borrow_id}')">✕ ยกเลิกคำขอยืม</button>`:''}
               <button style="flex:1;padding:10px;background:#f5f4ff;color:#7F77DD;border:1.5px solid #7F77DD;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit"
-                onclick="openPrintModalFromHistory('${b.borrow_id}','${b.borrow_date}','${b.due_date}','${encodeURIComponent(b.purpose||'')}','${encodeURIComponent(b.note||'')}','${b.status==='returned' ? encodeURIComponent(JSON.stringify({returned:true,borrower_name:b.borrower_name||'',borrower_email:b.borrower_email,return_date:b.return_date,condition:b.return_condition,condition_detail:b.condition_detail||'',confirmed_by:b.return_by})) : ''}')">📄 ดูเอกสาร</button>
+                onclick='openPrintModalFromBorrow(${JSON.stringify(b).replace(/'/g,"&#39;")})'>📄 ดูเอกสาร</button>
             </div>
-            ${b.status === 'approved' ? `
-              <button class="btn-return" onclick="openReturnModal('${b.borrow_id}')">
-                📬 แจ้งความต้องการคืนอุปกรณ์
-              </button>` : ''}
-            ${b.status === 'returning' ? `
-              <div class="returning-note">⏳ แจ้งคืนแล้ว กำลังรอ IT รับอุปกรณ์</div>` : ''}
+            ${b.status==='approved'?`<button class="btn-return" onclick="openReturnModal('${b.borrow_id}')">📬 แจ้งความต้องการคืนอุปกรณ์</button>`:''}
+            ${b.status==='returning'?`<div class="returning-note">⏳ แจ้งคืนแล้ว กำลังรอ IT รับอุปกรณ์</div>`:''}
           </div>`).join('');
-      } catch(e) {
-        el.innerHTML = '<div class="no-device">❌ เกิดข้อผิดพลาด กรุณาลองใหม่</div>';
-      }
+      } catch(e) { el.innerHTML = '<div class="no-device">❌ เกิดข้อผิดพลาด กรุณาลองใหม่</div>'; }
+    }
+
+    function openPrintModalFromBorrow(b) {
+      const rd = b.status === 'returned' ? buildReturnData(b) : null;
+      openPrintModal(b.borrow_id, b.borrow_date, b.due_date, b.purpose || '', rd);
+      setTimeout(() => { document.getElementById('pd-note').textContent = b.note || ''; }, 100);
     }
 
     function reopenPrintModal() {
@@ -629,25 +530,18 @@
       openPrintModal(lb.id, lb.borrowDate, lb.returnDate, lb.purpose, null);
     }
 
-    function openPrintModalFromHistory(borrowId, borrowDate, dueDate, purposeEnc, noteEnc, returnDataEnc) {
-      const purpose = decodeURIComponent(purposeEnc);
-      const note = decodeURIComponent(noteEnc);
-      const returnData = returnDataEnc ? JSON.parse(decodeURIComponent(returnDataEnc)) : null;
-      openPrintModal(borrowId, borrowDate, dueDate, purpose, returnData);
-      setTimeout(() => { document.getElementById('pd-note').textContent = note; }, 100);
-    }
-
-    // ===== fillReturnSection — แก้ไขหลัก =====
+    // =====================================================
+    // fillReturnSection — VERSION ที่ถูกต้อง
+    // condition และ condition_detail แยกจากกันชัดเจน
+    // =====================================================
     function fillReturnSection(returnData) {
-      // รีเซ็ต checkbox detail ก่อนทุกครั้ง
+      // รีเซ็ตทุกครั้ง
+      ['chk-normal','chk-missing','chk-damaged'].forEach(id => document.getElementById(id).textContent = '');
       document.getElementById('chk-missing-detail').textContent = '';
       document.getElementById('chk-damaged-detail').textContent = '';
-      document.getElementById('chk-normal').textContent = '';
-      document.getElementById('chk-missing').textContent = '';
-      document.getElementById('chk-damaged').textContent = '';
 
       if (!returnData || !returnData.returned) {
-        // ยังไม่คืน — แสดงช่องว่าง
+        // ยังไม่คืน — ช่องว่างทั้งหมด
         document.getElementById('pd-ret-sender').textContent = '( ................................................ )';
         document.getElementById('pd-ret-role').textContent = '';
         document.getElementById('pd-ret-date').textContent = '......./......./.......'
@@ -655,91 +549,83 @@
         return;
       }
 
-      // คืนแล้ว — กรอกข้อมูลผู้ส่งคืน
-      // ดึงชื่อจริง: ลำดับความสำคัญ borrower_name > user.name (ถ้าเป็น email ตัวเอง) > borrower_email
+      // ===== ชื่อผู้ส่งคืน =====
       let senderName = returnData.borrower_name || '';
       if (!senderName) {
-        const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
-        senderName = (returnData.borrower_email === userInfo.email)
-          ? (userInfo.name || returnData.borrower_email)
-          : returnData.borrower_email;
+        const ui = JSON.parse(localStorage.getItem('user') || '{}');
+        senderName = (returnData.borrower_email === ui.email) ? (ui.name || returnData.borrower_email) : returnData.borrower_email;
       }
       document.getElementById('pd-ret-sender').textContent = '( ' + senderName + ' )';
 
-      // ตำแหน่ง/สังกัดผู้ส่งคืน
-      const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
-      const retPosition = returnData.borrower_position ||
-        (returnData.borrower_email === userInfo.email ? userInfo.position || '' : '');
-      const retDepartment = returnData.borrower_department ||
-        (returnData.borrower_email === userInfo.email ? userInfo.department || '' : '');
-      document.getElementById('pd-ret-role').textContent =
-        retPosition + (retDepartment ? ' — ' + retDepartment : '');
-
+      // ตำแหน่ง/สังกัด
+      const ui = JSON.parse(localStorage.getItem('user') || '{}');
+      const pos = returnData.borrower_position || (returnData.borrower_email === ui.email ? ui.position || '' : '');
+      const dept = returnData.borrower_department || (returnData.borrower_email === ui.email ? ui.department || '' : '');
+      document.getElementById('pd-ret-role').textContent = pos + (dept ? ' — ' + dept : '');
       document.getElementById('pd-ret-date').textContent = formatDate(returnData.return_date);
       document.getElementById('pd-ret-by-date').textContent = formatDate(returnData.return_date);
 
-      // ติ๊ก checkbox ตามสภาพ + ใส่รายละเอียดในช่องข้อความ
+      // ===== Checkbox: condition แยกจาก condition_detail =====
       const condition = returnData.condition || 'ปกติ';
       const detail = returnData.condition_detail || '';
 
       if (condition === 'ปกติ') {
+        // ✓ ข้อ 1 เท่านั้น
         document.getElementById('chk-normal').textContent = '✓';
-      } else if (condition === 'มีรอยขีดข่วน' || condition === 'ขาดอุปกรณ์') {
+
+      } else if (condition === 'ขาดอุปกรณ์') {
+        // ✓ ข้อ 2 + ใส่รายละเอียดในช่องข้อ 2
         document.getElementById('chk-missing').textContent = '✓';
         document.getElementById('chk-missing-detail').textContent = detail;
-      } else if (condition === 'เสียหาย' || condition === 'ชำรุด') {
+
+      } else if (condition === 'เสียหาย') {
+        // ✓ ข้อ 3 + ใส่รายละเอียดในช่องข้อ 3
         document.getElementById('chk-damaged').textContent = '✓';
         document.getElementById('chk-damaged-detail').textContent = detail;
+
       } else {
-        // fallback: ถ้าไม่ตรงกับ 3 กลุ่ม → แสดงใน damaged
+        // fallback
         document.getElementById('chk-damaged').textContent = '✓';
-        document.getElementById('chk-damaged-detail').textContent = condition + (detail ? '\n' + detail : '');
+        document.getElementById('chk-damaged-detail').textContent = (condition + (detail ? '\n' + detail : '')).trim();
       }
     }
 
     function openPrintModal(borrowId, borrowDate, dueDate, purpose, returnData) {
       const d = window.currentDevice || {};
-      const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
+      const ui = JSON.parse(localStorage.getItem('user') || '{}');
       document.getElementById('pd-id').textContent = borrowId;
-      document.getElementById('pd-name').textContent = userInfo.name || userInfo.email || '';
-      document.getElementById('pd-pos').textContent = userInfo.position || '';
-      document.getElementById('pd-dept').textContent = userInfo.department || '';
-      document.getElementById('pd-phone').textContent = userInfo.phone || '';
-      document.getElementById('pd-email').textContent = userInfo.email || '';
+      document.getElementById('pd-name').textContent = ui.name || ui.email || '';
+      document.getElementById('pd-pos').textContent = ui.position || '';
+      document.getElementById('pd-dept').textContent = ui.department || '';
+      document.getElementById('pd-phone').textContent = ui.phone || '';
+      document.getElementById('pd-email').textContent = ui.email || '';
       document.getElementById('pd-purpose').textContent = purpose;
       document.getElementById('pd-bdate').textContent = formatDate(borrowDate);
       document.getElementById('pd-ddate').textContent = formatDate(dueDate);
       document.getElementById('pd-devname').textContent = d.name || '';
       document.getElementById('pd-krupha').textContent = d.krupha_no || '';
       document.getElementById('pd-note').textContent = '';
-      document.getElementById('pd-sign-name').textContent = userInfo.name || userInfo.email || '';
-      document.getElementById('pd-sign-role').textContent =
-        (userInfo.position || '') + (userInfo.department ? ' — ' + userInfo.department : '');
+      document.getElementById('pd-sign-name').textContent = ui.name || ui.email || '';
+      document.getElementById('pd-sign-role').textContent = (ui.position || '') + (ui.department ? ' — ' + ui.department : '');
       document.getElementById('pd-sign-date').textContent = formatDate(borrowDate);
       fillReturnSection(returnData || null);
       document.getElementById('print-overlay').classList.add('show');
     }
 
-    function closePrintModal() {
-      document.getElementById('print-overlay').classList.remove('show');
-    }
+    function closePrintModal() { document.getElementById('print-overlay').classList.remove('show'); }
 
-    function formatDate(dateVal) {
-      if (!dateVal) return '-';
-      try { return new Date(dateVal).toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' }); }
-      catch(e) { return dateVal; }
+    function formatDate(v) {
+      if (!v) return '-';
+      try { return new Date(v).toLocaleDateString('th-TH', { year:'numeric', month:'short', day:'numeric' }); }
+      catch(e) { return v; }
     }
 
     async function cancelBorrow(borrowId) {
       if (!confirm('ยืนยันการยกเลิกคำขอยืม ' + borrowId + ' ?')) return;
       try {
-        const res = await fetch(GAS_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: 'cancelBorrow', borrow_id: borrowId, borrower_email: user.email })
-        });
+        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'cancelBorrow', borrow_id: borrowId, borrower_email: user.email }) });
         const data = await res.json();
-        if (data.success) { loadMyBorrows(); }
-        else { alert('❌ ' + data.message); }
+        data.success ? loadMyBorrows() : alert('❌ ' + data.message);
       } catch(e) { alert('เกิดข้อผิดพลาด'); }
     }
 
@@ -751,9 +637,7 @@
       document.getElementById('return-modal').classList.add('show');
     }
 
-    function closeReturnModal() {
-      document.getElementById('return-modal').classList.remove('show');
-    }
+    function closeReturnModal() { document.getElementById('return-modal').classList.remove('show'); }
 
     async function submitReturn() {
       const borrowId = document.getElementById('return-borrow-id').value;
@@ -763,34 +647,18 @@
       const btn = document.querySelector('#return-modal .btn-confirm');
       btn.disabled = true; btn.textContent = '⏳ กำลังส่ง...';
       try {
-        const res = await fetch(GAS_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: 'requestReturn', borrow_id: borrowId, return_plan_date: planDate, note, borrower_email: user.email })
-        });
+        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'requestReturn', borrow_id: borrowId, return_plan_date: planDate, note, borrower_email: user.email }) });
         const data = await res.json();
         if (data.success) {
           showModalMsg('✅ แจ้งคืนสำเร็จ IT จะติดต่อกลับเร็วๆ นี้', 'success');
           btn.textContent = '✅ ส่งแล้ว';
           setTimeout(() => { closeReturnModal(); loadMyBorrows(); }, 1500);
-        } else {
-          showModalMsg('❌ ' + data.message, 'error');
-          btn.disabled = false; btn.textContent = '📬 แจ้งคืน';
-        }
-      } catch(e) {
-        showModalMsg('❌ เกิดข้อผิดพลาด', 'error');
-        btn.disabled = false; btn.textContent = '📬 แจ้งคืน';
-      }
+        } else { showModalMsg('❌ ' + data.message, 'error'); btn.disabled = false; btn.textContent = '📬 แจ้งคืน'; }
+      } catch(e) { showModalMsg('❌ เกิดข้อผิดพลาด', 'error'); btn.disabled = false; btn.textContent = '📬 แจ้งคืน'; }
     }
 
-    function showMsg(text, type) {
-      const el = document.getElementById('msg');
-      el.style.display = 'block'; el.className = type === 'success' ? 'msg-success' : 'msg-error'; el.textContent = text;
-    }
-
-    function showModalMsg(text, type) {
-      const el = document.getElementById('msg-modal');
-      el.style.display = 'block'; el.className = type === 'success' ? 'msg-success' : 'msg-error'; el.textContent = text;
-    }
+    function showMsg(t, type) { const el = document.getElementById('msg'); el.style.display='block'; el.className=type==='success'?'msg-success':'msg-error'; el.textContent=t; }
+    function showModalMsg(t, type) { const el = document.getElementById('msg-modal'); el.style.display='block'; el.className=type==='success'?'msg-success':'msg-error'; el.textContent=t; }
   </script>
 
 </body>
