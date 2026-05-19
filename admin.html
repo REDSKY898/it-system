@@ -899,10 +899,13 @@
           // เปิดเอกสารพร้อมข้อมูลการคืน
           const borrow = allBorrows.find(b => b.borrow_id === borrowId);
           if (borrow) {
+            const borrowerUser = allUsers.find(u => u.email === borrow.borrower_email);
             const returnData = {
               returned: true,
               borrower_email: borrow.borrower_email,
-              borrower_name: borrow.borrower_email,
+              borrower_name: borrowerUser ? borrowerUser.name : borrow.borrower_email,
+              borrower_position: borrowerUser ? borrowerUser.position || '' : '',
+              borrower_department: borrowerUser ? borrowerUser.department || '' : '',
               return_date: new Date().toISOString(),
               condition: condition,
               confirmed_by: user.email
