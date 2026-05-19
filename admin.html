@@ -136,11 +136,15 @@
       <input type="hidden" id="cr-borrow-id"/>
       <div class="form-group">
         <label class="form-label">สภาพอุปกรณ์ *</label>
-        <select class="form-input" id="cr-condition">
-          <option value="ปกติ">ปกติ ไม่มีความเสียหาย</option>
-          <option value="มีรอยขีดข่วน">มีรอยขีดข่วนเล็กน้อย</option>
-          <option value="เสียหาย">เสียหาย ต้องซ่อม</option>
+        <select class="form-input" id="cr-condition" onchange="onConditionChange()">
+          <option value="ปกติ">✅ ได้รับคืนอุปกรณ์ครบสภาพสมบูรณ์</option>
+          <option value="ขาดอุปกรณ์">⚠️ ได้รับอุปกรณ์คืนแต่ยังขาดอุปกรณ์ ดังนี้</option>
+          <option value="เสียหาย">❌ ได้รับอุปกรณ์คืนสภาพชำรุด ดังนี้</option>
         </select>
+      </div>
+      <div class="form-group" id="cr-detail-group" style="display:none">
+        <label class="form-label" id="cr-detail-label">รายละเอียด *</label>
+        <textarea class="form-input" id="cr-detail" style="height:70px;resize:none" placeholder="ระบุรายละเอียด..."></textarea>
       </div>
       <div class="form-group">
         <label class="form-label">สถานะหลังคืน *</label>
@@ -151,8 +155,8 @@
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">หมายเหตุ</label>
-        <textarea class="form-input" id="cr-note" style="height:60px;resize:none" placeholder="หมายเหตุเพิ่มเติม..."></textarea>
+        <label class="form-label">หมายเหตุเพิ่มเติม</label>
+        <textarea class="form-input" id="cr-note" style="height:50px;resize:none" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)..."></textarea>
       </div>
       <div class="modal-footer">
         <button class="btn-cancel" onclick="closeConfirmReturnModal()">ยกเลิก</button>
@@ -861,11 +865,33 @@
 
 
 
+    function onConditionChange() {
+      const cond = document.getElementById('cr-condition').value;
+      const group = document.getElementById('cr-detail-group');
+      const label = document.getElementById('cr-detail-label');
+      if (cond === 'ขาดอุปกรณ์') {
+        group.style.display = 'block';
+        label.textContent = 'ระบุอุปกรณ์ที่ขาด *';
+        document.getElementById('cr-detail').placeholder = 'เช่น สายชาร์จ, กระเป๋า...';
+        document.getElementById('cr-next-status').value = 'prep';
+      } else if (cond === 'เสียหาย') {
+        group.style.display = 'block';
+        label.textContent = 'ระบุความเสียหาย *';
+        document.getElementById('cr-detail').placeholder = 'เช่น หน้าจอแตก, แป้นพิมพ์ไม่ทำงาน...';
+        document.getElementById('cr-next-status').value = 'degraded';
+      } else {
+        group.style.display = 'none';
+        document.getElementById('cr-next-status').value = 'available';
+      }
+    }
+
     function openConfirmReturn(borrowId) {
       document.getElementById('cr-borrow-id').value = borrowId;
       document.getElementById('cr-note').value = '';
+      document.getElementById('cr-detail').value = '';
       document.getElementById('cr-condition').value = 'ปกติ';
       document.getElementById('cr-next-status').value = 'available';
+      document.getElementById('cr-detail-group').style.display = 'none';
       document.getElementById('msg-cr').style.display = 'none';
       document.getElementById('confirm-return-modal').classList.add('show');
     }
@@ -878,7 +904,17 @@
       const borrowId = document.getElementById('cr-borrow-id').value;
       const condition = document.getElementById('cr-condition').value;
       const nextStatus = document.getElementById('cr-next-status').value;
-      const note = document.getElementById('cr-note').value.trim();
+      const detail = document.getElementById('cr-detail').value.trim();
+      // ถ้าเลือกข้อ 2 หรือ 3 ต้องกรอกรายละเอียด
+      if ((condition === 'ขาดอุปกรณ์' || condition === 'เสียหาย') && !detail) {
+        const el = document.getElementById('msg-cr');
+        el.style.display = 'block'; el.className = 'msg-error';
+        el.textContent = 'กรุณาระบุรายละเอียดสภาพอุปกรณ์';
+        return;
+      }
+      // รวม detail เข้ากับ note
+      const noteExtra = document.getElementById('cr-note').value.trim();
+      const note = detail ? (condition + ': ' + detail + (noteExtra ? ' | ' + noteExtra : '')) : noteExtra;
       const btn = document.querySelector('#confirm-return-modal .btn-primary');
       btn.disabled = true;
       btn.textContent = '⏳ กำลังบันทึก...';
@@ -896,31 +932,6 @@
         if (data.success) {
           closeConfirmReturnModal();
           loadAll();
-          // เปิดเอกสารพร้อมข้อมูลการคืน
-          const borrow = allBorrows.find(b => b.borrow_id === borrowId);
-          if (borrow) {
-            const borrowerUser = allUsers.find(u => u.email === borrow.borrower_email);
-            const returnData = {
-              returned: true,
-              borrower_email: borrow.borrower_email,
-              borrower_name: borrowerUser ? borrowerUser.name : borrow.borrower_email,
-              borrower_position: borrowerUser ? borrowerUser.position || '' : '',
-              borrower_department: borrowerUser ? borrowerUser.department || '' : '',
-              return_date: new Date().toISOString(),
-              condition: condition,
-              confirmed_by: user.email
-            };
-            const params = new URLSearchParams({
-              print: '1',
-              borrow_id: borrowId,
-              borrow_date: borrow.borrow_date,
-              due_date: borrow.due_date,
-              purpose: borrow.purpose || '',
-              note: borrow.note || '',
-              returnData: JSON.stringify(returnData)
-            });
-            window.open('borrow.html?' + params.toString(), '_blank');
-          }
         } else {
           document.getElementById('msg-cr').style.display = 'block';
           document.getElementById('msg-cr').className = 'msg-error';
