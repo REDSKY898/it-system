@@ -197,23 +197,25 @@
           </div>
 
           <span class="sec-label" style="background:#666;margin-top:12px">ส่วนที่ 4 การคืนอุปกรณ์ (กรอกเมื่อคืน)</span>
-          <div class="ret-grid">
-            <div class="ret-box" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
-              <div style="font-weight:700;margin-bottom:16px">ผู้ส่งคืน</div>
-              <div style="border-bottom:1px solid #1a1a1a;width:80%;height:40px;margin-bottom:6px"></div>
-              <div id="pd-ret-sender">( ................................................ )</div>
-              <div style="margin-top:2px">ผู้ส่งคืน</div>
-              <div id="pd-ret-date" style="margin-top:2px">......./......./.......</div>
+          <div class="sign-grid">
+            <div class="sign-box">
+              <div style="font-size:10px;color:#555;margin-bottom:4px">ผู้ส่งคืน</div>
+              <div class="sign-line"></div>
+              <div class="sign-name" id="pd-ret-sender">( ................................................ )</div>
+              <div class="sign-role" id="pd-ret-role"></div>
+              <div class="sign-date" id="pd-ret-date">......./......./.......</div>
             </div>
-            <div class="ret-box">
-              <div style="font-weight:700;margin-bottom:6px">เจ้าหน้าที่ผู้รับคืน</div>
-              <div class="chk-row"><span class="chk-box" id="chk-normal"></span>ได้รับคืนครบถ้วนสภาพสมบูรณ์</div>
-              <div class="chk-row"><span class="chk-box" id="chk-missing"></span>ได้รับคืนแต่ยังขาดอุปกรณ์ ดังนี้ .....</div>
-              <div class="chk-row"><span class="chk-box" id="chk-damaged"></span>ได้รับคืนสภาพชำรุดเสียหาย ดังนี้ .....</div>
-              <div style="border-bottom:1px solid #1a1a1a;height:26px;margin:8px 0 4px"></div>
-              <div id="pd-ret-by" style="text-align:center">( ................................................ )</div>
-              <div style="text-align:center">เจ้าหน้าที่ผู้รับคืน</div>
-              <div id="pd-ret-by-date" style="text-align:center">......./......./.......</div>
+            <div class="sign-box">
+              <div style="font-size:10px;color:#555;margin-bottom:4px">เจ้าหน้าที่ผู้รับคืน</div>
+              <div style="display:flex;gap:12px;margin-bottom:6px;font-size:11px">
+                <span><span class="chk-box" id="chk-normal"></span> ปกติ</span>
+                <span><span class="chk-box" id="chk-missing"></span> ขาดอุปกรณ์</span>
+                <span><span class="chk-box" id="chk-damaged"></span> ชำรุด</span>
+              </div>
+              <div class="sign-line"></div>
+              <div class="sign-name" id="pd-ret-by">( ................................................ )</div>
+              <div class="sign-role">นักวิชาการคอมพิวเตอร์</div>
+              <div class="sign-date" id="pd-ret-by-date">......./......./.......</div>
             </div>
           </div>
         </div>
@@ -591,6 +593,7 @@
       if (!returnData || !returnData.returned) {
         // ยังไม่คืน — แสดงช่องว่าง
         document.getElementById('pd-ret-sender').textContent = '( ................................................ )';
+        if(document.getElementById('pd-ret-role')) document.getElementById('pd-ret-role').textContent = '';
         document.getElementById('pd-ret-date').textContent = '......./......./.......'
         document.getElementById('pd-ret-by').textContent = '( ................................................ )';
         document.getElementById('pd-ret-by-date').textContent = '......./......./.......';
@@ -600,7 +603,14 @@
         return;
       }
       // คืนแล้ว — กรอกข้อมูล
-      document.getElementById('pd-ret-sender').textContent = '( ' + (returnData.borrower_name || returnData.borrower_email || '') + ' )';
+      const senderName = returnData.borrower_name || returnData.borrower_email || '';
+      document.getElementById('pd-ret-sender').textContent = '( ' + senderName + ' )';
+      // ดึงตำแหน่ง/สังกัดจาก localStorage ถ้าเป็น user เดียวกัน
+      const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
+      if (returnData.borrower_email === userInfo.email) {
+        const role = (userInfo.position || '') + (userInfo.department ? ' — ' + userInfo.department : '');
+        document.getElementById('pd-ret-role').textContent = role;
+      }
       document.getElementById('pd-ret-date').textContent = formatDate(returnData.return_date);
       document.getElementById('pd-ret-by').textContent = '( ' + (returnData.confirmed_by || '') + ' )';
       document.getElementById('pd-ret-by-date').textContent = formatDate(returnData.return_date);
