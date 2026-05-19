@@ -28,6 +28,39 @@
     .mode-btn .mode-title { font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
     .mode-btn .mode-desc { font-size: 12px; color: #888; }
 
+    .print-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 20px; }
+    .print-overlay.show { display: flex; }
+    .print-modal { background: white; border-radius: 16px; width: 100%; max-width: 720px; margin: auto; overflow: hidden; }
+    .print-modal-header { background: #7F77DD; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; }
+    .print-modal-header span { color: white; font-size: 15px; font-weight: 600; }
+    .btn-print-action { padding: 10px 20px; background: #7F77DD; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; font-family: inherit; }
+    .btn-close-print { background: rgba(255,255,255,0.2); color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; }
+    .doc-wrap { font-family: "TH Sarabun New","Sarabun",serif; font-size: 14px; color: #1a1a1a; line-height: 1.6; }
+    .doc-header { text-align: center; margin-bottom: 12px; border-bottom: 1px solid #1D9E75; padding-bottom: 8px; }
+    .doc-org { font-size: 13px; color: #555; }
+    .doc-title { font-size: 16px; font-weight: 700; color: #1a1a1a; margin: 4px 0; }
+    .sec-label { font-size: 11px; font-weight: 700; color: white; background: #1D9E75; padding: 2px 8px; border-radius: 3px; display: inline-block; margin: 10px 0 6px; }
+    .f-row { display: flex; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
+    .f-item { display: flex; align-items: baseline; gap: 4px; flex: 1; min-width: 120px; }
+    .f-lbl { font-size: 12px; color: #555; white-space: nowrap; }
+    .f-val { flex: 1; border-bottom: 1px solid #bbb; font-size: 13px; color: #1D9E75; font-weight: 500; min-width: 60px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .doc-table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 6px 0; table-layout: fixed; }
+    .doc-table th { background: #f0f4f8; padding: 4px 6px; border: 1px solid #ccc; font-weight: 600; text-align: center; }
+    .doc-table td { padding: 4px 6px; border: 1px solid #ccc; text-align: center; }
+    .doc-table td.tl { text-align: left; color: #1D9E75; }
+    .doc-note { font-size: 11px; color: #555; line-height: 1.6; margin: 8px 0; }
+    .sign-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+    .sign-box { border: 0.5px solid #ccc; border-radius: 5px; padding: 10px; text-align: center; }
+    .sign-line { border-bottom: 1px solid #999; height: 36px; margin-bottom: 4px; }
+    .sign-name { font-weight: 600; font-size: 12px; }
+    .sign-role { color: #777; font-size: 10px; }
+    .sign-date { color: #999; font-size: 10px; margin-top: 3px; }
+    .ret-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+    .ret-box { border: 0.5px solid #ccc; border-radius: 5px; padding: 10px; font-size: 11px; }
+    .chk-row { display: flex; align-items: center; gap: 5px; margin: 2px 0; color: #555; }
+    .chk-box { width: 10px; height: 10px; border: 1px solid #999; display: inline-block; flex-shrink: 0; }
+    @media print { body * { visibility: hidden; } #print-doc, #print-doc * { visibility: visible; } #print-doc { position: absolute; inset: 0; padding: 15mm 20mm; } }
+
     .panel { display: none; }
     .panel.active { display: block; }
 
@@ -85,6 +118,99 @@
   </style>
 </head>
 <body>
+
+  <!-- Print Modal -->
+  <div class="print-overlay" id="print-overlay">
+    <div class="print-modal">
+      <div class="print-modal-header">
+        <span>📄 ใบยืมอุปกรณ์</span>
+        <div style="display:flex;gap:8px">
+          <button class="btn-print-action" onclick="window.print()">🖨️ พิมพ์เอกสาร</button>
+          <button class="btn-close-print" onclick="closePrintModal()">✕ ปิด</button>
+        </div>
+      </div>
+      <div class="print-modal-body">
+        <div id="print-doc" class="doc-wrap">
+          <div class="doc-header">
+            <div class="doc-org">คณะเศรษฐศาสตร์ ศรีราชา มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตศรีราชา</div>
+            <div class="doc-title">แบบฟอร์มขอใช้เครื่องคอมพิวเตอร์ คณะเศรษฐศาสตร์ ศรีราชา</div>
+          </div>
+          <div style="text-align:right;font-size:12px;color:#555;margin-bottom:8px">เลขที่ <span id="pd-id" style="color:#1D9E75;font-weight:600"></span></div>
+
+          <span class="sec-label">ส่วนที่ 1 ข้อมูลผู้ขอใช้บริการ</span>
+          <div class="f-row">
+            <div class="f-item" style="flex:2"><span class="f-lbl">ชื่อ/สกุล</span><span class="f-val" id="pd-name"></span></div>
+            <div class="f-item"><span class="f-lbl">ตำแหน่ง</span><span class="f-val" id="pd-pos"></span></div>
+            <div class="f-item"><span class="f-lbl">สังกัด</span><span class="f-val" id="pd-dept"></span></div>
+          </div>
+          <div class="f-row">
+            <div class="f-item"><span class="f-lbl">โทรศัพท์</span><span class="f-val" id="pd-phone"></span></div>
+            <div class="f-item" style="flex:2"><span class="f-lbl">อีเมล</span><span class="f-val" id="pd-email"></span></div>
+          </div>
+          <div style="margin:6px 0 3px;font-size:13px">มีความประสงค์ขอใช้บริการเครื่องคอมพิวเตอร์(ชนิดพกพา) คณะเศรษฐศาสตร์ ศรีราชา</div>
+          <div class="f-row">
+            <div class="f-item"><span class="f-lbl">เนื่องจาก</span><span class="f-val" id="pd-purpose" style="white-space:normal"></span></div>
+          </div>
+          <div class="f-row" style="margin-top:4px">
+            <div class="f-item"><span class="f-lbl">ตั้งแต่วันที่</span><span class="f-val" id="pd-bdate"></span></div>
+            <div class="f-item"><span class="f-lbl">กำหนดส่งคืนวันที่</span><span class="f-val" id="pd-ddate"></span></div>
+          </div>
+
+          <span class="sec-label">ส่วนที่ 2 รายการอุปกรณ์</span>
+          <table class="doc-table">
+            <thead><tr><th style="width:32px">ลำดับ</th><th>รายการ</th><th style="width:150px">เลขครุภัณฑ์</th><th style="width:100px">Serial Number</th><th style="width:40px">จำนวน</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td class="tl" id="pd-devname"></td><td id="pd-krupha" style="color:#1D9E75"></td><td id="pd-serial" style="color:#1D9E75"></td><td>1</td></tr>
+              <tr><td>2</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>3</td><td></td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+
+          <div class="doc-note">ในการนี้ หากมีการชำรุดเสียหายเนื่องมาจากการใช้งานผิดประเภท ทำตก ประมาท ฯลฯ ระหว่างการใช้งาน ข้าพเจ้ายินดีชดใช้ค่าเสียหายและซ่อมแซมให้อยู่ในสภาพปกติทุกประการตามมูลค่าจริง</div>
+
+          <span class="sec-label">ส่วนที่ 3 ลงนาม</span>
+          <div class="sign-grid">
+            <div class="sign-box">
+              <div style="font-size:10px;color:#555;margin-bottom:4px">ผู้ขอใช้บริการ</div>
+              <div class="sign-line"></div>
+              <div class="sign-name">(<span id="pd-sign-name"></span>)</div>
+              <div class="sign-role" id="pd-sign-role"></div>
+              <div class="sign-date" id="pd-sign-date"></div>
+            </div>
+            <div class="sign-box" style="border-color:#1D9E75">
+              <div style="font-size:10px;color:#555;margin-bottom:4px">ผู้ให้บริการ / เจ้าหน้าที่ IT</div>
+              <div class="sign-line"></div>
+              <div class="sign-name">(นายคุณากร ส่งเสริม)</div>
+              <div class="sign-role">นักวิชาการคอมพิวเตอร์</div>
+              <div class="sign-date">......./......./.......</div>
+            </div>
+          </div>
+
+          <span class="sec-label" style="background:#666;margin-top:12px">ส่วนที่ 4 การคืนอุปกรณ์ (กรอกเมื่อคืน)</span>
+          <div class="ret-grid">
+            <div class="ret-box">
+              <div style="font-weight:700;margin-bottom:6px">ผู้ส่งคืน</div>
+              <div style="margin-bottom:8px">จำนวน ............... รายการ</div>
+              <div style="border-bottom:1px solid #999;height:30px;margin-bottom:4px"></div>
+              <div style="text-align:center">( ................................................ )</div>
+              <div style="text-align:center;color:#777">ผู้ส่งคืน</div>
+              <div style="text-align:center;color:#999">......./......./.......</div>
+            </div>
+            <div class="ret-box">
+              <div style="font-weight:700;margin-bottom:6px">เจ้าหน้าที่ผู้รับคืน</div>
+              <div class="chk-row"><span class="chk-box"></span>ได้รับคืนครบถ้วนสภาพสมบูรณ์</div>
+              <div class="chk-row"><span class="chk-box"></span>ได้รับคืนแต่ยังขาดอุปกรณ์ ดังนี้ .....</div>
+              <div class="chk-row"><span class="chk-box"></span>ได้รับคืนสภาพชำรุดเสียหาย ดังนี้ .....</div>
+              <div style="border-bottom:1px solid #999;height:26px;margin:6px 0 4px"></div>
+              <div style="text-align:center">( ................................................ )</div>
+              <div style="text-align:center;color:#777">เจ้าหน้าที่ผู้รับคืน</div>
+              <div style="text-align:center;color:#999">......./......./.......</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="navbar">
     <span class="navbar-brand">📦 ยืม-คืนอุปกรณ์</span>
@@ -279,6 +405,7 @@
           const id = data.borrow_id || data.queue_id;
           showMsg(type === 'borrow' ? '✅ ส่งคำขอยืมสำเร็จ! รอ Admin อนุมัติ ID: ' + id : '✅ ลงคิวสำเร็จ! ID: ' + id, 'success');
           btn.textContent = '✅ ส่งแล้ว';
+          if (type === 'borrow') { setTimeout(() => openPrintModal(id, borrowDate, returnDate, purpose), 800); }
         } else {
           showMsg('❌ ' + data.message, 'error');
           btn.disabled = false;
@@ -332,6 +459,31 @@
       } catch(e) {
         el.innerHTML = '<div class="no-device">❌ เกิดข้อผิดพลาด กรุณาลองใหม่</div>';
       }
+    }
+
+    function openPrintModal(borrowId, borrowDate, dueDate, purpose) {
+      const d = window.currentDevice || {};
+      const userInfo = JSON.parse(localStorage.getItem('user') || '{}');
+      document.getElementById('pd-id').textContent = borrowId;
+      document.getElementById('pd-name').textContent = userInfo.name || userInfo.email || '';
+      document.getElementById('pd-pos').textContent = userInfo.position || '';
+      document.getElementById('pd-dept').textContent = userInfo.department || '';
+      document.getElementById('pd-phone').textContent = userInfo.phone || '';
+      document.getElementById('pd-email').textContent = userInfo.email || '';
+      document.getElementById('pd-purpose').textContent = purpose;
+      document.getElementById('pd-bdate').textContent = formatDate(borrowDate);
+      document.getElementById('pd-ddate').textContent = formatDate(dueDate);
+      document.getElementById('pd-devname').textContent = d.name || '';
+      document.getElementById('pd-krupha').textContent = d.krupha_no || '';
+      document.getElementById('pd-serial').textContent = d.serial_no || '';
+      document.getElementById('pd-sign-name').textContent = userInfo.name || userInfo.email || '';
+      document.getElementById('pd-sign-role').textContent = (userInfo.position || '') + (userInfo.department ? ' — ' + userInfo.department : '');
+      document.getElementById('pd-sign-date').textContent = formatDate(borrowDate);
+      document.getElementById('print-overlay').classList.add('show');
+    }
+
+    function closePrintModal() {
+      document.getElementById('print-overlay').classList.remove('show');
     }
 
     function formatDate(dateVal) {
