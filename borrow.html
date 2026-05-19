@@ -283,6 +283,7 @@
         </div>
         <div id="action-btn"></div>
         <div id="msg"></div>
+        <button id="btn-view-doc" onclick="reopenPrintModal()" style="display:none;width:100%;margin-top:10px;padding:12px;background:#f5f4ff;color:#7F77DD;border:1.5px solid #7F77DD;border-radius:12px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit">📄 ดูเอกสารใบยืมอีกครั้ง</button>
       </div>
     </div>
 
@@ -405,7 +406,11 @@
           const id = data.borrow_id || data.queue_id;
           showMsg(type === 'borrow' ? '✅ ส่งคำขอยืมสำเร็จ! รอ Admin อนุมัติ ID: ' + id : '✅ ลงคิวสำเร็จ! ID: ' + id, 'success');
           btn.textContent = '✅ ส่งแล้ว';
-          if (type === 'borrow') { setTimeout(() => openPrintModal(id, borrowDate, returnDate, purpose), 800); }
+          if (type === 'borrow') {
+            window.lastBorrow = { id, borrowDate, returnDate, purpose };
+            document.getElementById('btn-view-doc').style.display = 'block';
+            setTimeout(() => openPrintModal(id, borrowDate, returnDate, purpose), 800);
+          }
         } else {
           showMsg('❌ ' + data.message, 'error');
           btn.disabled = false;
@@ -449,7 +454,10 @@
               <span>📅 ยืม: ${formatDate(b.borrow_date)}</span>
               <span>📅 กำหนดคืน: ${formatDate(b.due_date)}</span>
             </div>
-            ${b.status === 'pending' ? `<button class="btn-cancel-borrow" onclick="cancelBorrow('${b.borrow_id}')">✕ ยกเลิกคำขอยืม</button>` : ''}
+            <div style="display:flex;gap:8px;margin-top:10px">
+              ${b.status === 'pending' ? `<button class="btn-cancel-borrow" style="margin-top:0;flex:1" onclick="cancelBorrow('${b.borrow_id}')">✕ ยกเลิกคำขอยืม</button>` : ''}
+              <button style="flex:1;padding:10px;background:#f5f4ff;color:#7F77DD;border:1.5px solid #7F77DD;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit" onclick="openPrintModalFromHistory('${b.borrow_id}','${b.borrow_date}','${b.due_date}','${b.purpose||''}')">📄 ดูเอกสาร</button>
+            </div>
             ${b.status === 'approved' ? `
               <button class="btn-return" onclick="openReturnModal('${b.borrow_id}')">
                 📬 แจ้งความต้องการคืนอุปกรณ์
@@ -460,6 +468,16 @@
       } catch(e) {
         el.innerHTML = '<div class="no-device">❌ เกิดข้อผิดพลาด กรุณาลองใหม่</div>';
       }
+    }
+
+    function reopenPrintModal() {
+      if (!window.lastBorrow) return;
+      const lb = window.lastBorrow;
+      openPrintModal(lb.id, lb.borrowDate, lb.returnDate, lb.purpose);
+    }
+
+    function openPrintModalFromHistory(borrowId, borrowDate, dueDate, purpose) {
+      openPrintModal(borrowId, borrowDate, dueDate, purpose);
     }
 
     function openPrintModal(borrowId, borrowDate, dueDate, purpose) {
