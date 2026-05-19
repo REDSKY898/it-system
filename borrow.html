@@ -95,6 +95,16 @@
     .no-device { text-align: center; padding: 20px; color: #999; font-size: 14px; }
     .loading { text-align: center; padding: 20px; color: #666; font-size: 14px; }
 
+
+    /* Document shortcuts */
+    .doc-shortcuts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .doc-shortcut-card { background: white; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 1.5px solid #eee; }
+    .doc-shortcut-title { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+    .doc-shortcut-meta { font-size: 11px; color: #888; margin-bottom: 10px; font-family: monospace; }
+    .doc-shortcut-empty { font-size: 11px; color: #bbb; margin-bottom: 10px; }
+    .btn-doc-view { width: 100%; padding: 8px; background: #f5f4ff; color: #7F77DD; border: 1.5px solid #7F77DD; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; font-family: inherit; }
+    .btn-doc-view:disabled { background: #f5f5f5; color: #bbb; border-color: #eee; cursor: not-allowed; }
+
     /* Borrow list */
     .borrow-item { border: 0.5px solid #eee; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
     .borrow-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
@@ -256,6 +266,20 @@
       </div>
     </div>
 
+    <!-- Document Shortcuts -->
+    <div class="doc-shortcuts">
+      <div class="doc-shortcut-card">
+        <div class="doc-shortcut-title">📄 เอกสารการยืม</div>
+        <div id="ds-borrow-meta" class="doc-shortcut-empty">ยังไม่มีเอกสาร</div>
+        <button class="btn-doc-view" id="ds-borrow-btn" disabled onclick="dsOpenBorrow()">ดูเอกสาร</button>
+      </div>
+      <div class="doc-shortcut-card">
+        <div class="doc-shortcut-title">📄 เอกสารการคืน</div>
+        <div id="ds-return-meta" class="doc-shortcut-empty">ยังไม่มีเอกสาร</div>
+        <button class="btn-doc-view" id="ds-return-btn" disabled onclick="dsOpenReturn()">ดูเอกสาร</button>
+      </div>
+    </div>
+
     <!-- Panel: ยืม -->
     <div class="panel active" id="panel-borrow">
       <div class="card">
@@ -344,6 +368,72 @@
       const deviceStr = localStorage.getItem('selectedDevice');
       deviceStr ? showDevice(JSON.parse(deviceStr)) : showNoDevice();
     }
+
+    // Document Shortcuts
+    let dsLatestBorrow = null;
+    let dsLatestReturn = null;
+
+    async function loadDocShortcuts() {
+      try {
+        const res = await fetch(GAS_URL + '?action=getBorrows');
+        const data = await res.json();
+        if (!data.success) return;
+        const myBorrows = data.borrows.filter(b => b.borrower_email === user.email);
+
+        // หาการยืมล่าสุด (ที่ไม่ใช่ cancelled/rejected)
+        const activeBorrow = [...myBorrows].reverse().find(b =>
+          ['pending','approved','returning'].includes(b.status)
+        );
+        if (activeBorrow) {
+          dsLatestBorrow = activeBorrow;
+          document.getElementById('ds-borrow-meta').className = 'doc-shortcut-meta';
+          document.getElementById('ds-borrow-meta').textContent = activeBorrow.borrow_id + ' · ' + formatDate(activeBorrow.borrow_date);
+          document.getElementById('ds-borrow-btn').disabled = false;
+        }
+
+        // หาการคืนล่าสุด
+        const returnedBorrow = [...myBorrows].reverse().find(b => b.status === 'returned');
+        if (returnedBorrow) {
+          dsLatestReturn = returnedBorrow;
+          document.getElementById('ds-return-meta').className = 'doc-shortcut-meta';
+          document.getElementById('ds-return-meta').textContent = returnedBorrow.borrow_id + ' · คืนแล้ว ' + formatDate(returnedBorrow.return_date);
+          document.getElementById('ds-return-btn').disabled = false;
+        }
+      } catch(e) {}
+    }
+
+    function dsOpenBorrow() {
+      if (!dsLatestBorrow) return;
+      const b = dsLatestBorrow;
+      // ดึงอุปกรณ์จาก selectedDevice หรือ device_id
+      openPrintModal(b.borrow_id, b.borrow_date, b.due_date, b.purpose || '', null);
+      setTimeout(() => {
+        document.getElementById('pd-devname').textContent = b.device_id;
+        document.getElementById('pd-krupha').textContent = '';
+        document.getElementById('pd-note').textContent = b.note || '';
+      }, 100);
+    }
+
+    function dsOpenReturn() {
+      if (!dsLatestReturn) return;
+      const b = dsLatestReturn;
+      const returnData = {
+        returned: true,
+        borrower_email: b.borrower_email,
+        return_date: b.return_date,
+        condition: b.return_condition || 'ปกติ',
+        confirmed_by: b.return_by || ''
+      };
+      openPrintModal(b.borrow_id, b.borrow_date, b.due_date, b.purpose || '', returnData);
+      setTimeout(() => {
+        document.getElementById('pd-devname').textContent = b.device_id;
+        document.getElementById('pd-krupha').textContent = '';
+        document.getElementById('pd-note').textContent = b.note || '';
+      }, 100);
+    }
+
+    // โหลด shortcuts ตอนเริ่ม
+    loadDocShortcuts();
 
     function switchMode(mode) {
       document.getElementById('btn-borrow-mode').classList.toggle('active', mode === 'borrow');
