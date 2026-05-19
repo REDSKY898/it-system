@@ -859,13 +859,7 @@
       } catch(e) { btn.disabled = false; btn.textContent = 'ยืนยันอนุมัติ'; }
     }
 
-    async function approveBorrow(borrowId) {
-      try {
-        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'approveBorrow', borrow_id: borrowId, approved_by: user.email }) });
-        const data = await res.json();
-        if (data.success) { loadAll(); }
-      } catch(e) { alert('เกิดข้อผิดพลาด'); }
-    }
+
 
     function openConfirmReturn(borrowId) {
       document.getElementById('cr-borrow-id').value = borrowId;
