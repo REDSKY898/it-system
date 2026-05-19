@@ -135,7 +135,7 @@
         <div id="print-doc" class="doc-wrap">
           <div class="doc-header">
             <div class="doc-org">คณะเศรษฐศาสตร์ ศรีราชา มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตศรีราชา</div>
-            <div class="doc-title">แบบฟอร์มขอใช้อุปกรณ์สารสนเทศ คณะเศรษฐศาสตร์ ศรีราชา</div>
+            <div class="doc-title">แบบฟอร์มการยืม-คืน อุปกรณ์สารสนเทศ คณะเศรษฐศาสตร์ ศรีราชา</div>
           </div>
           <div style="text-align:right;font-size:12px;color:#555;margin-bottom:8px">เลขที่ <span id="pd-id" style="color:#1D9E75;font-weight:600"></span></div>
 
@@ -149,7 +149,7 @@
             <div class="f-item"><span class="f-lbl">โทรศัพท์</span><span class="f-val" id="pd-phone"></span></div>
             <div class="f-item" style="flex:2"><span class="f-lbl">อีเมล</span><span class="f-val" id="pd-email"></span></div>
           </div>
-          <div style="margin:6px 0 3px;font-size:13px">มีความประสงค์ขอใช้บริการอุปกรณ์สารสนเทศ คณะเศรษฐศาสตร์ ศรีราชา</div>
+          <div style="margin:6px 0 3px;font-size:13px">มีความประสงค์ขอยืมอุปกรณ์สารสนเทศ คณะเศรษฐศาสตร์ ศรีราชา</div>
           <div class="f-row">
             <div class="f-item"><span class="f-lbl">เหตุผลในการขอใช้งาน</span><span class="f-val" id="pd-purpose" style="white-space:normal"></span></div>
           </div>
@@ -160,9 +160,9 @@
 
           <span class="sec-label">ส่วนที่ 2 รายการอุปกรณ์</span>
           <table class="doc-table">
-            <thead><tr><th>รายการ</th><th style="width:200px">เลขครุภัณฑ์</th></tr></thead>
+            <thead><tr><th>รายการ</th><th style="width:180px">เลขครุภัณฑ์</th><th style="width:160px">หมายเหตุ</th></tr></thead>
             <tbody>
-              <tr><td class="tl" id="pd-devname"></td><td id="pd-krupha" style="color:#0C447C"></td></tr>
+              <tr><td class="tl" id="pd-devname"></td><td id="pd-krupha" style="color:#0C447C"></td><td id="pd-note" style="font-size:11px;color:#555;text-align:left"></td></tr>
             </tbody>
           </table>
 
@@ -455,7 +455,7 @@
             </div>
             <div style="display:flex;gap:8px;margin-top:10px">
               ${b.status === 'pending' ? `<button class="btn-cancel-borrow" style="margin-top:0;flex:1" onclick="cancelBorrow('${b.borrow_id}')">✕ ยกเลิกคำขอยืม</button>` : ''}
-              <button style="flex:1;padding:10px;background:#f5f4ff;color:#7F77DD;border:1.5px solid #7F77DD;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit" onclick="openPrintModalFromHistory('${b.borrow_id}','${b.borrow_date}','${b.due_date}','${b.purpose||''}')">📄 ดูเอกสาร</button>
+              <button style="flex:1;padding:10px;background:#f5f4ff;color:#7F77DD;border:1.5px solid #7F77DD;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit" onclick="openPrintModalFromHistory('${b.borrow_id}','${b.borrow_date}','${b.due_date}','${b.purpose||''}','${b.note||''}')">📄 ดูเอกสาร</button>
             </div>
             ${b.status === 'approved' ? `
               <button class="btn-return" onclick="openReturnModal('${b.borrow_id}')">
@@ -475,8 +475,9 @@
       openPrintModal(lb.id, lb.borrowDate, lb.returnDate, lb.purpose);
     }
 
-    function openPrintModalFromHistory(borrowId, borrowDate, dueDate, purpose) {
+    function openPrintModalFromHistory(borrowId, borrowDate, dueDate, purpose, note) {
       openPrintModal(borrowId, borrowDate, dueDate, purpose);
+      setTimeout(() => { document.getElementById('pd-note').textContent = note || ''; }, 100);
     }
 
     function openPrintModal(borrowId, borrowDate, dueDate, purpose) {
@@ -493,6 +494,7 @@
       document.getElementById('pd-ddate').textContent = formatDate(dueDate);
       document.getElementById('pd-devname').textContent = d.name || '';
       document.getElementById('pd-krupha').textContent = d.krupha_no || '';
+      document.getElementById('pd-note').textContent = '';
       document.getElementById('pd-sign-name').textContent = userInfo.name || userInfo.email || '';
       document.getElementById('pd-sign-role').textContent = (userInfo.position || '') + (userInfo.department ? ' — ' + userInfo.department : '');
       document.getElementById('pd-sign-date').textContent = formatDate(borrowDate);
