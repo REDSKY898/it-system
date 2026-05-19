@@ -896,6 +896,28 @@
         if (data.success) {
           closeConfirmReturnModal();
           loadAll();
+          // เปิดเอกสารพร้อมข้อมูลการคืน
+          const borrow = allBorrows.find(b => b.borrow_id === borrowId);
+          if (borrow) {
+            const returnData = {
+              returned: true,
+              borrower_email: borrow.borrower_email,
+              borrower_name: borrow.borrower_email,
+              return_date: new Date().toISOString(),
+              condition: condition,
+              confirmed_by: user.email
+            };
+            const params = new URLSearchParams({
+              print: '1',
+              borrow_id: borrowId,
+              borrow_date: borrow.borrow_date,
+              due_date: borrow.due_date,
+              purpose: borrow.purpose || '',
+              note: borrow.note || '',
+              returnData: JSON.stringify(returnData)
+            });
+            window.open('borrow.html?' + params.toString(), '_blank');
+          }
         } else {
           document.getElementById('msg-cr').style.display = 'block';
           document.getElementById('msg-cr').className = 'msg-error';
