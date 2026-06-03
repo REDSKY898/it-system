@@ -29,9 +29,10 @@
     .btn-primary { padding: 9px 18px; background: #1a1a2e; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; font-family: inherit; }
     .btn-primary:hover { background: #2d2d4e; }
     .btn-warning { padding: 6px 10px; background: #FAEEDA; color: #633806; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; }
-    .btn-danger { padding: 6px 10px; background: #FCEBEB; color: #791F1F; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; }
+    .btn-danger  { padding: 6px 10px; background: #FCEBEB; color: #791F1F; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; }
     .btn-success { padding: 6px 10px; background: #E1F5EE; color: #085041; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; }
-    .btn-info { padding: 6px 10px; background: #E6F1FB; color: #0C447C; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; }
+    .btn-info    { padding: 6px 10px; background: #E6F1FB; color: #0C447C; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; }
+    .btn-photo   { padding: 6px 10px; background: #EEEDFE; color: #3C3489; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; }
     .table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
     th { font-size: 11px; font-weight: 500; color: #666; padding: 8px 12px; border-bottom: 0.5px solid #eee; text-align: left; background: #fafafa; white-space: nowrap; }
@@ -40,23 +41,23 @@
     tr:last-child td { border-bottom: none; }
     tr.inactive-row td { opacity: 0.5; }
     .badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
-    .badge-admin { background: #1a1a2e; color: white; }
-    .badge-user { background: #f0f4f8; color: #666; }
-    .badge-active { background: #E1F5EE; color: #085041; }
+    .badge-admin    { background: #1a1a2e; color: white; }
+    .badge-user     { background: #f0f4f8; color: #666; }
+    .badge-active   { background: #E1F5EE; color: #085041; }
     .badge-inactive { background: #FCEBEB; color: #791F1F; }
-    .badge-available { background: #E1F5EE; color: #085041; }
+    .badge-available{ background: #E1F5EE; color: #085041; }
     .badge-borrowed { background: #FCEBEB; color: #791F1F; }
-    .badge-room { background: #EEEDFE; color: #3C3489; }
+    .badge-room     { background: #EEEDFE; color: #3C3489; }
     .badge-assigned { background: #FAECE7; color: #712B13; }
     .badge-degraded { background: #FAEEDA; color: #633806; }
-    .badge-returning { background: #E6F1FB; color: #0C447C; }
+    .badge-returning{ background: #E6F1FB; color: #0C447C; }
     .badge-returned { background: #f0f4f8; color: #666; }
     .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 20px; }
-    .stat-card { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center; }
-    .stat-num { font-size: 28px; font-weight: 600; color: #1a1a2e; margin: 0; }
+    .stat-card  { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center; }
+    .stat-num   { font-size: 28px; font-weight: 600; color: #1a1a2e; margin: 0; }
     .stat-label { font-size: 12px; color: #666; margin: 4px 0 0; }
     .msg-success { background: #E1F5EE; color: #085041; }
-    .msg-error { background: #FCEBEB; color: #791F1F; }
+    .msg-error   { background: #FCEBEB; color: #791F1F; }
     .panel { display: none; }
     .panel.active { display: block; }
     .loading { text-align: center; padding: 20px; color: #666; font-size: 14px; }
@@ -65,12 +66,36 @@
     .owner-box .form-label { color: #712B13; }
     .owner-note { font-size: 11px; color: #D85A30; margin-top: 4px; }
     .toggle-inactive { font-size: 12px; color: #7F77DD; cursor: pointer; background: none; border: none; font-family: inherit; }
+
+    /* Modal */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: center; justify-content: center; }
     .modal-overlay.show { display: flex; }
     .modal { background: white; border-radius: 16px; padding: 24px; width: 480px; max-width: 95vw; box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
     .modal-title { font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 0.5px solid #eee; }
     .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
     .btn-cancel { padding: 9px 18px; background: #f0f4f8; color: #666; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; }
+
+    /* Modal รูป */
+    .photo-modal { background: white; border-radius: 16px; padding: 24px; width: 680px; max-width: 96vw; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 32px rgba(0,0,0,0.18); }
+    .photo-modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 0.5px solid #eee; }
+    .photo-modal-title { font-size: 15px; font-weight: 600; color: #1a1a1a; }
+    .btn-close-modal { background: #f0f4f8; color: #666; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; }
+    .photo-grid-modal { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+    .photo-thumb {
+      aspect-ratio: 4/3; border-radius: 10px; overflow: hidden; border: 0.5px solid #eee;
+      cursor: pointer; position: relative; background: #f5f5f5;
+    }
+    .photo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .photo-thumb:hover { border-color: #7F77DD; }
+    .photo-num { position: absolute; bottom: 5px; left: 6px; background: rgba(0,0,0,0.5); color: white; font-size: 10px; padding: 1px 6px; border-radius: 4px; }
+    .photo-empty { text-align: center; padding: 30px; color: #999; font-size: 13px; }
+
+    /* Lightbox */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 300; align-items: center; justify-content: center; }
+    .lightbox.show { display: flex; }
+    .lightbox img { max-width: 92vw; max-height: 88vh; border-radius: 8px; object-fit: contain; }
+    .lightbox-close { position: absolute; top: 16px; right: 20px; color: white; font-size: 28px; cursor: pointer; background: none; border: none; line-height: 1; }
+    .lightbox-open { position: absolute; bottom: 16px; right: 20px; background: rgba(255,255,255,0.15); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-family: inherit; }
   </style>
 </head>
 <body>
@@ -89,37 +114,16 @@
       <p class="modal-title">✏️ แก้ไขข้อมูลผู้ใช้</p>
       <input type="hidden" id="edit-email"/>
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">ชื่อ-นามสกุล *</label>
-          <input type="text" class="form-input" id="edit-name"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Role</label>
-          <select class="form-input" id="edit-role">
-            <option value="user">user</option>
-            <option value="admin">admin</option>
-          </select>
-        </div>
+        <div class="form-group"><label class="form-label">ชื่อ-นามสกุล *</label><input type="text" class="form-input" id="edit-name"/></div>
+        <div class="form-group"><label class="form-label">Role</label><select class="form-input" id="edit-role"><option value="user">user</option><option value="admin">admin</option></select></div>
       </div>
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">แผนก</label>
-          <input type="text" class="form-input" id="edit-department"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">ตำแหน่ง</label>
-          <input type="text" class="form-input" id="edit-position"/>
-        </div>
+        <div class="form-group"><label class="form-label">แผนก</label><input type="text" class="form-input" id="edit-department"/></div>
+        <div class="form-group"><label class="form-label">ตำแหน่ง</label><input type="text" class="form-input" id="edit-position"/></div>
       </div>
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">เบอร์โทร</label>
-          <input type="text" class="form-input" id="edit-phone"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">ช่องทางออนไลน์</label>
-          <input type="text" class="form-input" id="edit-online"/>
-        </div>
+        <div class="form-group"><label class="form-label">เบอร์โทร</label><input type="text" class="form-input" id="edit-phone"/></div>
+        <div class="form-group"><label class="form-label">ช่องทางออนไลน์</label><input type="text" class="form-input" id="edit-online"/></div>
       </div>
       <div class="modal-footer">
         <button class="btn-cancel" onclick="closeEditModal()">ยกเลิก</button>
@@ -172,92 +176,40 @@
       <p class="modal-title">✏️ แก้ไขข้อมูลอุปกรณ์</p>
       <input type="hidden" id="ed-device-id"/>
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">รหัสอุปกรณ์</label>
-          <input type="text" class="form-input" id="ed-id" readonly style="background:#f8f9fa"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">เลขครุภัณฑ์</label>
-          <input type="text" class="form-input" id="ed-krupha"/>
-        </div>
+        <div class="form-group"><label class="form-label">รหัสอุปกรณ์</label><input type="text" class="form-input" id="ed-id" readonly style="background:#f8f9fa"/></div>
+        <div class="form-group"><label class="form-label">เลขครุภัณฑ์</label><input type="text" class="form-input" id="ed-krupha"/></div>
       </div>
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Serial Number</label>
-          <input type="text" class="form-input" id="ed-serial" placeholder="S/N (ถ้ามี)"/>
-        </div>
+        <div class="form-group"><label class="form-label">Serial Number</label><input type="text" class="form-input" id="ed-serial" placeholder="S/N (ถ้ามี)"/></div>
         <div class="form-group">
           <label class="form-label">หมวดหมู่</label>
           <select class="form-input" id="ed-category" onchange="updateEditDeviceName()">
-            <option value="Notebook">Notebook</option>
-            <option value="AIO PC">AIO PC</option>
-            <option value="PC">PC</option>
-            <option value="Projector">Projector</option>
-            <option value="Printer">Printer</option>
-            <option value="Monitor">Monitor</option>
-            <option value="Camera">Camera</option>
-            <option value="Adapter">Adapter</option>
-            <option value="Mouse">Mouse</option>
-            <option value="Keyboard">Keyboard</option>
-            <option value="TABLET">TABLET</option>
-            <option value="Scanner">Scanner</option>
-            <option value="UPS">UPS</option>
-            <option value="SWITCH">SWITCH</option>
-            <option value="AP">AP</option>
-            <option value="Router">Router</option>
-            <option value="Lightning Display">Lightning Display</option>
-            <option value="HUB">HUB</option>
-            <option value="Other">Other</option>
+            <option value="Notebook">Notebook</option><option value="AIO PC">AIO PC</option><option value="PC">PC</option>
+            <option value="Projector">Projector</option><option value="Printer">Printer</option><option value="Monitor">Monitor</option>
+            <option value="Camera">Camera</option><option value="Adapter">Adapter</option><option value="Mouse">Mouse</option>
+            <option value="Keyboard">Keyboard</option><option value="TABLET">TABLET</option><option value="Scanner">Scanner</option>
+            <option value="UPS">UPS</option><option value="SWITCH">SWITCH</option><option value="AP">AP</option>
+            <option value="Router">Router</option><option value="Lightning Display">Lightning Display</option>
+            <option value="HUB">HUB</option><option value="Other">Other</option>
           </select>
         </div>
       </div>
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">ยี่ห้อ *</label>
-          <input type="text" class="form-input" id="ed-brand" oninput="updateEditDeviceName()"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">รุ่น *</label>
-          <input type="text" class="form-input" id="ed-model" oninput="updateEditDeviceName()"/>
-        </div>
+        <div class="form-group"><label class="form-label">ยี่ห้อ *</label><input type="text" class="form-input" id="ed-brand" oninput="updateEditDeviceName()"/></div>
+        <div class="form-group"><label class="form-label">รุ่น *</label><input type="text" class="form-input" id="ed-model" oninput="updateEditDeviceName()"/></div>
       </div>
-      <div class="name-preview" style="margin-bottom:12px">
-        <span>ชื่ออุปกรณ์: </span>
-        <span id="ed-name-preview" style="color:#1a1a2e">-</span>
+      <div class="name-preview" style="margin-bottom:12px"><span>ชื่ออุปกรณ์: </span><span id="ed-name-preview" style="color:#1a1a2e">-</span></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">ประเภท</label><select class="form-input" id="ed-type"><option value="borrow">ยืมได้ (borrow)</option><option value="room">ประจำห้อง (room)</option><option value="assigned">ประจำตัว (assigned)</option></select></div>
+        <div class="form-group"><label class="form-label">ที่ตั้ง</label><input type="text" class="form-input" id="ed-location"/></div>
       </div>
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">ประเภท</label>
-          <select class="form-input" id="ed-type">
-            <option value="borrow">ยืมได้ (borrow)</option>
-            <option value="room">ประจำห้อง (room)</option>
-            <option value="assigned">ประจำตัว (assigned)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">ที่ตั้ง</label>
-          <input type="text" class="form-input" id="ed-location"/>
-        </div>
+        <div class="form-group"><label class="form-label">วันที่ซื้อ</label><input type="date" class="form-input" id="ed-date"/></div>
+        <div class="form-group"><label class="form-label">ราคา (บาท)</label><input type="number" class="form-input" id="ed-price"/></div>
       </div>
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">วันที่ซื้อ</label>
-          <input type="date" class="form-input" id="ed-date"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">ราคา (บาท)</label>
-          <input type="number" class="form-input" id="ed-price"/>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">MAC Ethernet</label>
-          <input type="text" class="form-input" id="ed-mac"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">MAC WiFi</label>
-          <input type="text" class="form-input" id="ed-macwifi"/>
-        </div>
+        <div class="form-group"><label class="form-label">MAC Ethernet</label><input type="text" class="form-input" id="ed-mac"/></div>
+        <div class="form-group"><label class="form-label">MAC WiFi</label><input type="text" class="form-input" id="ed-macwifi"/></div>
       </div>
       <div class="modal-footer">
         <button class="btn-cancel" onclick="closeEditDeviceModal()">ยกเลิก</button>
@@ -267,7 +219,7 @@
     </div>
   </div>
 
-  <!-- Modal อนุมัติพร้อมหมายเหตุ -->
+  <!-- Modal อนุมัติ -->
   <div class="modal-overlay" id="approve-modal">
     <div class="modal">
       <p class="modal-title">อนุมัติการยืม</p>
@@ -282,6 +234,24 @@
       </div>
       <div id="msg-approve" style="padding:8px;border-radius:8px;font-size:12px;display:none;margin-top:8px;text-align:center"></div>
     </div>
+  </div>
+
+  <!-- ===== Modal ดูรูปแจ้งซ่อม ===== -->
+  <div class="modal-overlay" id="photo-modal-overlay">
+    <div class="photo-modal">
+      <div class="photo-modal-header">
+        <span class="photo-modal-title" id="photo-modal-title">📷 รูปภาพแจ้งซ่อม</span>
+        <button class="btn-close-modal" onclick="closePhotoModal()">✕ ปิด</button>
+      </div>
+      <div class="photo-grid-modal" id="photo-grid-modal"></div>
+    </div>
+  </div>
+
+  <!-- ===== Lightbox ===== -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightbox-img" src="" alt="รูปแจ้งซ่อม"/>
+    <button class="lightbox-open" onclick="openLightboxUrl(event)">เปิดใน Drive ↗</button>
   </div>
 
   <div class="container">
@@ -305,61 +275,27 @@
       <div class="card">
         <p class="card-title">เพิ่มผู้ใช้ใหม่</p>
         <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">อีเมล @ku.th *</label>
-            <input type="email" class="form-input" id="new-email" placeholder="xxxx@ku.th"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">ชื่อ-นามสกุล *</label>
-            <input type="text" class="form-input" id="new-name" placeholder="ชื่อ นามสกุล"/>
-          </div>
+          <div class="form-group"><label class="form-label">อีเมล @ku.th *</label><input type="email" class="form-input" id="new-email" placeholder="xxxx@ku.th"/></div>
+          <div class="form-group"><label class="form-label">ชื่อ-นามสกุล *</label><input type="text" class="form-input" id="new-name" placeholder="ชื่อ นามสกุล"/></div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Role</label>
-            <select class="form-input" id="new-role">
-              <option value="user">user</option>
-              <option value="admin">admin</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">เบอร์โทร</label>
-            <input type="text" class="form-input" id="new-phone" placeholder="0812345678"/>
-          </div>
+          <div class="form-group"><label class="form-label">Role</label><select class="form-input" id="new-role"><option value="user">user</option><option value="admin">admin</option></select></div>
+          <div class="form-group"><label class="form-label">เบอร์โทร</label><input type="text" class="form-input" id="new-phone" placeholder="0812345678"/></div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">แผนก</label>
-            <input type="text" class="form-input" id="new-department" placeholder="เช่น คณะเศรษฐศาสตร์"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">ตำแหน่ง</label>
-            <input type="text" class="form-input" id="new-position" placeholder="เช่น อาจารย์ เจ้าหน้าที่"/>
-          </div>
+          <div class="form-group"><label class="form-label">แผนก</label><input type="text" class="form-input" id="new-department" placeholder="เช่น คณะเศรษฐศาสตร์"/></div>
+          <div class="form-group"><label class="form-label">ตำแหน่ง</label><input type="text" class="form-input" id="new-position" placeholder="เช่น อาจารย์ เจ้าหน้าที่"/></div>
         </div>
-        <div class="form-group">
-          <label class="form-label">ช่องทางออนไลน์</label>
-          <input type="text" class="form-input" id="new-online" placeholder="เช่น Line: @username, Teams: ชื่อ"/>
-        </div>
+        <div class="form-group"><label class="form-label">ช่องทางออนไลน์</label><input type="text" class="form-input" id="new-online" placeholder="เช่น Line: @username"/></div>
         <button class="btn-primary" onclick="addUser()">+ เพิ่มผู้ใช้</button>
         <div id="msg-admin" style="padding:10px;border-radius:8px;font-size:13px;display:none;margin-top:10px;text-align:center"></div>
       </div>
-
       <div class="card">
-        <p class="card-title">
-          รายชื่อผู้ใช้ทั้งหมด
-          <button class="toggle-inactive" onclick="toggleInactive()">
-            <span id="toggle-label">👁 แสดง inactive</span>
-          </button>
-        </p>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>อีเมล</th><th>ชื่อ</th><th>แผนก/ตำแหน่ง</th><th>เบอร์/ออนไลน์</th><th>Role</th><th>สถานะ</th><th>จัดการ</th></tr>
-            </thead>
-            <tbody id="users-table"><tr><td colspan="7" class="loading">⏳ กำลังโหลด...</td></tr></tbody>
-          </table>
-        </div>
+        <p class="card-title">รายชื่อผู้ใช้ทั้งหมด<button class="toggle-inactive" onclick="toggleInactive()"><span id="toggle-label">👁 แสดง inactive</span></button></p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>อีเมล</th><th>ชื่อ</th><th>แผนก/ตำแหน่ง</th><th>เบอร์/ออนไลน์</th><th>Role</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+          <tbody id="users-table"><tr><td colspan="7" class="loading">⏳ กำลังโหลด...</td></tr></tbody>
+        </table></div>
       </div>
     </div>
 
@@ -369,121 +305,55 @@
         <p class="card-title">+ เพิ่มอุปกรณ์ใหม่</p>
         <p class="section-divider">ข้อมูลพื้นฐาน</p>
         <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">รหัสอุปกรณ์ *</label>
-            <input type="text" class="form-input" id="dev-id" placeholder="เช่น NB-0006"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">เลขครุภัณฑ์ *</label>
-            <input type="text" class="form-input" id="dev-krupha" placeholder="เช่น คภ.54-0006"/>
-          </div>
+          <div class="form-group"><label class="form-label">รหัสอุปกรณ์ *</label><input type="text" class="form-input" id="dev-id" placeholder="เช่น NB-0006"/></div>
+          <div class="form-group"><label class="form-label">เลขครุภัณฑ์ *</label><input type="text" class="form-input" id="dev-krupha" placeholder="เช่น คภ.54-0006"/></div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Serial Number</label>
-            <input type="text" class="form-input" id="dev-serial" placeholder="S/N"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">หมวดหมู่ *</label>
+          <div class="form-group"><label class="form-label">Serial Number</label><input type="text" class="form-input" id="dev-serial" placeholder="S/N"/></div>
+          <div class="form-group"><label class="form-label">หมวดหมู่ *</label>
             <select class="form-input" id="dev-category" onchange="updateDeviceName()">
-              <option value="Notebook">Notebook</option>
-              <option value="AIO PC">AIO PC</option>
-              <option value="PC">PC</option>
-              <option value="Projector">Projector</option>
-              <option value="Printer">Printer</option>
-              <option value="Monitor">Monitor</option>
-              <option value="Camera">Camera</option>
-              <option value="Adapter">Adapter</option>
-              <option value="Mouse">Mouse</option>
-              <option value="Keyboard">Keyboard</option>
-              <option value="TABLET">TABLET</option>
-              <option value="Scanner">Scanner</option>
-              <option value="UPS">UPS</option>
-              <option value="SWITCH">SWITCH</option>
-              <option value="AP">AP</option>
-              <option value="Router">Router</option>
-              <option value="Lightning Display">Lightning Display</option>
-              <option value="HUB">HUB</option>
-              <option value="Other">Other</option>
+              <option value="Notebook">Notebook</option><option value="AIO PC">AIO PC</option><option value="PC">PC</option>
+              <option value="Projector">Projector</option><option value="Printer">Printer</option><option value="Monitor">Monitor</option>
+              <option value="Camera">Camera</option><option value="Adapter">Adapter</option><option value="Mouse">Mouse</option>
+              <option value="Keyboard">Keyboard</option><option value="TABLET">TABLET</option><option value="Scanner">Scanner</option>
+              <option value="UPS">UPS</option><option value="SWITCH">SWITCH</option><option value="AP">AP</option>
+              <option value="Router">Router</option><option value="Lightning Display">Lightning Display</option>
+              <option value="HUB">HUB</option><option value="Other">Other</option>
             </select>
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">ยี่ห้อ *</label>
-            <input type="text" class="form-input" id="dev-brand" placeholder="เช่น Dell, HP, Epson" oninput="updateDeviceName()"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">รุ่น *</label>
-            <input type="text" class="form-input" id="dev-model" placeholder="เช่น Latitude 5420" oninput="updateDeviceName()"/>
-          </div>
+          <div class="form-group"><label class="form-label">ยี่ห้อ *</label><input type="text" class="form-input" id="dev-brand" placeholder="เช่น Dell, HP" oninput="updateDeviceName()"/></div>
+          <div class="form-group"><label class="form-label">รุ่น *</label><input type="text" class="form-input" id="dev-model" placeholder="เช่น Latitude 5420" oninput="updateDeviceName()"/></div>
         </div>
-        <div class="name-preview" id="name-preview">
-          <span>ชื่ออุปกรณ์ที่จะบันทึก: </span>
-          <span id="name-preview-text" style="color:#1a1a2e">— กรอกยี่ห้อและรุ่นเพื่อดูตัวอย่าง</span>
+        <div class="name-preview" id="name-preview"><span>ชื่ออุปกรณ์ที่จะบันทึก: </span><span id="name-preview-text" style="color:#1a1a2e">— กรอกยี่ห้อและรุ่นเพื่อดูตัวอย่าง</span></div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">ประเภท *</label><select class="form-input" id="dev-type" onchange="onTypeChange()"><option value="borrow">ยืมได้ (borrow)</option><option value="room">ประจำห้อง (room)</option><option value="assigned">ประจำตัว (assigned)</option></select></div>
+          <div class="form-group"><label class="form-label">ที่ตั้ง *</label><input type="text" class="form-input" id="dev-location" placeholder="เช่น ห้องไอที ชั้น 2"/></div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">ประเภท *</label>
-            <select class="form-input" id="dev-type" onchange="onTypeChange()">
-              <option value="borrow">ยืมได้ (borrow)</option>
-              <option value="room">ประจำห้อง (room)</option>
-              <option value="assigned">ประจำตัว (assigned)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">ที่ตั้ง *</label>
-            <input type="text" class="form-input" id="dev-location" placeholder="เช่น ห้องไอที ชั้น 2"/>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">วันที่ซื้อ</label>
-            <input type="date" class="form-input" id="dev-date"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">ราคา (บาท)</label>
-            <input type="number" class="form-input" id="dev-price" placeholder="35000"/>
-          </div>
+          <div class="form-group"><label class="form-label">วันที่ซื้อ</label><input type="date" class="form-input" id="dev-date"/></div>
+          <div class="form-group"><label class="form-label">ราคา (บาท)</label><input type="number" class="form-input" id="dev-price" placeholder="35000"/></div>
         </div>
         <div class="owner-box" id="owner-box">
-          <div class="form-group" style="margin-bottom:4px">
-            <label class="form-label">👤 ผู้ถือครอง *</label>
-            <select class="form-input" id="dev-owner">
-              <option value="">-- เลือกผู้ถือครอง --</option>
-            </select>
-          </div>
-          <p class="owner-note">* อุปกรณ์ประจำตัวจะถูกกำหนดให้บุคคลนี้ทันที สถานะจะเป็น "assigned"</p>
+          <div class="form-group" style="margin-bottom:4px"><label class="form-label">👤 ผู้ถือครอง *</label><select class="form-input" id="dev-owner"><option value="">-- เลือกผู้ถือครอง --</option></select></div>
+          <p class="owner-note">* อุปกรณ์ประจำตัวจะถูกกำหนดให้บุคคลนี้ทันที</p>
         </div>
         <p class="section-divider">MAC Address (optional)</p>
         <div class="form-row-3">
-          <div class="form-group">
-            <label class="form-label">MAC Ethernet</label>
-            <input type="text" class="form-input" id="dev-mac" placeholder="00:1A:2B:3C:4D:01"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">MAC WiFi</label>
-            <input type="text" class="form-input" id="dev-macwifi" placeholder="optional"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">MAC Bluetooth</label>
-            <input type="text" class="form-input" id="dev-macbt" placeholder="optional"/>
-          </div>
+          <div class="form-group"><label class="form-label">MAC Ethernet</label><input type="text" class="form-input" id="dev-mac" placeholder="00:1A:2B:3C:4D:01"/></div>
+          <div class="form-group"><label class="form-label">MAC WiFi</label><input type="text" class="form-input" id="dev-macwifi" placeholder="optional"/></div>
+          <div class="form-group"><label class="form-label">MAC Bluetooth</label><input type="text" class="form-input" id="dev-macbt" placeholder="optional"/></div>
         </div>
         <button class="btn-primary" onclick="addDevice()">+ เพิ่มอุปกรณ์</button>
         <div id="msg-device" style="padding:10px;border-radius:8px;font-size:13px;display:none;margin-top:10px;text-align:center"></div>
       </div>
-
       <div class="card">
         <p class="card-title">อุปกรณ์ทั้งหมด</p>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>รหัส</th><th>ชื่อ</th><th>หมวด</th><th>ประเภท</th><th>สถานะ</th><th>ผู้ถือครอง</th><th>ที่ตั้ง</th><th>จัดการ</th></tr>
-            </thead>
-            <tbody id="devices-table"><tr><td colspan="8" class="loading">⏳ กำลังโหลด...</td></tr></tbody>
-          </table>
-        </div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>รหัส</th><th>ชื่อ</th><th>หมวด</th><th>ประเภท</th><th>สถานะ</th><th>ผู้ถือครอง</th><th>ที่ตั้ง</th><th>จัดการ</th></tr></thead>
+          <tbody id="devices-table"><tr><td colspan="8" class="loading">⏳ กำลังโหลด...</td></tr></tbody>
+        </table></div>
       </div>
     </div>
 
@@ -491,12 +361,10 @@
     <div class="panel" id="panel-tickets">
       <div class="card">
         <p class="card-title">Ticket แจ้งซ่อม</p>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Ticket ID</th><th>วันที่</th><th>ผู้แจ้ง</th><th>อุปกรณ์</th><th>อาการ</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
-            <tbody id="tickets-table"><tr><td colspan="7" class="loading">⏳ กำลังโหลด...</td></tr></tbody>
-          </table>
-        </div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Ticket ID</th><th>วันที่</th><th>ผู้แจ้ง</th><th>อุปกรณ์</th><th>อาการ</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+          <tbody id="tickets-table"><tr><td colspan="7" class="loading">⏳ กำลังโหลด...</td></tr></tbody>
+        </table></div>
       </div>
     </div>
 
@@ -504,12 +372,10 @@
     <div class="panel" id="panel-borrows">
       <div class="card">
         <p class="card-title">รายการยืมอุปกรณ์</p>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Borrow ID</th><th>อุปกรณ์</th><th>ผู้ยืม</th><th>วันยืม</th><th>กำหนดคืน</th><th>วันคืนจริง</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
-            <tbody id="borrows-table"><tr><td colspan="8" class="loading">⏳ กำลังโหลด...</td></tr></tbody>
-          </table>
-        </div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Borrow ID</th><th>อุปกรณ์</th><th>ผู้ยืม</th><th>วันยืม</th><th>กำหนดคืน</th><th>วันคืนจริง</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+          <tbody id="borrows-table"><tr><td colspan="8" class="loading">⏳ กำลังโหลด...</td></tr></tbody>
+        </table></div>
       </div>
     </div>
 
@@ -517,9 +383,8 @@
 
   <script>
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbwRwYG6zliBbpSrQQzgTIVhFODMbe6Nfb5zG-AV_APAIuC-2HP2QJAb98FfKEYVC3vY/exec';
-
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    if (!user.email) { location.href = 'index.html'; }
+    if (!user.email) location.href = 'index.html';
     if (user.role !== 'admin') { alert('คุณไม่มีสิทธิ์เข้าถึงหน้านี้'); location.href = 'dashboard.html'; }
 
     let allUsers = [], allDevices = [], allTickets = [], allBorrows = [];
@@ -528,56 +393,39 @@
     async function loadAll() {
       try {
         const [uRes, dRes, tRes, bRes] = await Promise.all([
-          fetch(GAS_URL + '?action=getUsers'),
-          fetch(GAS_URL + '?action=getDevices'),
-          fetch(GAS_URL + '?action=getTickets'),
-          fetch(GAS_URL + '?action=getBorrows')
+          fetch(GAS_URL + '?action=getUsers'), fetch(GAS_URL + '?action=getDevices'),
+          fetch(GAS_URL + '?action=getTickets'), fetch(GAS_URL + '?action=getBorrows')
         ]);
-        const [uData, dData, tData, bData] = await Promise.all([
-          uRes.json(), dRes.json(), tRes.json(), bRes.json()
-        ]);
-        if (uData.success) { allUsers = uData.users; renderUsers(); populateOwnerDropdown(); }
+        const [uData, dData, tData, bData] = await Promise.all([uRes.json(), dRes.json(), tRes.json(), bRes.json()]);
+        if (uData.success) { allUsers   = uData.users;   renderUsers(); populateOwnerDropdown(); }
         if (dData.success) { allDevices = dData.devices; renderDevices(); }
         if (tData.success) { allTickets = tData.tickets; renderTickets(); }
         if (bData.success) { allBorrows = bData.borrows; renderBorrows(); }
-        document.getElementById('stat-users').textContent = allUsers.filter(u => u.status === 'active').length;
+        document.getElementById('stat-users').textContent   = allUsers.filter(u => u.status === 'active').length;
         document.getElementById('stat-devices').textContent = allDevices.length;
         document.getElementById('stat-tickets').textContent = allTickets.filter(t => t.status === 'pending').length;
         document.getElementById('stat-borrows').textContent = allBorrows.filter(b => b.status === 'approved').length;
-      } catch(e) { console.error('Load error:', e); }
+      } catch(e) { console.error(e); }
     }
 
     function populateOwnerDropdown() {
       const sel = document.getElementById('dev-owner');
       sel.innerHTML = '<option value="">-- เลือกผู้ถือครอง --</option>';
       allUsers.filter(u => u.status === 'active').forEach(u => {
-        const opt = document.createElement('option');
-        opt.value = u.email;
-        opt.textContent = u.name + ' (' + u.email + ')';
-        sel.appendChild(opt);
+        const o = document.createElement('option'); o.value = u.email; o.textContent = u.name + ' (' + u.email + ')'; sel.appendChild(o);
       });
     }
 
     function updateDeviceName() {
-      const category = document.getElementById('dev-category').value;
+      const cat = document.getElementById('dev-category').value;
       const brand = document.getElementById('dev-brand').value.trim();
       const model = document.getElementById('dev-model').value.trim();
-      const name = [category, brand, model].filter(Boolean).join(' ');
-      document.getElementById('name-preview-text').textContent = name || '— กรอกยี่ห้อและรุ่นเพื่อดูตัวอย่าง';
+      document.getElementById('name-preview-text').textContent = [cat,brand,model].filter(Boolean).join(' ') || '— กรอกยี่ห้อและรุ่นเพื่อดูตัวอย่าง';
     }
-
     function getDeviceName() {
-      const category = document.getElementById('dev-category').value;
-      const brand = document.getElementById('dev-brand').value.trim();
-      const model = document.getElementById('dev-model').value.trim();
-      return [category, brand, model].filter(Boolean).join(' ');
+      return [document.getElementById('dev-category').value, document.getElementById('dev-brand').value.trim(), document.getElementById('dev-model').value.trim()].filter(Boolean).join(' ');
     }
-
-    function onTypeChange() {
-      const type = document.getElementById('dev-type').value;
-      document.getElementById('owner-box').style.display = type === 'assigned' ? 'block' : 'none';
-    }
-
+    function onTypeChange() { document.getElementById('owner-box').style.display = document.getElementById('dev-type').value === 'assigned' ? 'block' : 'none'; }
     function toggleInactive() {
       showInactive = !showInactive;
       document.getElementById('toggle-label').textContent = showInactive ? '🙈 ซ่อน inactive' : '👁 แสดง inactive';
@@ -590,15 +438,14 @@
       if (!users.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>'; return; }
       tbody.innerHTML = users.map(u => `
         <tr class="${u.status === 'inactive' ? 'inactive-row' : ''}">
-          <td style="font-size:12px">${u.email}</td>
-          <td>${u.name || '-'}</td>
-          <td style="font-size:11px;color:#666">${u.department || '-'}<br><span style="color:#999">${u.position || ''}</span></td>
-          <td style="font-size:11px;color:#666">${u.phone || '-'}<br><span style="color:#999">${u.online_contact || ''}</span></td>
+          <td style="font-size:12px">${u.email}</td><td>${u.name||'-'}</td>
+          <td style="font-size:11px;color:#666">${u.department||'-'}<br><span style="color:#999">${u.position||''}</span></td>
+          <td style="font-size:11px;color:#666">${u.phone||'-'}<br><span style="color:#999">${u.online_contact||''}</span></td>
           <td><span class="badge badge-${u.role}">${u.role}</span></td>
           <td><span class="badge badge-${u.status}">${u.status}</span></td>
           <td style="white-space:nowrap;display:flex;gap:4px">
             <button class="btn-info" onclick="openEditModal('${u.email}')">✏️ แก้ไข</button>
-            ${u.status === 'active'
+            ${u.status==='active'
               ? `<button class="btn-danger" onclick="toggleUserStatus('${u.email}','inactive')">🔴 บล็อก</button>`
               : `<button class="btn-success" onclick="toggleUserStatus('${u.email}','active')">🟢 ปลดบล็อก</button>`}
           </td>
@@ -613,7 +460,7 @@
           <td><span style="font-family:monospace;font-size:12px">${d.device_id}</span></td>
           <td>${d.name}</td><td>${d.category}</td><td>${d.type}</td>
           <td><span class="badge badge-${d.status}">${d.status}</span></td>
-          <td style="font-size:12px;color:#666">${d.owner_email || '-'}</td>
+          <td style="font-size:12px;color:#666">${d.owner_email||'-'}</td>
           <td>${d.location}</td>
           <td style="white-space:nowrap;display:flex;gap:4px">
             <button class="btn-info" onclick="openEditDeviceModal('${d.device_id}')">✏️ แก้ไข</button>
@@ -622,27 +469,33 @@
         </tr>`).join('');
     }
 
+    // ===== Tickets — เพิ่มปุ่มดูรูป =====
     function renderTickets() {
       const tbody = document.getElementById('tickets-table');
       if (!allTickets.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>'; return; }
-      tbody.innerHTML = allTickets.map(t => `
-        <tr>
-          <td><span style="font-family:monospace;font-size:12px">${t.ticket_id}</span></td>
-          <td>${new Date(t.created_date).toLocaleDateString('th-TH')}</td>
-          <td>${t.requester_email}</td><td>${t.device_id}</td><td>${t.symptom}</td>
-          <td><span class="badge badge-${t.status === 'pending' ? 'borrowed' : 'available'}">${t.status}</span></td>
-          <td>${t.status === 'pending' ? `<button class="btn-success" onclick="closeTicket('${t.ticket_id}')">ปิดงาน</button>` : '-'}</td>
-        </tr>`).join('');
+      tbody.innerHTML = allTickets.map(t => {
+        const hasImg = t.image_url && String(t.image_url).trim() !== '';
+        const imgUrls = hasImg ? String(t.image_url).split(',').filter(Boolean) : [];
+        return `
+          <tr>
+            <td><span style="font-family:monospace;font-size:12px">${t.ticket_id}</span></td>
+            <td>${formatDate(t.created_date)}</td>
+            <td>${t.requester_email}</td>
+            <td>${t.device_id}</td>
+            <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${t.symptom}">${t.symptom}</td>
+            <td><span class="badge badge-${t.status==='pending'?'borrowed':'available'}">${t.status}</span></td>
+            <td style="white-space:nowrap;display:flex;gap:4px">
+              ${t.status==='pending' ? `<button class="btn-success" onclick="closeTicket('${t.ticket_id}')">ปิดงาน</button>` : ''}
+              ${hasImg
+                ? `<button class="btn-photo" onclick='openPhotoModal("${t.ticket_id}",${JSON.stringify(imgUrls)})'>📷 ${imgUrls.length} รูป</button>`
+                : '<span style="font-size:11px;color:#ccc">ไม่มีรูป</span>'}
+            </td>
+          </tr>`;
+      }).join('');
     }
 
-    const BORROW_STATUS_LABEL = {
-      'pending': 'รออนุมัติ', 'approved': 'กำลังยืม', 'rejected': 'ไม่อนุมัติ',
-      'returning': '📬 แจ้งคืนแล้ว', 'returned': 'คืนแล้ว'
-    };
-    const BORROW_BADGE = {
-      'pending': 'borrowed', 'approved': 'available', 'rejected': 'inactive',
-      'returning': 'returning', 'returned': 'inactive'
-    };
+    const BORROW_STATUS_LABEL = { 'pending':'รออนุมัติ','approved':'กำลังยืม','rejected':'ไม่อนุมัติ','returning':'📬 แจ้งคืนแล้ว','returned':'คืนแล้ว' };
+    const BORROW_BADGE = { 'pending':'borrowed','approved':'available','rejected':'inactive','returning':'returning','returned':'inactive' };
 
     function renderBorrows() {
       const tbody = document.getElementById('borrows-table');
@@ -650,168 +503,162 @@
       tbody.innerHTML = allBorrows.map(b => `
         <tr>
           <td><span style="font-family:monospace;font-size:12px">${b.borrow_id}</span></td>
-          <td>${b.device_id}</td>
-          <td style="font-size:12px">${b.borrower_email}</td>
+          <td>${b.device_id}</td><td style="font-size:12px">${b.borrower_email}</td>
           <td style="font-size:12px">${formatDate(b.borrow_date)}</td>
           <td style="font-size:12px">${formatDate(b.due_date)}</td>
           <td style="font-size:12px">${formatDate(b.return_date)}</td>
-          <td><span class="badge badge-${BORROW_BADGE[b.status] || 'available'}">${BORROW_STATUS_LABEL[b.status] || b.status}</span></td>
+          <td><span class="badge badge-${BORROW_BADGE[b.status]||'available'}">${BORROW_STATUS_LABEL[b.status]||b.status}</span></td>
           <td style="white-space:nowrap;display:flex;gap:4px">
-            ${b.status === 'pending' ? `<button class="btn-success" onclick="openApproveModal('${b.borrow_id}')">✅ อนุมัติ</button><button class="btn-danger" onclick="rejectBorrow('${b.borrow_id}')">❌ ไม่อนุมัติ</button>` : ''}
-            ${b.status === 'returning' ? `<button class="btn-info" onclick="openConfirmReturn('${b.borrow_id}')">📦 ยืนยันรับคืน</button>` : ''}
-            ${(b.status === 'returned' || b.status === 'approved') ? '-' : ''}
+            ${b.status==='pending' ? `<button class="btn-success" onclick="openApproveModal('${b.borrow_id}')">✅ อนุมัติ</button><button class="btn-danger" onclick="rejectBorrow('${b.borrow_id}')">❌ ไม่อนุมัติ</button>` : ''}
+            ${b.status==='returning' ? `<button class="btn-info" onclick="openConfirmReturn('${b.borrow_id}')">📦 ยืนยันรับคืน</button>` : ''}
+            ${(b.status==='returned'||b.status==='approved') ? '-' : ''}
           </td>
         </tr>`).join('');
     }
 
+    // ===== Photo Modal =====
+    let currentLightboxUrl = '';
+
+    function openPhotoModal(ticketId, urls) {
+      document.getElementById('photo-modal-title').textContent = '📷 รูปภาพแจ้งซ่อม — ' + ticketId + ' (' + urls.length + ' รูป)';
+      const grid = document.getElementById('photo-grid-modal');
+      if (!urls.length) {
+        grid.innerHTML = '<div class="photo-empty">ไม่มีรูปภาพ</div>';
+      } else {
+        grid.innerHTML = urls.map((url, i) => `
+          <div class="photo-thumb" onclick="openLightbox('${url}')">
+            <img src="${url.replace('/view','/preview').replace('?usp=sharing','')}" alt="รูป ${i+1}" onerror="this.src=''; this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:11px;color:#999;padding:8px;text-align:center\'>กดเพื่อเปิด Drive</div>'; this.parentElement.onclick=()=>window.open(\'${url}\',\'_blank\')"/>
+            <span class="photo-num">รูป ${i+1}</span>
+          </div>`).join('');
+      }
+      document.getElementById('photo-modal-overlay').classList.add('show');
+    }
+
+    function closePhotoModal() { document.getElementById('photo-modal-overlay').classList.remove('show'); }
+
+    function openLightbox(url) {
+      currentLightboxUrl = url;
+      // ใช้ preview URL สำหรับ img tag
+      const previewUrl = url.replace('/view', '/preview').replace('?usp=sharing', '');
+      document.getElementById('lightbox-img').src = previewUrl;
+      document.getElementById('lightbox').classList.add('show');
+    }
+
+    function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); }
+
+    function openLightboxUrl(e) {
+      e.stopPropagation();
+      if (currentLightboxUrl) window.open(currentLightboxUrl, '_blank');
+    }
+
+    // ===== User Actions =====
     async function addUser() {
       const email = document.getElementById('new-email').value.trim();
-      const name = document.getElementById('new-name').value.trim();
-      const role = document.getElementById('new-role').value;
-      if (!email || !name) { showMsg('กรุณากรอกอีเมลและชื่อ', 'error'); return; }
-      if (!email.endsWith('@ku.th')) { showMsg('อีเมลต้องเป็น @ku.th', 'error'); return; }
+      const name  = document.getElementById('new-name').value.trim();
+      const role  = document.getElementById('new-role').value;
+      if (!email || !name) { showMsg('กรุณากรอกอีเมลและชื่อ','error'); return; }
+      if (!email.endsWith('@ku.th')) { showMsg('อีเมลต้องเป็น @ku.th','error'); return; }
       try {
-        const res = await fetch(GAS_URL, {
-          method: 'POST',
-          body: JSON.stringify({
-            action: 'addUser', email, name, role,
-            phone: document.getElementById('new-phone').value.trim(),
-            department: document.getElementById('new-department').value.trim(),
-            position: document.getElementById('new-position').value.trim(),
-            online_contact: document.getElementById('new-online').value.trim(),
-            added_by: user.email
-          })
-        });
+        const res = await fetch(GAS_URL, { method:'POST', body: JSON.stringify({
+          action:'addUser', email, name, role,
+          phone: document.getElementById('new-phone').value.trim(),
+          department: document.getElementById('new-department').value.trim(),
+          position: document.getElementById('new-position').value.trim(),
+          online_contact: document.getElementById('new-online').value.trim(),
+          added_by: user.email
+        })});
         const data = await res.json();
-        if (data.success) {
-          showMsg('✅ เพิ่มผู้ใช้สำเร็จ', 'success');
-          ['new-email','new-name','new-phone','new-department','new-position','new-online'].forEach(id => document.getElementById(id).value = '');
-          loadAll();
-        } else { showMsg('❌ ' + data.message, 'error'); }
-      } catch(e) { showMsg('❌ เกิดข้อผิดพลาด', 'error'); }
+        if (data.success) { showMsg('✅ เพิ่มผู้ใช้สำเร็จ','success'); ['new-email','new-name','new-phone','new-department','new-position','new-online'].forEach(id=>document.getElementById(id).value=''); loadAll(); }
+        else showMsg('❌ '+data.message,'error');
+      } catch(e) { showMsg('❌ เกิดข้อผิดพลาด','error'); }
     }
 
     function openEditModal(email) {
-      const u = allUsers.find(u => u.email === email);
-      if (!u) return;
-      document.getElementById('edit-email').value = u.email;
-      document.getElementById('edit-name').value = u.name || '';
-      document.getElementById('edit-role').value = u.role || 'user';
-      document.getElementById('edit-department').value = u.department || '';
-      document.getElementById('edit-position').value = u.position || '';
-      document.getElementById('edit-phone').value = u.phone || '';
-      document.getElementById('edit-online').value = u.online_contact || '';
+      const u = allUsers.find(u=>u.email===email); if (!u) return;
+      document.getElementById('edit-email').value      = u.email;
+      document.getElementById('edit-name').value       = u.name||'';
+      document.getElementById('edit-role').value       = u.role||'user';
+      document.getElementById('edit-department').value = u.department||'';
+      document.getElementById('edit-position').value   = u.position||'';
+      document.getElementById('edit-phone').value      = u.phone||'';
+      document.getElementById('edit-online').value     = u.online_contact||'';
       document.getElementById('edit-modal').classList.add('show');
     }
-
-    function closeEditModal() {
-      document.getElementById('edit-modal').classList.remove('show');
-      document.getElementById('msg-edit').style.display = 'none';
-    }
+    function closeEditModal() { document.getElementById('edit-modal').classList.remove('show'); document.getElementById('msg-edit').style.display='none'; }
 
     async function saveEditUser() {
       const email = document.getElementById('edit-email').value;
-      const name = document.getElementById('edit-name').value.trim();
-      if (!name) { showEditMsg('กรุณากรอกชื่อ', 'error'); return; }
+      const name  = document.getElementById('edit-name').value.trim();
+      if (!name) { showEditMsg('กรุณากรอกชื่อ','error'); return; }
       try {
-        const res = await fetch(GAS_URL, {
-          method: 'POST',
-          body: JSON.stringify({
-            action: 'updateUser', email, name,
-            role: document.getElementById('edit-role').value,
-            department: document.getElementById('edit-department').value.trim(),
-            position: document.getElementById('edit-position').value.trim(),
-            phone: document.getElementById('edit-phone').value.trim(),
-            online_contact: document.getElementById('edit-online').value.trim()
-          })
-        });
+        const res = await fetch(GAS_URL, { method:'POST', body: JSON.stringify({
+          action:'updateUser', email, name,
+          role: document.getElementById('edit-role').value,
+          department: document.getElementById('edit-department').value.trim(),
+          position: document.getElementById('edit-position').value.trim(),
+          phone: document.getElementById('edit-phone').value.trim(),
+          online_contact: document.getElementById('edit-online').value.trim()
+        })});
         const data = await res.json();
-        if (data.success) { closeEditModal(); showMsg('✅ แก้ไขข้อมูลสำเร็จ', 'success'); loadAll(); }
-        else { showEditMsg('❌ ' + data.message, 'error'); }
-      } catch(e) { showEditMsg('❌ เกิดข้อผิดพลาด', 'error'); }
+        if (data.success) { closeEditModal(); showMsg('✅ แก้ไขข้อมูลสำเร็จ','success'); loadAll(); }
+        else showEditMsg('❌ '+data.message,'error');
+      } catch(e) { showEditMsg('❌ เกิดข้อผิดพลาด','error'); }
     }
 
     async function toggleUserStatus(email, status) {
-      const action = status === 'inactive' ? 'บล็อก' : 'ปลดบล็อก';
-      if (!confirm(action + ' ' + email + ' ?')) return;
-      try {
-        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'toggleUserStatus', email, status }) });
-        const data = await res.json();
-        if (data.success) { showMsg('✅ ' + action + 'สำเร็จ', 'success'); loadAll(); }
-        else showMsg('❌ ' + data.message, 'error');
-      } catch(e) { showMsg('❌ เกิดข้อผิดพลาด', 'error'); }
+      if (!confirm((status==='inactive'?'บล็อก':'ปลดบล็อก')+' '+email+' ?')) return;
+      const res  = await fetch(GAS_URL, {method:'POST',body:JSON.stringify({action:'toggleUserStatus',email,status})});
+      const data = await res.json();
+      if (data.success) { showMsg('✅ สำเร็จ','success'); loadAll(); } else showMsg('❌ '+data.message,'error');
     }
 
     async function addDevice() {
       const devId = document.getElementById('dev-id').value.trim();
-      const krupha = document.getElementById('dev-krupha').value.trim();
-      const serial = document.getElementById('dev-serial').value.trim();
+      const krupha= document.getElementById('dev-krupha').value.trim();
       const brand = document.getElementById('dev-brand').value.trim();
       const model = document.getElementById('dev-model').value.trim();
-      const location = document.getElementById('dev-location').value.trim();
-      const type = document.getElementById('dev-type').value;
-      const ownerEmail = document.getElementById('dev-owner').value;
-      if (!devId || !krupha || !brand || !model || !location) { showDeviceMsg('กรุณากรอกข้อมูลที่มี * ให้ครบ', 'error'); return; }
-      if (type === 'assigned' && !ownerEmail) { showDeviceMsg('กรุณาเลือกผู้ถือครอง', 'error'); return; }
-      const deviceName = getDeviceName();
-      try {
-        const res = await fetch(GAS_URL, {
-          method: 'POST',
-          body: JSON.stringify({
-            action: 'addDevice',
-            device_id: devId, krupha_no: krupha, serial_no: serial,
-            mac_ethernet: document.getElementById('dev-mac').value.trim(),
-            mac_wifi: document.getElementById('dev-macwifi').value.trim(),
-            mac_bluetooth: document.getElementById('dev-macbt').value.trim(),
-            name: deviceName, category: document.getElementById('dev-category').value,
-            brand, model,
-            purchase_date: document.getElementById('dev-date').value,
-            purchase_price: document.getElementById('dev-price').value,
-            type, status: type === 'assigned' ? 'assigned' : 'available',
-            owner_email: ownerEmail, location, added_by: user.email
-          })
-        });
-        const data = await res.json();
-        if (data.success) {
-          showDeviceMsg('✅ เพิ่ม ' + deviceName + ' สำเร็จ' + (ownerEmail ? ' — มอบให้ ' + ownerEmail : ''), 'success');
-          ['dev-id','dev-krupha','dev-serial','dev-brand','dev-model','dev-mac','dev-macwifi','dev-macbt','dev-date','dev-price','dev-location']
-            .forEach(id => document.getElementById(id).value = '');
-          document.getElementById('dev-owner').value = '';
-          document.getElementById('owner-box').style.display = 'none';
-          document.getElementById('dev-type').value = 'borrow';
-          document.getElementById('name-preview-text').textContent = '— กรอกยี่ห้อและรุ่นเพื่อดูตัวอย่าง';
-          loadAll();
-        } else { showDeviceMsg('❌ ' + data.message, 'error'); }
-      } catch(e) { showDeviceMsg('❌ เกิดข้อผิดพลาด', 'error'); }
+      const loc   = document.getElementById('dev-location').value.trim();
+      const type  = document.getElementById('dev-type').value;
+      const owner = document.getElementById('dev-owner').value;
+      if (!devId||!krupha||!brand||!model||!loc) { showDeviceMsg('กรุณากรอกข้อมูลที่มี * ให้ครบ','error'); return; }
+      if (type==='assigned'&&!owner) { showDeviceMsg('กรุณาเลือกผู้ถือครอง','error'); return; }
+      const name = getDeviceName();
+      const res  = await fetch(GAS_URL, {method:'POST',body:JSON.stringify({
+        action:'addDevice', device_id:devId, krupha_no:krupha, serial_no:document.getElementById('dev-serial').value.trim(),
+        mac_ethernet:document.getElementById('dev-mac').value.trim(), mac_wifi:document.getElementById('dev-macwifi').value.trim(),
+        mac_bluetooth:document.getElementById('dev-macbt').value.trim(), name,
+        category:document.getElementById('dev-category').value, brand, model,
+        purchase_date:document.getElementById('dev-date').value, purchase_price:document.getElementById('dev-price').value,
+        type, status:type==='assigned'?'assigned':'available', owner_email:owner, location:loc, added_by:user.email
+      })});
+      const data = await res.json();
+      if (data.success) {
+        showDeviceMsg('✅ เพิ่ม '+name+' สำเร็จ','success');
+        ['dev-id','dev-krupha','dev-serial','dev-brand','dev-model','dev-mac','dev-macwifi','dev-macbt','dev-date','dev-price','dev-location'].forEach(id=>document.getElementById(id).value='');
+        document.getElementById('dev-owner').value=''; document.getElementById('owner-box').style.display='none';
+        document.getElementById('dev-type').value='borrow'; document.getElementById('name-preview-text').textContent='— กรอกยี่ห้อและรุ่นเพื่อดูตัวอย่าง';
+        loadAll();
+      } else showDeviceMsg('❌ '+data.message,'error');
     }
 
     async function updateStatus(deviceId, status) {
-      try {
-        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'updateDeviceStatus', device_id: deviceId, status }) });
-        const data = await res.json();
-        if (data.success) { loadAll(); }
-      } catch(e) { alert('เกิดข้อผิดพลาด'); }
+      const res = await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'updateDeviceStatus',device_id:deviceId,status})});
+      const data = await res.json();
+      if (data.success) loadAll();
     }
 
     async function closeTicket(ticketId) {
-      const solution = prompt('กรอกวิธีแก้ไข:');
-      if (!solution) return;
-      try {
-        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'closeTicket', ticket_id: ticketId, solution, assigned_to: user.email }) });
-        const data = await res.json();
-        if (data.success) { loadAll(); }
-      } catch(e) { alert('เกิดข้อผิดพลาด'); }
+      const solution = prompt('กรอกวิธีแก้ไข:'); if (!solution) return;
+      const res  = await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'closeTicket',ticket_id:ticketId,solution,assigned_to:user.email})});
+      const data = await res.json();
+      if (data.success) loadAll();
     }
 
     async function rejectBorrow(borrowId) {
-      const reason = prompt('กรุณาระบุเหตุผลที่ไม่อนุมัติ:');
-      if (reason === null) return;
-      try {
-        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'rejectBorrow', borrow_id: borrowId, reason, rejected_by: user.email }) });
-        const data = await res.json();
-        if (data.success) { loadAll(); }
-        else alert('❌ ' + data.message);
-      } catch(e) { alert('เกิดข้อผิดพลาด'); }
+      const reason = prompt('กรุณาระบุเหตุผลที่ไม่อนุมัติ:'); if (reason===null) return;
+      const res  = await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'rejectBorrow',borrow_id:borrowId,reason,rejected_by:user.email})});
+      const data = await res.json();
+      if (data.success) loadAll(); else alert('❌ '+data.message);
     }
 
     function openApproveModal(borrowId) {
@@ -820,49 +667,26 @@
       document.getElementById('msg-approve').style.display = 'none';
       document.getElementById('approve-modal').classList.add('show');
     }
-
-    function closeApproveModal() {
-      document.getElementById('approve-modal').classList.remove('show');
-    }
+    function closeApproveModal() { document.getElementById('approve-modal').classList.remove('show'); }
 
     async function submitApproveBorrow() {
       const borrowId = document.getElementById('approve-borrow-id').value;
-      const note = document.getElementById('approve-note').value.trim();
+      const note     = document.getElementById('approve-note').value.trim();
       const btn = document.querySelector('#approve-modal .btn-primary');
-      btn.disabled = true; btn.textContent = 'กำลังบันทึก...';
-      try {
-        const res = await fetch(GAS_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: 'approveBorrow', borrow_id: borrowId, approved_by: user.email, note })
-        });
-        const data = await res.json();
-        if (data.success) { closeApproveModal(); loadAll(); }
-        else {
-          const el = document.getElementById('msg-approve');
-          el.style.display = 'block'; el.className = 'msg-error'; el.textContent = data.message;
-          btn.disabled = false; btn.textContent = 'ยืนยันอนุมัติ';
-        }
-      } catch(e) { btn.disabled = false; btn.textContent = 'ยืนยันอนุมัติ'; }
+      btn.disabled=true; btn.textContent='กำลังบันทึก...';
+      const res  = await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'approveBorrow',borrow_id:borrowId,approved_by:user.email,note})});
+      const data = await res.json();
+      if (data.success) { closeApproveModal(); loadAll(); }
+      else { const el=document.getElementById('msg-approve'); el.style.display='block'; el.className='msg-error'; el.textContent=data.message; btn.disabled=false; btn.textContent='ยืนยันอนุมัติ'; }
     }
 
     function onConditionChange() {
-      const cond = document.getElementById('cr-condition').value;
+      const cond  = document.getElementById('cr-condition').value;
       const group = document.getElementById('cr-detail-group');
       const label = document.getElementById('cr-detail-label');
-      if (cond === 'ขาดอุปกรณ์') {
-        group.style.display = 'block';
-        label.textContent = 'ระบุอุปกรณ์ที่ขาด *';
-        document.getElementById('cr-detail').placeholder = 'เช่น สายชาร์จ, กระเป๋า...';
-        document.getElementById('cr-next-status').value = 'prep';
-      } else if (cond === 'เสียหาย') {
-        group.style.display = 'block';
-        label.textContent = 'ระบุความเสียหาย *';
-        document.getElementById('cr-detail').placeholder = 'เช่น หน้าจอแตก, แป้นพิมพ์ไม่ทำงาน...';
-        document.getElementById('cr-next-status').value = 'degraded';
-      } else {
-        group.style.display = 'none';
-        document.getElementById('cr-next-status').value = 'available';
-      }
+      if (cond==='ขาดอุปกรณ์') { group.style.display='block'; label.textContent='ระบุอุปกรณ์ที่ขาด *'; document.getElementById('cr-detail').placeholder='เช่น สายชาร์จ, กระเป๋า...'; document.getElementById('cr-next-status').value='prep'; }
+      else if (cond==='เสียหาย') { group.style.display='block'; label.textContent='ระบุความเสียหาย *'; document.getElementById('cr-detail').placeholder='เช่น หน้าจอแตก, แป้นพิมพ์ไม่ทำงาน...'; document.getElementById('cr-next-status').value='degraded'; }
+      else { group.style.display='none'; document.getElementById('cr-next-status').value='available'; }
     }
 
     function openConfirmReturn(borrowId) {
@@ -875,163 +699,95 @@
       document.getElementById('msg-cr').style.display = 'none';
       document.getElementById('confirm-return-modal').classList.add('show');
     }
+    function closeConfirmReturnModal() { document.getElementById('confirm-return-modal').classList.remove('show'); }
 
-    function closeConfirmReturnModal() {
-      document.getElementById('confirm-return-modal').classList.remove('show');
-    }
-
-    // =====================================================
-    // submitConfirmReturn — แก้ไขหลัก
-    // ส่ง condition_detail แยกออกมา ไม่รวมเข้า note
-    // =====================================================
     async function submitConfirmReturn() {
-      const borrowId = document.getElementById('cr-borrow-id').value;
+      const borrowId  = document.getElementById('cr-borrow-id').value;
       const condition = document.getElementById('cr-condition').value;
-      const nextStatus = document.getElementById('cr-next-status').value;
-      const detail = document.getElementById('cr-detail').value.trim();
+      const detail    = document.getElementById('cr-detail').value.trim();
       const noteExtra = document.getElementById('cr-note').value.trim();
-
-      // ถ้าเลือกข้อ 2 หรือ 3 ต้องกรอกรายละเอียด
-      if ((condition === 'ขาดอุปกรณ์' || condition === 'เสียหาย') && !detail) {
-        const el = document.getElementById('msg-cr');
-        el.style.display = 'block'; el.className = 'msg-error';
-        el.textContent = 'กรุณาระบุรายละเอียดสภาพอุปกรณ์';
-        return;
+      if ((condition==='ขาดอุปกรณ์'||condition==='เสียหาย') && !detail) {
+        const el = document.getElementById('msg-cr'); el.style.display='block'; el.className='msg-error'; el.textContent='กรุณาระบุรายละเอียดสภาพอุปกรณ์'; return;
       }
-
       const btn = document.querySelector('#confirm-return-modal .btn-primary');
-      btn.disabled = true;
-      btn.textContent = '⏳ กำลังบันทึก...';
-
-      try {
-        const res = await fetch(GAS_URL, {
-          method: 'POST',
-          body: JSON.stringify({
-            action: 'confirmReturn',
-            borrow_id: borrowId,
-            condition,           // "ปกติ" | "ขาดอุปกรณ์" | "เสียหาย"
-            condition_detail: detail,  // <-- ส่งแยก ให้ borrow.html นำไปใส่ช่องข้อความ
-            next_status: nextStatus,
-            note: noteExtra,     // หมายเหตุเพิ่มเติมล้วนๆ ไม่ปนกัน
-            confirmed_by: user.email
-          })
-        });
-        const data = await res.json();
-        if (data.success) {
-          closeConfirmReturnModal();
-          loadAll();
-        } else {
-          document.getElementById('msg-cr').style.display = 'block';
-          document.getElementById('msg-cr').className = 'msg-error';
-          document.getElementById('msg-cr').textContent = '❌ ' + data.message;
-          btn.disabled = false;
-          btn.textContent = '✅ ยืนยันรับคืน';
-        }
-      } catch(e) {
-        document.getElementById('msg-cr').style.display = 'block';
-        document.getElementById('msg-cr').textContent = '❌ เกิดข้อผิดพลาด';
-        btn.disabled = false;
-        btn.textContent = '✅ ยืนยันรับคืน';
-      }
+      btn.disabled=true; btn.textContent='⏳ กำลังบันทึก...';
+      const res  = await fetch(GAS_URL,{method:'POST',body:JSON.stringify({
+        action:'confirmReturn', borrow_id:borrowId, condition,
+        condition_detail:detail, next_status:document.getElementById('cr-next-status').value,
+        note:noteExtra, confirmed_by:user.email
+      })});
+      const data = await res.json();
+      if (data.success) { closeConfirmReturnModal(); loadAll(); }
+      else { const el=document.getElementById('msg-cr'); el.style.display='block'; el.className='msg-error'; el.textContent='❌ '+data.message; btn.disabled=false; btn.textContent='✅ ยืนยันรับคืน'; }
     }
 
     function switchTab(tab) {
-      document.querySelectorAll('.tab').forEach((t,i) => {
-        t.classList.toggle('active', ['users','devices','tickets','borrows'][i] === tab);
-      });
-      document.querySelectorAll('.panel').forEach((p,i) => {
-        p.classList.toggle('active', ['panel-users','panel-devices','panel-tickets','panel-borrows'][i] === 'panel-'+tab);
-      });
+      document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['users','devices','tickets','borrows'][i]===tab));
+      document.querySelectorAll('.panel').forEach((p,i) => p.classList.toggle('active', ['panel-users','panel-devices','panel-tickets','panel-borrows'][i]==='panel-'+tab));
+    }
+
+    function openEditDeviceModal(deviceId) {
+      const d = allDevices.find(d=>d.device_id===deviceId); if (!d) return;
+      document.getElementById('ed-device-id').value = d.device_id;
+      document.getElementById('ed-id').value        = d.device_id;
+      document.getElementById('ed-krupha').value    = d.krupha_no||'';
+      document.getElementById('ed-serial').value    = d.serial_no||'';
+      document.getElementById('ed-category').value  = d.category||'Other';
+      document.getElementById('ed-brand').value     = d.brand||'';
+      document.getElementById('ed-model').value     = d.model||'';
+      document.getElementById('ed-type').value      = d.type||'borrow';
+      document.getElementById('ed-location').value  = d.location||'';
+      document.getElementById('ed-date').value      = d.purchase_date ? String(d.purchase_date).split('T')[0] : '';
+      document.getElementById('ed-price').value     = d.purchase_price||'';
+      document.getElementById('ed-mac').value       = d.mac_ethernet||'';
+      document.getElementById('ed-macwifi').value   = d.mac_wifi||'';
+      document.getElementById('ed-name-preview').textContent = d.name||'-';
+      document.getElementById('msg-ed').style.display='none';
+      document.getElementById('edit-device-modal').classList.add('show');
+    }
+    function updateEditDeviceName() {
+      const cat   = document.getElementById('ed-category').value;
+      const brand = document.getElementById('ed-brand').value.trim();
+      const model = document.getElementById('ed-model').value.trim();
+      document.getElementById('ed-name-preview').textContent = [cat,brand,model].filter(Boolean).join(' ')||'-';
+    }
+    function closeEditDeviceModal() { document.getElementById('edit-device-modal').classList.remove('show'); }
+
+    async function saveEditDevice() {
+      const deviceId = document.getElementById('ed-device-id').value;
+      const brand    = document.getElementById('ed-brand').value.trim();
+      const model    = document.getElementById('ed-model').value.trim();
+      const category = document.getElementById('ed-category').value;
+      if (!brand||!model) { showEdMsg('กรุณากรอกยี่ห้อและรุ่น','error'); return; }
+      const name = [category,brand,model].filter(Boolean).join(' ');
+      const btn  = document.querySelector('#edit-device-modal .btn-primary');
+      btn.disabled=true; btn.textContent='⏳ กำลังบันทึก...';
+      const res  = await fetch(GAS_URL,{method:'POST',body:JSON.stringify({
+        action:'updateDevice', device_id:deviceId,
+        krupha_no:document.getElementById('ed-krupha').value.trim(),
+        serial_no:document.getElementById('ed-serial').value.trim(),
+        name, category, brand, model,
+        type:document.getElementById('ed-type').value,
+        location:document.getElementById('ed-location').value.trim(),
+        purchase_date:document.getElementById('ed-date').value,
+        purchase_price:document.getElementById('ed-price').value,
+        mac_ethernet:document.getElementById('ed-mac').value.trim(),
+        mac_wifi:document.getElementById('ed-macwifi').value.trim()
+      })});
+      const data = await res.json();
+      if (data.success) { closeEditDeviceModal(); loadAll(); }
+      else { showEdMsg('❌ '+data.message,'error'); btn.disabled=false; btn.textContent='💾 บันทึก'; }
     }
 
     function formatDate(v) {
       if (!v) return '-';
-      try { return new Date(v).toLocaleDateString('th-TH', {year:'numeric',month:'short',day:'numeric'}); }
+      try { return new Date(v).toLocaleDateString('th-TH',{year:'numeric',month:'short',day:'numeric'}); }
       catch(e) { return String(v); }
     }
-
-    function showMsg(text, type) {
-      const el = document.getElementById('msg-admin');
-      el.style.display = 'block'; el.className = type === 'success' ? 'msg-success' : 'msg-error'; el.textContent = text;
-      setTimeout(() => el.style.display = 'none', 3000);
-    }
-    function showDeviceMsg(text, type) {
-      const el = document.getElementById('msg-device');
-      el.style.display = 'block'; el.className = type === 'success' ? 'msg-success' : 'msg-error'; el.textContent = text;
-      setTimeout(() => el.style.display = 'none', 3000);
-    }
-    function showEditMsg(text, type) {
-      const el = document.getElementById('msg-edit');
-      el.style.display = 'block'; el.className = type === 'success' ? 'msg-success' : 'msg-error'; el.textContent = text;
-    }
-
-    function openEditDeviceModal(deviceId) {
-      const d = allDevices.find(d => d.device_id === deviceId);
-      if (!d) return;
-      document.getElementById('ed-device-id').value = d.device_id;
-      document.getElementById('ed-id').value = d.device_id;
-      document.getElementById('ed-krupha').value = d.krupha_no || '';
-      document.getElementById('ed-serial').value = d.serial_no || '';
-      document.getElementById('ed-category').value = d.category || 'Other';
-      document.getElementById('ed-brand').value = d.brand || '';
-      document.getElementById('ed-model').value = d.model || '';
-      document.getElementById('ed-type').value = d.type || 'borrow';
-      document.getElementById('ed-location').value = d.location || '';
-      document.getElementById('ed-date').value = d.purchase_date ? String(d.purchase_date).split('T')[0] : '';
-      document.getElementById('ed-price').value = d.purchase_price || '';
-      document.getElementById('ed-mac').value = d.mac_ethernet || '';
-      document.getElementById('ed-macwifi').value = d.mac_wifi || '';
-      document.getElementById('ed-name-preview').textContent = d.name || '-';
-      document.getElementById('msg-ed').style.display = 'none';
-      document.getElementById('edit-device-modal').classList.add('show');
-    }
-
-    function updateEditDeviceName() {
-      const cat = document.getElementById('ed-category').value;
-      const brand = document.getElementById('ed-brand').value.trim();
-      const model = document.getElementById('ed-model').value.trim();
-      document.getElementById('ed-name-preview').textContent = [cat, brand, model].filter(Boolean).join(' ') || '-';
-    }
-
-    function closeEditDeviceModal() {
-      document.getElementById('edit-device-modal').classList.remove('show');
-    }
-
-    async function saveEditDevice() {
-      const deviceId = document.getElementById('ed-device-id').value;
-      const brand = document.getElementById('ed-brand').value.trim();
-      const model = document.getElementById('ed-model').value.trim();
-      const category = document.getElementById('ed-category').value;
-      if (!brand || !model) { showEdMsg('กรุณากรอกยี่ห้อและรุ่น', 'error'); return; }
-      const name = [category, brand, model].filter(Boolean).join(' ');
-      const btn = document.querySelector('#edit-device-modal .btn-primary');
-      btn.disabled = true; btn.textContent = '⏳ กำลังบันทึก...';
-      try {
-        const res = await fetch(GAS_URL, {
-          method: 'POST',
-          body: JSON.stringify({
-            action: 'updateDevice', device_id: deviceId,
-            krupha_no: document.getElementById('ed-krupha').value.trim(),
-            serial_no: document.getElementById('ed-serial').value.trim(),
-            name, category, brand, model,
-            type: document.getElementById('ed-type').value,
-            location: document.getElementById('ed-location').value.trim(),
-            purchase_date: document.getElementById('ed-date').value,
-            purchase_price: document.getElementById('ed-price').value,
-            mac_ethernet: document.getElementById('ed-mac').value.trim(),
-            mac_wifi: document.getElementById('ed-macwifi').value.trim()
-          })
-        });
-        const data = await res.json();
-        if (data.success) { closeEditDeviceModal(); loadAll(); }
-        else { showEdMsg('❌ ' + data.message, 'error'); btn.disabled = false; btn.textContent = '💾 บันทึก'; }
-      } catch(e) { showEdMsg('❌ เกิดข้อผิดพลาด', 'error'); btn.disabled = false; btn.textContent = '💾 บันทึก'; }
-    }
-
-    function showEdMsg(text, type) {
-      const el = document.getElementById('msg-ed');
-      el.style.display = 'block'; el.className = type === 'success' ? 'msg-success' : 'msg-error'; el.textContent = text;
-    }
+    function showMsg(t,type) { const el=document.getElementById('msg-admin'); el.style.display='block'; el.className=type==='success'?'msg-success':'msg-error'; el.textContent=t; setTimeout(()=>el.style.display='none',3000); }
+    function showDeviceMsg(t,type) { const el=document.getElementById('msg-device'); el.style.display='block'; el.className=type==='success'?'msg-success':'msg-error'; el.textContent=t; setTimeout(()=>el.style.display='none',3000); }
+    function showEditMsg(t,type) { const el=document.getElementById('msg-edit'); el.style.display='block'; el.className=type==='success'?'msg-success':'msg-error'; el.textContent=t; }
+    function showEdMsg(t,type) { const el=document.getElementById('msg-ed'); el.style.display='block'; el.className=type==='success'?'msg-success':'msg-error'; el.textContent=t; }
 
     loadAll();
   </script>
