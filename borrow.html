@@ -122,7 +122,6 @@
       </div>
       <div style="padding:20px;">
         <div id="print-doc" class="doc-wrap">
-
           <div class="doc-header">
             <div class="doc-org">คณะเศรษฐศาสตร์ ศรีราชา มหาวิทยาลัยเกษตรศาสตร์ วิทยาเขตศรีราชา</div>
             <div class="doc-title">แบบฟอร์มขอใช้อุปกรณ์สารสนเทศ คณะเศรษฐศาสตร์ ศรีราชา</div>
@@ -151,9 +150,7 @@
           <span class="sec-label">ส่วนที่ 2 รายการอุปกรณ์</span>
           <table class="doc-table">
             <thead><tr><th>รายการ</th><th style="width:180px">เลขครุภัณฑ์</th><th style="width:160px">หมายเหตุ</th></tr></thead>
-            <tbody>
-              <tr><td class="tl" id="pd-devname"></td><td id="pd-krupha"></td><td id="pd-note" style="font-size:11px;color:#555;text-align:left"></td></tr>
-            </tbody>
+            <tbody><tr><td class="tl" id="pd-devname"></td><td id="pd-krupha"></td><td id="pd-note" style="font-size:11px;color:#555;text-align:left"></td></tr></tbody>
           </table>
           <div class="doc-note">ในการนี้ หากมีการชำรุดเสียหายเนื่องมาจากการใช้งานผิดประเภท ทำตก ประมาท ฯลฯ ระหว่างการใช้งาน ข้าพเจ้ายินดีชดใช้ค่าเสียหายและซ่อมแซมให้อยู่ในสภาพปกติทุกประการตามมูลค่าจริง</div>
 
@@ -175,11 +172,8 @@
             </div>
           </div>
 
-          <!-- ===== ส่วนที่ 4 ===== -->
           <span class="sec-label" style="background:#555;margin-top:14px">ส่วนที่ 4 การคืนอุปกรณ์ (กรอกเมื่อคืน)</span>
           <div class="ret-grid">
-
-            <!-- ฝั่งซ้าย: ผู้ส่งคืน -->
             <div class="ret-box" style="text-align:center">
               <div style="font-size:10px;color:#555;margin-bottom:6px">ผู้ส่งคืน</div>
               <div class="sign-line"></div>
@@ -187,50 +181,34 @@
               <div class="sign-role" id="pd-ret-role" style="font-size:12px;color:#555;margin-top:3px"></div>
               <div class="sign-date" id="pd-ret-date">......./......./.......</div>
             </div>
-
-            <!-- ฝั่งขวา: เจ้าหน้าที่ผู้รับคืน (ตายตัว) -->
             <div class="ret-box">
               <div style="font-size:10px;color:#555;margin-bottom:8px;text-align:center">เจ้าหน้าที่ผู้รับคืน</div>
-
-              <!-- Checkbox ข้อ 1 -->
               <div style="margin-bottom:8px">
                 <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1a1a1a">
                   <span class="chk-box" id="chk-normal"></span>
                   <span>ได้รับคืนอุปกรณ์ครบสภาพสมบูรณ์</span>
                 </div>
               </div>
-
-              <!-- Checkbox ข้อ 2 -->
               <div style="margin-bottom:8px">
                 <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1a1a1a;margin-bottom:4px">
                   <span class="chk-box" id="chk-missing"></span>
                   <span>ได้รับคืนแต่ยังขาดอุปกรณ์ ดังนี้</span>
                 </div>
-                <div id="chk-missing-detail"
-                     style="min-height:32px;border-bottom:1px solid #ccc;margin-left:17px;
-                            font-size:12px;color:#1a1a1a;line-height:1.6;white-space:pre-wrap;padding-bottom:2px"></div>
+                <div id="chk-missing-detail" style="min-height:32px;border-bottom:1px solid #ccc;margin-left:17px;font-size:12px;color:#1a1a1a;line-height:1.6;white-space:pre-wrap;padding-bottom:2px"></div>
               </div>
-
-              <!-- Checkbox ข้อ 3 -->
               <div style="margin-bottom:12px">
                 <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1a1a1a;margin-bottom:4px">
                   <span class="chk-box" id="chk-damaged"></span>
                   <span>ได้รับคืนสภาพชำรุดเสียหาย ดังนี้</span>
                 </div>
-                <div id="chk-damaged-detail"
-                     style="min-height:32px;border-bottom:1px solid #ccc;margin-left:17px;
-                            font-size:12px;color:#1a1a1a;line-height:1.6;white-space:pre-wrap;padding-bottom:2px"></div>
+                <div id="chk-damaged-detail" style="min-height:32px;border-bottom:1px solid #ccc;margin-left:17px;font-size:12px;color:#1a1a1a;line-height:1.6;white-space:pre-wrap;padding-bottom:2px"></div>
               </div>
-
               <div class="sign-line"></div>
               <div class="sign-name" style="text-align:center">(นายคุณากร ส่งเสริม)</div>
               <div class="sign-role" style="text-align:center;font-size:12px">นักวิชาการคอมพิวเตอร์ — สำนักงานเลขานุการ</div>
               <div class="sign-date" style="text-align:center" id="pd-ret-by-date">......./......./.......</div>
             </div>
-
           </div>
-          <!-- ===== จบส่วนที่ 4 ===== -->
-
         </div>
       </div>
     </div>
@@ -266,7 +244,6 @@
   </div>
 
   <div class="container">
-
     <div class="mode-selector">
       <div class="mode-btn active" id="btn-borrow-mode" onclick="switchMode('borrow')">
         <div class="mode-icon">📦</div><div class="mode-title">ยืมอุปกรณ์</div><div class="mode-desc">เลือกและยืมอุปกรณ์</div>
@@ -322,7 +299,6 @@
         <div id="return-list"><div class="loading">⏳ กำลังโหลด...</div></div>
       </div>
     </div>
-
   </div>
 
   <script>
@@ -330,41 +306,67 @@
     const ICONS = { 'Notebook':'💻','Projector':'📽️','PC':'🖥️','Adapter':'🔌','Camera':'📷','Mouse':'🖱️','default':'📦' };
     const STATUS_LABEL = { 'available':'พร้อมยืม','borrowed':'ถูกยืมอยู่','prep':'อยู่ระหว่างเตรียมพร้อม','assigned':'ประจำตัวบุคคล','room':'ประจำห้อง ยืมไม่ได้' };
 
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    if (!user.email) { location.href = 'index.html'; }
+    let user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user.email) location.href = 'index.html';
 
-    const today = new Date().toISOString().split('T')[0];
+    const today    = new Date().toISOString().split('T')[0];
     const nextWeek = new Date(Date.now() + 7*24*60*60*1000).toISOString().split('T')[0];
     document.getElementById('return-plan-date').value = today;
 
     const urlParams = new URLSearchParams(window.location.search);
-    const deviceId = urlParams.get('id');
+    const deviceId  = urlParams.get('id');
 
     if (urlParams.get('print') === '1') {
       const returnDataStr = urlParams.get('returnData');
       window.addEventListener('load', () => {
-        setTimeout(() => {
+        setTimeout(async () => {
+          await refreshUser();
           openPrintModal(
             urlParams.get('borrow_id'), urlParams.get('borrow_date'),
-            urlParams.get('due_date'), urlParams.get('purpose'),
+            urlParams.get('due_date'),  urlParams.get('purpose'),
             returnDataStr ? JSON.parse(returnDataStr) : null
           );
           const note = urlParams.get('note');
           if (note) document.getElementById('pd-note').textContent = note;
-        }, 500);
+        }, 300);
       });
     }
 
     if (deviceId) {
-      fetch(GAS_URL + '?action=getDevices').then(r => r.json()).then(data => {
-        if (data.success) {
-          const d = data.devices.find(d => d.device_id === deviceId);
-          d ? showDevice(d) : showNoDevice();
-        } else showNoDevice();
+      fetch(GAS_URL + '?action=getDevices').then(r=>r.json()).then(data => {
+        if (data.success) { const d = data.devices.find(d=>d.device_id===deviceId); d ? showDevice(d) : showNoDevice(); }
+        else showNoDevice();
       }).catch(showNoDevice);
     } else {
       const ds = localStorage.getItem('selectedDevice');
       ds ? showDevice(JSON.parse(ds)) : showNoDevice();
+    }
+
+    // =========================================================
+    // refreshUser — ดึงข้อมูล user ล่าสุดจาก GAS
+    // อัปเดต localStorage และตัวแปร user ทุกครั้งก่อนเปิด modal
+    // =========================================================
+    async function refreshUser() {
+      try {
+        const res  = await fetch(GAS_URL + '?action=checkUser&email=' + encodeURIComponent(user.email));
+        const data = await res.json();
+        if (data.success) {
+          // อัปเดตทั้ง localStorage และตัวแปร user ในหน้านี้
+          user = {
+            email:          data.email,
+            name:           data.name,
+            role:           data.role,
+            phone:          data.phone           || '',
+            online_contact: data.online_contact  || '',
+            department:     data.department      || '',
+            position:       data.position        || ''
+          };
+          localStorage.setItem('user', JSON.stringify(user));
+        }
+      } catch(e) {
+        // ถ้า network error ใช้ข้อมูลเก่าจาก localStorage แทน
+        console.warn('refreshUser failed, using cached data');
+      }
     }
 
     // ===== Document Shortcuts =====
@@ -372,60 +374,54 @@
 
     async function loadDocShortcuts() {
       try {
-        const res = await fetch(GAS_URL + '?action=getBorrows');
+        const res  = await fetch(GAS_URL + '?action=getBorrows');
         const data = await res.json();
         if (!data.success) return;
         const myBorrows = data.borrows.filter(b => b.borrower_email === user.email);
         const activeBorrow = [...myBorrows].reverse().find(b => ['pending','approved','returning'].includes(b.status));
         if (activeBorrow) {
           dsLatestBorrow = activeBorrow;
-          document.getElementById('ds-borrow-meta').className = 'doc-shortcut-meta';
+          document.getElementById('ds-borrow-meta').className   = 'doc-shortcut-meta';
           document.getElementById('ds-borrow-meta').textContent = activeBorrow.borrow_id + ' · ' + formatDate(activeBorrow.borrow_date);
           document.getElementById('ds-borrow-btn').disabled = false;
         }
         const returnedBorrow = [...myBorrows].reverse().find(b => b.status === 'returned');
         if (returnedBorrow) {
           dsLatestReturn = returnedBorrow;
-          document.getElementById('ds-return-meta').className = 'doc-shortcut-meta';
+          document.getElementById('ds-return-meta').className   = 'doc-shortcut-meta';
           document.getElementById('ds-return-meta').textContent = returnedBorrow.borrow_id + ' · คืนแล้ว ' + formatDate(returnedBorrow.return_date);
           document.getElementById('ds-return-btn').disabled = false;
         }
       } catch(e) {}
     }
 
-    function dsOpenBorrow() {
+    async function dsOpenBorrow() {
       if (!dsLatestBorrow) return;
       const b = dsLatestBorrow;
+      await refreshUser();
       openPrintModal(b.borrow_id, b.borrow_date, b.due_date, b.purpose || '', null);
       setTimeout(() => { document.getElementById('pd-devname').textContent = b.device_id; document.getElementById('pd-note').textContent = b.note || ''; }, 100);
     }
 
-    function dsOpenReturn() {
+    async function dsOpenReturn() {
       if (!dsLatestReturn) return;
       const b = dsLatestReturn;
-      openPrintModal(b.borrow_id, b.borrow_date, b.due_date, b.purpose || '', buildReturnData(b));
-      setTimeout(() => { document.getElementById('pd-devname').textContent = b.device_id; }, 100);
-    }
-
-    // สร้าง returnData object จาก borrow record ของ sheet
-    function buildReturnData(b) {
-      return {
-        returned: true,
-        borrower_name: b.borrower_name || '',   // ถ้า sheet มี column นี้
-        borrower_email: b.borrower_email,
-        return_date: b.return_date,
-        condition: b.return_condition || 'ปกติ',
-        condition_detail: b.condition_detail || '', // ถ้า sheet มี column นี้
-        confirmed_by: b.return_by || ''
+      await refreshUser();
+      const rd = {
+        returned: true, borrower_name: b.borrower_name || '', borrower_email: b.borrower_email,
+        return_date: b.return_date, condition: b.return_condition || 'ปกติ',
+        condition_detail: b.condition_detail || '', confirmed_by: b.return_by || ''
       };
+      openPrintModal(b.borrow_id, b.borrow_date, b.due_date, b.purpose || '', rd);
+      setTimeout(() => { document.getElementById('pd-devname').textContent = b.device_id; }, 100);
     }
 
     loadDocShortcuts();
 
     function switchMode(mode) {
       ['borrow','return'].forEach(m => {
-        document.getElementById('btn-' + m + '-mode').classList.toggle('active', m === mode);
-        document.getElementById('panel-' + m).classList.toggle('active', m === mode);
+        document.getElementById('btn-'+m+'-mode').classList.toggle('active', m===mode);
+        document.getElementById('panel-'+m).classList.toggle('active', m===mode);
       });
       if (mode === 'return') loadMyBorrows();
     }
@@ -439,23 +435,22 @@
 
     function showDevice(d) {
       window.currentDevice = d;
-      let statusClass = d.type === 'room' ? 'status-room' : (d.status === 'available' ? 'status-available' : 'status-unavailable');
+      let statusClass = d.type==='room' ? 'status-room' : (d.status==='available' ? 'status-available' : 'status-unavailable');
       document.getElementById('device-section').innerHTML = `
         <div class="device-selected">
-          <span class="device-icon">${ICONS[d.category] || ICONS.default}</span>
+          <span class="device-icon">${ICONS[d.category]||ICONS.default}</span>
           <div><p class="device-info-name">${d.name}</p><p class="device-info-code">${d.device_id} · ${d.krupha_no}</p></div>
           <button class="btn-change" onclick="location.href='devices.html'">เปลี่ยน</button>
         </div>
         <div class="status-box ${statusClass}">
-          ${d.type === 'room' ? '🚫' : d.status === 'available' ? '✅' : '⏳'}
-          ${STATUS_LABEL[d.status] || d.status}
-          ${d.type === 'room' ? ' — อุปกรณ์ประจำห้องไม่สามารถยืมได้' : ''}
+          ${d.type==='room'?'🚫':d.status==='available'?'✅':'⏳'} ${STATUS_LABEL[d.status]||d.status}
+          ${d.type==='room'?' — อุปกรณ์ประจำห้องไม่สามารถยืมได้':''}
         </div>`;
       if (d.type !== 'room') {
         document.getElementById('form-card').style.display = 'block';
-        document.getElementById('borrow-date').value = today;
-        document.getElementById('return-date').value = nextWeek;
-        document.getElementById('action-btn').innerHTML = d.status === 'available'
+        document.getElementById('borrow-date').value  = today;
+        document.getElementById('return-date').value  = nextWeek;
+        document.getElementById('action-btn').innerHTML = d.status==='available'
           ? `<button class="btn-submit" onclick="submitBorrow('borrow')">📦 ส่งคำขอยืม</button>`
           : `<button class="btn-queue" onclick="submitBorrow('queue')">⏳ ลงคิวรออุปกรณ์</button>`;
       }
@@ -464,38 +459,40 @@
     async function submitBorrow(type) {
       const borrowDate = document.getElementById('borrow-date').value;
       const returnDate = document.getElementById('return-date').value;
-      const purpose = document.getElementById('purpose').value.trim();
-      if (!borrowDate || !returnDate || !purpose) { showMsg('กรุณากรอกข้อมูลให้ครบ', 'error'); return; }
-      if (returnDate < borrowDate) { showMsg('วันที่คืนต้องหลังวันที่ยืม', 'error'); return; }
+      const purpose    = document.getElementById('purpose').value.trim();
+      if (!borrowDate||!returnDate||!purpose) { showMsg('กรุณากรอกข้อมูลให้ครบ','error'); return; }
+      if (returnDate < borrowDate) { showMsg('วันที่คืนต้องหลังวันที่ยืม','error'); return; }
       const d = window.currentDevice;
-      if (!d) { showMsg('ไม่พบข้อมูลอุปกรณ์', 'error'); return; }
+      if (!d) { showMsg('ไม่พบข้อมูลอุปกรณ์','error'); return; }
       const btn = document.querySelector('#panel-borrow .btn-submit, #panel-borrow .btn-queue');
-      btn.disabled = true; btn.textContent = '⏳ กำลังส่ง...';
+      btn.disabled=true; btn.textContent='⏳ กำลังส่ง...';
       try {
-        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: type === 'borrow' ? 'createBorrow' : 'createQueue', device_id: d.device_id, borrower_email: user.email, borrow_date: borrowDate, due_date: returnDate, purpose }) });
+        const res  = await fetch(GAS_URL, {method:'POST', body:JSON.stringify({action:type==='borrow'?'createBorrow':'createQueue', device_id:d.device_id, borrower_email:user.email, borrow_date:borrowDate, due_date:returnDate, purpose})});
         const data = await res.json();
         if (data.success) {
           const id = data.borrow_id || data.queue_id;
-          showMsg(type === 'borrow' ? '✅ ส่งคำขอยืมสำเร็จ! รอ Admin อนุมัติ ID: ' + id : '✅ ลงคิวสำเร็จ! ID: ' + id, 'success');
+          showMsg(type==='borrow' ? '✅ ส่งคำขอยืมสำเร็จ! รอ Admin อนุมัติ ID: '+id : '✅ ลงคิวสำเร็จ! ID: '+id, 'success');
           btn.textContent = '✅ ส่งแล้ว';
-          if (type === 'borrow') {
+          if (type==='borrow') {
             window.lastBorrow = { id, borrowDate, returnDate, purpose };
             document.getElementById('btn-view-doc').style.display = 'block';
+            // refresh user ก่อนเปิด modal
+            await refreshUser();
             setTimeout(() => openPrintModal(id, borrowDate, returnDate, purpose, null), 800);
           }
-        } else { showMsg('❌ ' + data.message, 'error'); btn.disabled = false; btn.textContent = type === 'borrow' ? '📦 ส่งคำขอยืม' : '⏳ ลงคิวรออุปกรณ์'; }
-      } catch(e) { showMsg('❌ เกิดข้อผิดพลาด', 'error'); btn.disabled = false; btn.textContent = type === 'borrow' ? '📦 ส่งคำขอยืม' : '⏳ ลงคิวรออุปกรณ์'; }
+        } else { showMsg('❌ '+data.message,'error'); btn.disabled=false; btn.textContent=type==='borrow'?'📦 ส่งคำขอยืม':'⏳ ลงคิวรออุปกรณ์'; }
+      } catch(e) { showMsg('❌ เกิดข้อผิดพลาด','error'); btn.disabled=false; btn.textContent=type==='borrow'?'📦 ส่งคำขอยืม':'⏳ ลงคิวรออุปกรณ์'; }
     }
 
     async function loadMyBorrows() {
       const el = document.getElementById('return-list');
       el.innerHTML = '<div class="loading">⏳ กำลังโหลด...</div>';
       try {
-        const res = await fetch(GAS_URL + '?action=getBorrows');
+        const res  = await fetch(GAS_URL + '?action=getBorrows');
         const data = await res.json();
-        if (!data.success) { el.innerHTML = '<div class="no-device">ไม่สามารถโหลดข้อมูลได้</div>'; return; }
-        const myBorrows = data.borrows.filter(b => b.borrower_email === user.email && ['approved','returning','pending'].includes(b.status)).reverse();
-        if (!myBorrows.length) { el.innerHTML = '<div class="no-device" style="padding:30px">ไม่มีรายการที่ยืมอยู่</div>'; return; }
+        if (!data.success) { el.innerHTML='<div class="no-device">ไม่สามารถโหลดข้อมูลได้</div>'; return; }
+        const myBorrows = data.borrows.filter(b => b.borrower_email===user.email && ['approved','returning','pending'].includes(b.status)).reverse();
+        if (!myBorrows.length) { el.innerHTML='<div class="no-device" style="padding:30px">ไม่มีรายการที่ยืมอยู่</div>'; return; }
         el.innerHTML = myBorrows.map(b => `
           <div class="borrow-item">
             <div class="borrow-header">
@@ -508,107 +505,79 @@
               <span>📅 กำหนดคืน: ${formatDate(b.due_date)}</span>
             </div>
             <div style="display:flex;gap:8px;margin-top:10px">
-              ${b.status==='pending'?`<button class="btn-cancel-borrow" style="margin-top:0;flex:1" onclick="cancelBorrow('${b.borrow_id}')">✕ ยกเลิกคำขอยืม</button>`:''}
+              ${b.status==='pending' ? `<button class="btn-cancel-borrow" style="margin-top:0;flex:1" onclick="cancelBorrow('${b.borrow_id}')">✕ ยกเลิกคำขอยืม</button>` : ''}
               <button style="flex:1;padding:10px;background:#f5f4ff;color:#7F77DD;border:1.5px solid #7F77DD;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit"
                 onclick='openPrintModalFromBorrow(${JSON.stringify(b).replace(/'/g,"&#39;")})'>📄 ดูเอกสาร</button>
             </div>
-            ${b.status==='approved'?`<button class="btn-return" onclick="openReturnModal('${b.borrow_id}')">📬 แจ้งความต้องการคืนอุปกรณ์</button>`:''}
-            ${b.status==='returning'?`<div class="returning-note">⏳ แจ้งคืนแล้ว กำลังรอ IT รับอุปกรณ์</div>`:''}
+            ${b.status==='approved' ? `<button class="btn-return" onclick="openReturnModal('${b.borrow_id}')">📬 แจ้งความต้องการคืนอุปกรณ์</button>` : ''}
+            ${b.status==='returning' ? `<div class="returning-note">⏳ แจ้งคืนแล้ว กำลังรอ IT รับอุปกรณ์</div>` : ''}
           </div>`).join('');
-      } catch(e) { el.innerHTML = '<div class="no-device">❌ เกิดข้อผิดพลาด กรุณาลองใหม่</div>'; }
+      } catch(e) { el.innerHTML='<div class="no-device">❌ เกิดข้อผิดพลาด กรุณาลองใหม่</div>'; }
     }
 
-    function openPrintModalFromBorrow(b) {
-      const rd = b.status === 'returned' ? buildReturnData(b) : null;
-      openPrintModal(b.borrow_id, b.borrow_date, b.due_date, b.purpose || '', rd);
-      setTimeout(() => { document.getElementById('pd-note').textContent = b.note || ''; }, 100);
+    async function openPrintModalFromBorrow(b) {
+      await refreshUser(); // ดึงข้อมูลล่าสุดก่อนทุกครั้ง
+      const rd = b.status==='returned' ? {
+        returned:true, borrower_name:b.borrower_name||'', borrower_email:b.borrower_email,
+        return_date:b.return_date, condition:b.return_condition||'ปกติ',
+        condition_detail:b.condition_detail||'', confirmed_by:b.return_by||''
+      } : null;
+      openPrintModal(b.borrow_id, b.borrow_date, b.due_date, b.purpose||'', rd);
+      setTimeout(() => { document.getElementById('pd-note').textContent = b.note||''; }, 100);
     }
 
-    function reopenPrintModal() {
+    async function reopenPrintModal() {
       if (!window.lastBorrow) return;
       const lb = window.lastBorrow;
+      await refreshUser();
       openPrintModal(lb.id, lb.borrowDate, lb.returnDate, lb.purpose, null);
     }
 
-    // =====================================================
-    // fillReturnSection — VERSION ที่ถูกต้อง
-    // condition และ condition_detail แยกจากกันชัดเจน
-    // =====================================================
-    function fillReturnSection(returnData) {
-      // รีเซ็ตทุกครั้ง
-      ['chk-normal','chk-missing','chk-damaged'].forEach(id => document.getElementById(id).textContent = '');
-      document.getElementById('chk-missing-detail').textContent = '';
-      document.getElementById('chk-damaged-detail').textContent = '';
-
-      if (!returnData || !returnData.returned) {
-        // ยังไม่คืน — ช่องว่างทั้งหมด
-        document.getElementById('pd-ret-sender').textContent = '( ................................................ )';
-        document.getElementById('pd-ret-role').textContent = '';
-        document.getElementById('pd-ret-date').textContent = '......./......./.......'
+    function fillReturnSection(rd) {
+      ['chk-normal','chk-missing','chk-damaged'].forEach(id => document.getElementById(id).textContent='');
+      document.getElementById('chk-missing-detail').textContent='';
+      document.getElementById('chk-damaged-detail').textContent='';
+      if (!rd || !rd.returned) {
+        document.getElementById('pd-ret-sender').textContent  = '( ................................................ )';
+        document.getElementById('pd-ret-role').textContent    = '';
+        document.getElementById('pd-ret-date').textContent    = '......./......./.......';
         document.getElementById('pd-ret-by-date').textContent = '......./......./.......';
         return;
       }
-
-      // ===== ชื่อผู้ส่งคืน =====
-      let senderName = returnData.borrower_name || '';
-      if (!senderName) {
-        const ui = JSON.parse(localStorage.getItem('user') || '{}');
-        senderName = (returnData.borrower_email === ui.email) ? (ui.name || returnData.borrower_email) : returnData.borrower_email;
-      }
-      document.getElementById('pd-ret-sender').textContent = '( ' + senderName + ' )';
-
-      // ตำแหน่ง/สังกัด
-      const ui = JSON.parse(localStorage.getItem('user') || '{}');
-      const pos = returnData.borrower_position || (returnData.borrower_email === ui.email ? ui.position || '' : '');
-      const dept = returnData.borrower_department || (returnData.borrower_email === ui.email ? ui.department || '' : '');
-      document.getElementById('pd-ret-role').textContent = pos + (dept ? ' — ' + dept : '');
-      document.getElementById('pd-ret-date').textContent = formatDate(returnData.return_date);
-      document.getElementById('pd-ret-by-date').textContent = formatDate(returnData.return_date);
-
-      // ===== Checkbox: condition แยกจาก condition_detail =====
-      const condition = returnData.condition || 'ปกติ';
-      const detail = returnData.condition_detail || '';
-
-      if (condition === 'ปกติ') {
-        // ✓ ข้อ 1 เท่านั้น
-        document.getElementById('chk-normal').textContent = '✓';
-
-      } else if (condition === 'ขาดอุปกรณ์') {
-        // ✓ ข้อ 2 + ใส่รายละเอียดในช่องข้อ 2
-        document.getElementById('chk-missing').textContent = '✓';
-        document.getElementById('chk-missing-detail').textContent = detail;
-
-      } else if (condition === 'เสียหาย') {
-        // ✓ ข้อ 3 + ใส่รายละเอียดในช่องข้อ 3
-        document.getElementById('chk-damaged').textContent = '✓';
-        document.getElementById('chk-damaged-detail').textContent = detail;
-
-      } else {
-        // fallback
-        document.getElementById('chk-damaged').textContent = '✓';
-        document.getElementById('chk-damaged-detail').textContent = (condition + (detail ? '\n' + detail : '')).trim();
-      }
+      let senderName = rd.borrower_name || '';
+      if (!senderName) senderName = (rd.borrower_email===user.email) ? (user.name||rd.borrower_email) : rd.borrower_email;
+      document.getElementById('pd-ret-sender').textContent = '( '+senderName+' )';
+      const pos  = rd.borrower_position  || (rd.borrower_email===user.email ? user.position||'' : '');
+      const dept = rd.borrower_department|| (rd.borrower_email===user.email ? user.department||'' : '');
+      document.getElementById('pd-ret-role').textContent    = pos+(dept?' — '+dept:'');
+      document.getElementById('pd-ret-date').textContent    = formatDate(rd.return_date);
+      document.getElementById('pd-ret-by-date').textContent = formatDate(rd.return_date);
+      const cond=rd.condition||'ปกติ', detail=rd.condition_detail||'';
+      if (cond==='ปกติ') { document.getElementById('chk-normal').textContent='✓'; }
+      else if (cond==='ขาดอุปกรณ์') { document.getElementById('chk-missing').textContent='✓'; document.getElementById('chk-missing-detail').textContent=detail; }
+      else if (cond==='เสียหาย')    { document.getElementById('chk-damaged').textContent='✓'; document.getElementById('chk-damaged-detail').textContent=detail; }
+      else { document.getElementById('chk-damaged').textContent='✓'; document.getElementById('chk-damaged-detail').textContent=(cond+(detail?'\n'+detail:'')).trim(); }
     }
 
+    // openPrintModal ใช้ตัวแปร user ที่ถูก refreshUser() อัปเดตแล้ว
     function openPrintModal(borrowId, borrowDate, dueDate, purpose, returnData) {
       const d = window.currentDevice || {};
-      const ui = JSON.parse(localStorage.getItem('user') || '{}');
-      document.getElementById('pd-id').textContent = borrowId;
-      document.getElementById('pd-name').textContent = ui.name || ui.email || '';
-      document.getElementById('pd-pos').textContent = ui.position || '';
-      document.getElementById('pd-dept').textContent = ui.department || '';
-      document.getElementById('pd-phone').textContent = ui.phone || '';
-      document.getElementById('pd-email').textContent = ui.email || '';
-      document.getElementById('pd-purpose').textContent = purpose;
-      document.getElementById('pd-bdate').textContent = formatDate(borrowDate);
-      document.getElementById('pd-ddate').textContent = formatDate(dueDate);
-      document.getElementById('pd-devname').textContent = d.name || '';
-      document.getElementById('pd-krupha').textContent = d.krupha_no || '';
-      document.getElementById('pd-note').textContent = '';
-      document.getElementById('pd-sign-name').textContent = ui.name || ui.email || '';
-      document.getElementById('pd-sign-role').textContent = (ui.position || '') + (ui.department ? ' — ' + ui.department : '');
+      document.getElementById('pd-id').textContent        = borrowId;
+      document.getElementById('pd-name').textContent      = user.name      || user.email || '';
+      document.getElementById('pd-pos').textContent       = user.position  || '';
+      document.getElementById('pd-dept').textContent      = user.department|| '';
+      document.getElementById('pd-phone').textContent     = user.phone     || '';
+      document.getElementById('pd-email').textContent     = user.email     || '';
+      document.getElementById('pd-purpose').textContent   = purpose;
+      document.getElementById('pd-bdate').textContent     = formatDate(borrowDate);
+      document.getElementById('pd-ddate').textContent     = formatDate(dueDate);
+      document.getElementById('pd-devname').textContent   = d.name         || '';
+      document.getElementById('pd-krupha').textContent    = d.krupha_no    || '';
+      document.getElementById('pd-note').textContent      = '';
+      document.getElementById('pd-sign-name').textContent = user.name      || user.email || '';
+      document.getElementById('pd-sign-role').textContent = (user.position||'')+(user.department?' — '+user.department:'');
       document.getElementById('pd-sign-date').textContent = formatDate(borrowDate);
-      fillReturnSection(returnData || null);
+      fillReturnSection(returnData||null);
       document.getElementById('print-overlay').classList.add('show');
     }
 
@@ -616,50 +585,41 @@
 
     function formatDate(v) {
       if (!v) return '-';
-      try { return new Date(v).toLocaleDateString('th-TH', { year:'numeric', month:'short', day:'numeric' }); }
+      try { return new Date(v).toLocaleDateString('th-TH',{year:'numeric',month:'short',day:'numeric'}); }
       catch(e) { return v; }
     }
 
     async function cancelBorrow(borrowId) {
-      if (!confirm('ยืนยันการยกเลิกคำขอยืม ' + borrowId + ' ?')) return;
-      try {
-        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'cancelBorrow', borrow_id: borrowId, borrower_email: user.email }) });
-        const data = await res.json();
-        data.success ? loadMyBorrows() : alert('❌ ' + data.message);
-      } catch(e) { alert('เกิดข้อผิดพลาด'); }
+      if (!confirm('ยืนยันการยกเลิกคำขอยืม '+borrowId+' ?')) return;
+      const res  = await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'cancelBorrow',borrow_id:borrowId,borrower_email:user.email})});
+      const data = await res.json();
+      data.success ? loadMyBorrows() : alert('❌ '+data.message);
     }
 
     function openReturnModal(borrowId) {
       document.getElementById('return-borrow-id').value = borrowId;
-      document.getElementById('return-note').value = '';
+      document.getElementById('return-note').value      = '';
       document.getElementById('return-plan-date').value = today;
-      document.getElementById('msg-modal').style.display = 'none';
+      document.getElementById('msg-modal').style.display='none';
       document.getElementById('return-modal').classList.add('show');
     }
-
     function closeReturnModal() { document.getElementById('return-modal').classList.remove('show'); }
 
     async function submitReturn() {
       const borrowId = document.getElementById('return-borrow-id').value;
       const planDate = document.getElementById('return-plan-date').value;
-      const note = document.getElementById('return-note').value.trim();
-      if (!planDate) { showModalMsg('กรุณาเลือกวันที่จะนำมาคืน', 'error'); return; }
+      const note     = document.getElementById('return-note').value.trim();
+      if (!planDate) { showModalMsg('กรุณาเลือกวันที่จะนำมาคืน','error'); return; }
       const btn = document.querySelector('#return-modal .btn-confirm');
-      btn.disabled = true; btn.textContent = '⏳ กำลังส่ง...';
-      try {
-        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'requestReturn', borrow_id: borrowId, return_plan_date: planDate, note, borrower_email: user.email }) });
-        const data = await res.json();
-        if (data.success) {
-          showModalMsg('✅ แจ้งคืนสำเร็จ IT จะติดต่อกลับเร็วๆ นี้', 'success');
-          btn.textContent = '✅ ส่งแล้ว';
-          setTimeout(() => { closeReturnModal(); loadMyBorrows(); }, 1500);
-        } else { showModalMsg('❌ ' + data.message, 'error'); btn.disabled = false; btn.textContent = '📬 แจ้งคืน'; }
-      } catch(e) { showModalMsg('❌ เกิดข้อผิดพลาด', 'error'); btn.disabled = false; btn.textContent = '📬 แจ้งคืน'; }
+      btn.disabled=true; btn.textContent='⏳ กำลังส่ง...';
+      const res  = await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'requestReturn',borrow_id:borrowId,return_plan_date:planDate,note,borrower_email:user.email})});
+      const data = await res.json();
+      if (data.success) { showModalMsg('✅ แจ้งคืนสำเร็จ IT จะติดต่อกลับเร็วๆ นี้','success'); btn.textContent='✅ ส่งแล้ว'; setTimeout(()=>{closeReturnModal();loadMyBorrows();},1500); }
+      else { showModalMsg('❌ '+data.message,'error'); btn.disabled=false; btn.textContent='📬 แจ้งคืน'; }
     }
 
-    function showMsg(t, type) { const el = document.getElementById('msg'); el.style.display='block'; el.className=type==='success'?'msg-success':'msg-error'; el.textContent=t; }
-    function showModalMsg(t, type) { const el = document.getElementById('msg-modal'); el.style.display='block'; el.className=type==='success'?'msg-success':'msg-error'; el.textContent=t; }
+    function showMsg(t,type) { const el=document.getElementById('msg'); el.style.display='block'; el.className=type==='success'?'msg-success':'msg-error'; el.textContent=t; }
+    function showModalMsg(t,type) { const el=document.getElementById('msg-modal'); el.style.display='block'; el.className=type==='success'?'msg-success':'msg-error'; el.textContent=t; }
   </script>
-
 </body>
 </html>
