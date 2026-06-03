@@ -28,7 +28,6 @@
     .name-preview span { color: #999; font-size: 11px; font-weight: 400; }
     .btn-primary { padding: 9px 18px; background: #1a1a2e; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; font-family: inherit; }
     .btn-primary:hover { background: #2d2d4e; }
-    .btn-warning { padding: 6px 10px; background: #FAEEDA; color: #633806; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; }
     .btn-danger  { padding: 6px 10px; background: #FCEBEB; color: #791F1F; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; }
     .btn-success { padding: 6px 10px; background: #E1F5EE; color: #085041; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; }
     .btn-info    { padding: 6px 10px; background: #E6F1FB; color: #0C447C; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; font-family: inherit; }
@@ -63,17 +62,14 @@
     .loading { text-align: center; padding: 20px; color: #666; font-size: 14px; }
     .section-divider { font-size: 11px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: .5px; margin: 16px 0 10px; padding-bottom: 6px; border-bottom: 0.5px solid #eee; }
     .owner-box { background: #FAECE7; border: 1.5px solid #D85A30; border-radius: 10px; padding: 14px; margin-bottom: 12px; display: none; }
-    .owner-box .form-label { color: #712B13; }
     .owner-note { font-size: 11px; color: #D85A30; margin-top: 4px; }
     .toggle-inactive { font-size: 12px; color: #7F77DD; cursor: pointer; background: none; border: none; font-family: inherit; }
-    /* Modal */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: center; justify-content: center; }
     .modal-overlay.show { display: flex; }
     .modal { background: white; border-radius: 16px; padding: 24px; width: 480px; max-width: 95vw; box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
     .modal-title { font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 0.5px solid #eee; }
     .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
     .btn-cancel { padding: 9px 18px; background: #f0f4f8; color: #666; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; }
-    /* Photo modal */
     .photo-modal { background: white; border-radius: 16px; padding: 24px; width: 680px; max-width: 96vw; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 32px rgba(0,0,0,0.18); }
     .photo-modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 0.5px solid #eee; }
     .photo-modal-title { font-size: 15px; font-weight: 600; color: #1a1a1a; }
@@ -84,12 +80,13 @@
     .photo-thumb:hover { border-color: #7F77DD; }
     .photo-num { position: absolute; bottom: 5px; left: 6px; background: rgba(0,0,0,0.5); color: white; font-size: 10px; padding: 1px 6px; border-radius: 4px; }
     .photo-empty { text-align: center; padding: 30px; color: #999; font-size: 13px; }
-    /* Lightbox */
     .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 300; align-items: center; justify-content: center; }
     .lightbox.show { display: flex; }
     .lightbox img { max-width: 92vw; max-height: 88vh; border-radius: 8px; object-fit: contain; }
     .lightbox-close { position: absolute; top: 16px; right: 20px; color: white; font-size: 28px; cursor: pointer; background: none; border: none; line-height: 1; }
     .lightbox-open { position: absolute; bottom: 16px; right: 20px; background: rgba(255,255,255,0.15); color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-family: inherit; }
+    /* prefix hint */
+    .prefix-hint { font-size: 11px; color: #888; margin-top: 3px; }
   </style>
 </head>
 <body>
@@ -102,15 +99,35 @@
     </div>
   </div>
 
+  <!-- datalist คำนำหน้า (ใช้ร่วมทั้งหน้า) -->
+  <datalist id="prefix-list">
+    <option value="นาย">
+    <option value="นาง">
+    <option value="นางสาว">
+    <option value="ดร.">
+    <option value="อาจารย์">
+    <option value="ผศ.">
+    <option value="ผศ.ดร.">
+    <option value="รศ.">
+    <option value="รศ.ดร.">
+    <option value="ศ.">
+    <option value="ศ.ดร.">
+  </datalist>
+
   <!-- Modal แก้ไขผู้ใช้ -->
   <div class="modal-overlay" id="edit-modal">
     <div class="modal">
       <p class="modal-title">✏️ แก้ไขข้อมูลผู้ใช้</p>
       <input type="hidden" id="edit-email"/>
       <div class="form-row">
-        <div class="form-group"><label class="form-label">ชื่อ-นามสกุล *</label><input type="text" class="form-input" id="edit-name"/></div>
+        <div class="form-group">
+          <label class="form-label">คำนำหน้า</label>
+          <input type="text" class="form-input" id="edit-prefix" list="prefix-list" placeholder="เช่น นาย, ดร., ผศ."/>
+          <p class="prefix-hint">พิมพ์หรือเลือกจากรายการ</p>
+        </div>
         <div class="form-group"><label class="form-label">Role</label><select class="form-input" id="edit-role"><option value="user">user</option><option value="admin">admin</option></select></div>
       </div>
+      <div class="form-group"><label class="form-label">ชื่อ-นามสกุล *</label><input type="text" class="form-input" id="edit-name"/></div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">แผนก</label><input type="text" class="form-input" id="edit-department"/></div>
         <div class="form-group"><label class="form-label">ตำแหน่ง</label><input type="text" class="form-input" id="edit-position"/></div>
@@ -174,9 +191,8 @@
         <div class="form-group"><label class="form-label">เลขครุภัณฑ์</label><input type="text" class="form-input" id="ed-krupha"/></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label class="form-label">Serial Number</label><input type="text" class="form-input" id="ed-serial" placeholder="S/N (ถ้ามี)"/></div>
-        <div class="form-group">
-          <label class="form-label">หมวดหมู่</label>
+        <div class="form-group"><label class="form-label">Serial Number</label><input type="text" class="form-input" id="ed-serial"/></div>
+        <div class="form-group"><label class="form-label">หมวดหมู่</label>
           <select class="form-input" id="ed-category" onchange="updateEditDeviceName()">
             <option value="Notebook">Notebook</option><option value="AIO PC">AIO PC</option><option value="PC">PC</option>
             <option value="Projector">Projector</option><option value="Printer">Printer</option><option value="Monitor">Monitor</option>
@@ -218,10 +234,7 @@
     <div class="modal">
       <p class="modal-title">✅ อนุมัติการยืม</p>
       <input type="hidden" id="approve-borrow-id"/>
-      <div class="form-group">
-        <label class="form-label">หมายเหตุ (ไม่บังคับ)</label>
-        <textarea class="form-input" id="approve-note" style="height:80px;resize:none" placeholder="เช่น กรุณาคืนก่อนวันที่กำหนด..."></textarea>
-      </div>
+      <div class="form-group"><label class="form-label">หมายเหตุ (ไม่บังคับ)</label><textarea class="form-input" id="approve-note" style="height:80px;resize:none" placeholder="เช่น กรุณาคืนก่อนวันที่กำหนด..."></textarea></div>
       <div class="modal-footer">
         <button class="btn-cancel" onclick="closeApproveModal()">ยกเลิก</button>
         <button class="btn-primary" onclick="submitApproveBorrow()">✅ ยืนยันอนุมัติ</button>
@@ -234,10 +247,7 @@
   <div class="modal-overlay" id="close-ticket-modal">
     <div class="modal">
       <p class="modal-title">✅ ปิด Ticket</p>
-      <div class="form-group">
-        <label class="form-label">วิธีแก้ไข *</label>
-        <textarea class="form-input" id="close-ticket-solution" style="height:90px;resize:none" placeholder="อธิบายวิธีแก้ไขที่ใช้..."></textarea>
-      </div>
+      <div class="form-group"><label class="form-label">วิธีแก้ไข *</label><textarea class="form-input" id="close-ticket-solution" style="height:90px;resize:none" placeholder="อธิบายวิธีแก้ไขที่ใช้..."></textarea></div>
       <div class="modal-footer">
         <button class="btn-cancel" onclick="document.getElementById('close-ticket-modal').classList.remove('show')">ยกเลิก</button>
         <button class="btn-primary" onclick="submitCloseTicket()">✅ บันทึกและปิดงาน</button>
@@ -246,14 +256,11 @@
     </div>
   </div>
 
-  <!-- Modal ไม่อนุมัติการยืม -->
+  <!-- Modal ไม่อนุมัติ -->
   <div class="modal-overlay" id="reject-modal">
     <div class="modal">
       <p class="modal-title">❌ ไม่อนุมัติการยืม</p>
-      <div class="form-group">
-        <label class="form-label">เหตุผล (ไม่บังคับ)</label>
-        <textarea class="form-input" id="reject-reason" style="height:80px;resize:none" placeholder="เช่น อุปกรณ์ถูกจองไว้แล้ว, อยู่ระหว่างซ่อม..."></textarea>
-      </div>
+      <div class="form-group"><label class="form-label">เหตุผล (ไม่บังคับ)</label><textarea class="form-input" id="reject-reason" style="height:80px;resize:none" placeholder="เช่น อุปกรณ์ถูกจองไว้แล้ว..."></textarea></div>
       <div class="modal-footer">
         <button class="btn-cancel" onclick="document.getElementById('reject-modal').classList.remove('show')">ยกเลิก</button>
         <button class="btn-primary" style="background:#791F1F" onclick="submitRejectBorrow()">❌ ยืนยันไม่อนุมัติ</button>
@@ -273,7 +280,6 @@
     </div>
   </div>
 
-  <!-- Lightbox -->
   <div class="lightbox" id="lightbox" onclick="closeLightbox()">
     <button class="lightbox-close" onclick="closeLightbox()">✕</button>
     <img id="lightbox-img" src="" alt="รูปแจ้งซ่อม"/>
@@ -281,7 +287,6 @@
   </div>
 
   <div class="container">
-
     <div class="stats-grid">
       <div class="stat-card"><p class="stat-num" id="stat-users">-</p><p class="stat-label">ผู้ใช้ทั้งหมด</p></div>
       <div class="stat-card"><p class="stat-num" id="stat-devices">-</p><p class="stat-label">อุปกรณ์ทั้งหมด</p></div>
@@ -301,25 +306,32 @@
       <div class="card">
         <p class="card-title">เพิ่มผู้ใช้ใหม่</p>
         <div class="form-row">
-          <div class="form-group"><label class="form-label">อีเมล @ku.th *</label><input type="email" class="form-input" id="new-email" placeholder="xxxx@ku.th"/></div>
-          <div class="form-group"><label class="form-label">ชื่อ-นามสกุล *</label><input type="text" class="form-input" id="new-name" placeholder="ชื่อ นามสกุล"/></div>
+          <div class="form-group">
+            <label class="form-label">คำนำหน้า</label>
+            <input type="text" class="form-input" id="new-prefix" list="prefix-list" placeholder="เช่น นาย, ดร., ผศ."/>
+            <p class="prefix-hint">พิมพ์หรือเลือกจากรายการ</p>
+          </div>
+          <div class="form-group"><label class="form-label">Role</label><select class="form-input" id="new-role"><option value="user">user</option><option value="admin">admin</option></select></div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label class="form-label">Role</label><select class="form-input" id="new-role"><option value="user">user</option><option value="admin">admin</option></select></div>
+          <div class="form-group"><label class="form-label">อีเมล @ku.th *</label><input type="email" class="form-input" id="new-email" placeholder="xxxx@ku.th"/></div>
+          <div class="form-group"><label class="form-label">ชื่อ-นามสกุล *</label><input type="text" class="form-input" id="new-name" placeholder="ชื่อ นามสกุล (ไม่ต้องใส่คำนำหน้า)"/></div>
+        </div>
+        <div class="form-row">
           <div class="form-group"><label class="form-label">เบอร์โทร</label><input type="text" class="form-input" id="new-phone" placeholder="0812345678"/></div>
+          <div class="form-group"><label class="form-label">ช่องทางออนไลน์</label><input type="text" class="form-input" id="new-online" placeholder="เช่น Line: @username"/></div>
         </div>
         <div class="form-row">
           <div class="form-group"><label class="form-label">แผนก</label><input type="text" class="form-input" id="new-department" placeholder="เช่น คณะเศรษฐศาสตร์"/></div>
           <div class="form-group"><label class="form-label">ตำแหน่ง</label><input type="text" class="form-input" id="new-position" placeholder="เช่น อาจารย์ เจ้าหน้าที่"/></div>
         </div>
-        <div class="form-group"><label class="form-label">ช่องทางออนไลน์</label><input type="text" class="form-input" id="new-online" placeholder="เช่น Line: @username"/></div>
         <button class="btn-primary" onclick="addUser()">+ เพิ่มผู้ใช้</button>
         <div id="msg-admin" style="padding:10px;border-radius:8px;font-size:13px;display:none;margin-top:10px;text-align:center"></div>
       </div>
       <div class="card">
         <p class="card-title">รายชื่อผู้ใช้ทั้งหมด<button class="toggle-inactive" onclick="toggleInactive()"><span id="toggle-label">👁 แสดง inactive</span></button></p>
         <div class="table-wrap"><table>
-          <thead><tr><th>อีเมล</th><th>ชื่อ</th><th>แผนก/ตำแหน่ง</th><th>เบอร์/ออนไลน์</th><th>Role</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+          <thead><tr><th>อีเมล</th><th>คำนำหน้า + ชื่อ</th><th>แผนก/ตำแหน่ง</th><th>เบอร์</th><th>Role</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
           <tbody id="users-table"><tr><td colspan="7" class="loading">⏳ กำลังโหลด...</td></tr></tbody>
         </table></div>
       </div>
@@ -363,7 +375,7 @@
         </div>
         <div class="owner-box" id="owner-box">
           <div class="form-group" style="margin-bottom:4px"><label class="form-label">👤 ผู้ถือครอง *</label><select class="form-input" id="dev-owner"><option value="">-- เลือกผู้ถือครอง --</option></select></div>
-          <p class="owner-note">* อุปกรณ์ประจำตัวจะถูกกำหนดให้บุคคลนี้ทันที สถานะจะเป็น "assigned"</p>
+          <p class="owner-note">* อุปกรณ์ประจำตัวจะถูกกำหนดให้บุคคลนี้ทันที</p>
         </div>
         <p class="section-divider">MAC Address (optional)</p>
         <div class="form-row-3">
@@ -404,7 +416,6 @@
         </table></div>
       </div>
     </div>
-
   </div>
 
   <script>
@@ -413,60 +424,60 @@
     if (!user.email) location.href = 'index.html';
     if (user.role !== 'admin') { alert('คุณไม่มีสิทธิ์เข้าถึงหน้านี้'); location.href = 'dashboard.html'; }
 
-    let allUsers = [], allDevices = [], allTickets = [], allBorrows = [];
-    let showInactive = false;
-    let pendingTicketId = '';
-    let pendingRejectId = '';
+    let allUsers=[], allDevices=[], allTickets=[], allBorrows=[];
+    let showInactive=false, pendingTicketId='', pendingRejectId='';
+
+    // helper: prefix + name
+    function fullName(u) { return (u.prefix ? u.prefix + ' ' : '') + (u.name || ''); }
 
     async function loadAll() {
       try {
-        const [uRes, dRes, tRes, bRes] = await Promise.all([
-          fetch(GAS_URL + '?action=getUsers'), fetch(GAS_URL + '?action=getDevices'),
-          fetch(GAS_URL + '?action=getTickets'), fetch(GAS_URL + '?action=getBorrows')
+        const [uRes,dRes,tRes,bRes] = await Promise.all([
+          fetch(GAS_URL+'?action=getUsers'), fetch(GAS_URL+'?action=getDevices'),
+          fetch(GAS_URL+'?action=getTickets'), fetch(GAS_URL+'?action=getBorrows')
         ]);
-        const [uData, dData, tData, bData] = await Promise.all([uRes.json(), dRes.json(), tRes.json(), bRes.json()]);
-        if (uData.success) { allUsers   = uData.users;   renderUsers(); populateOwnerDropdown(); }
-        if (dData.success) { allDevices = dData.devices; renderDevices(); }
-        if (tData.success) { allTickets = tData.tickets; renderTickets(); }
-        if (bData.success) { allBorrows = bData.borrows; renderBorrows(); }
-        document.getElementById('stat-users').textContent   = allUsers.filter(u => u.status === 'active').length;
+        const [uData,dData,tData,bData] = await Promise.all([uRes.json(),dRes.json(),tRes.json(),bRes.json()]);
+        if (uData.success) { allUsers=uData.users; renderUsers(); populateOwnerDropdown(); }
+        if (dData.success) { allDevices=dData.devices; renderDevices(); }
+        if (tData.success) { allTickets=tData.tickets; renderTickets(); }
+        if (bData.success) { allBorrows=bData.borrows; renderBorrows(); }
+        document.getElementById('stat-users').textContent   = allUsers.filter(u=>u.status==='active').length;
         document.getElementById('stat-devices').textContent = allDevices.length;
-        document.getElementById('stat-tickets').textContent = allTickets.filter(t => t.status === 'pending').length;
-        document.getElementById('stat-borrows').textContent = allBorrows.filter(b => b.status === 'approved').length;
+        document.getElementById('stat-tickets').textContent = allTickets.filter(t=>t.status==='pending').length;
+        document.getElementById('stat-borrows').textContent = allBorrows.filter(b=>b.status==='approved').length;
       } catch(e) { console.error(e); }
     }
 
     function populateOwnerDropdown() {
       const sel = document.getElementById('dev-owner');
       sel.innerHTML = '<option value="">-- เลือกผู้ถือครอง --</option>';
-      allUsers.filter(u => u.status === 'active').forEach(u => {
-        const o = document.createElement('option'); o.value = u.email; o.textContent = u.name + ' (' + u.email + ')'; sel.appendChild(o);
+      allUsers.filter(u=>u.status==='active').forEach(u => {
+        const o = document.createElement('option');
+        o.value = u.email; o.textContent = fullName(u) + ' (' + u.email + ')'; sel.appendChild(o);
       });
     }
 
     function updateDeviceName() {
-      const name = [document.getElementById('dev-category').value, document.getElementById('dev-brand').value.trim(), document.getElementById('dev-model').value.trim()].filter(Boolean).join(' ');
-      document.getElementById('name-preview-text').textContent = name || '— กรอกยี่ห้อและรุ่นเพื่อดูตัวอย่าง';
+      const n = [document.getElementById('dev-category').value, document.getElementById('dev-brand').value.trim(), document.getElementById('dev-model').value.trim()].filter(Boolean).join(' ');
+      document.getElementById('name-preview-text').textContent = n || '— กรอกยี่ห้อและรุ่นเพื่อดูตัวอย่าง';
     }
-    function getDeviceName() {
-      return [document.getElementById('dev-category').value, document.getElementById('dev-brand').value.trim(), document.getElementById('dev-model').value.trim()].filter(Boolean).join(' ');
-    }
-    function onTypeChange() { document.getElementById('owner-box').style.display = document.getElementById('dev-type').value === 'assigned' ? 'block' : 'none'; }
-    function toggleInactive() {
-      showInactive = !showInactive;
-      document.getElementById('toggle-label').textContent = showInactive ? '🙈 ซ่อน inactive' : '👁 แสดง inactive';
-      renderUsers();
-    }
+    function getDeviceName() { return [document.getElementById('dev-category').value, document.getElementById('dev-brand').value.trim(), document.getElementById('dev-model').value.trim()].filter(Boolean).join(' '); }
+    function onTypeChange() { document.getElementById('owner-box').style.display = document.getElementById('dev-type').value==='assigned'?'block':'none'; }
+    function toggleInactive() { showInactive=!showInactive; document.getElementById('toggle-label').textContent=showInactive?'🙈 ซ่อน inactive':'👁 แสดง inactive'; renderUsers(); }
 
     function renderUsers() {
       const tbody = document.getElementById('users-table');
-      const users = showInactive ? allUsers : allUsers.filter(u => u.status === 'active');
-      if (!users.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>'; return; }
+      const users = showInactive ? allUsers : allUsers.filter(u=>u.status==='active');
+      if (!users.length) { tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>'; return; }
       tbody.innerHTML = users.map(u => `
-        <tr class="${u.status === 'inactive' ? 'inactive-row' : ''}">
-          <td style="font-size:12px">${u.email}</td><td>${u.name||'-'}</td>
+        <tr class="${u.status==='inactive'?'inactive-row':''}">
+          <td style="font-size:12px">${u.email}</td>
+          <td>
+            ${u.prefix ? `<span style="font-size:11px;color:#7F77DD;background:#f5f4ff;padding:1px 6px;border-radius:4px;margin-right:4px">${u.prefix}</span>` : ''}
+            ${u.name||'-'}
+          </td>
           <td style="font-size:11px;color:#666">${u.department||'-'}<br><span style="color:#999">${u.position||''}</span></td>
-          <td style="font-size:11px;color:#666">${u.phone||'-'}<br><span style="color:#999">${u.online_contact||''}</span></td>
+          <td style="font-size:11px;color:#666">${u.phone||'-'}</td>
           <td><span class="badge badge-${u.role}">${u.role}</span></td>
           <td><span class="badge badge-${u.status}">${u.status}</span></td>
           <td style="white-space:nowrap;display:flex;gap:4px">
@@ -480,7 +491,7 @@
 
     function renderDevices() {
       const tbody = document.getElementById('devices-table');
-      if (!allDevices.length) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>'; return; }
+      if (!allDevices.length) { tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>'; return; }
       tbody.innerHTML = allDevices.map(d => `
         <tr>
           <td><span style="font-family:monospace;font-size:12px">${d.device_id}</span></td>
@@ -497,33 +508,30 @@
 
     function renderTickets() {
       const tbody = document.getElementById('tickets-table');
-      if (!allTickets.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>'; return; }
+      if (!allTickets.length) { tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>'; return; }
       tbody.innerHTML = allTickets.map(t => {
         const imgUrls = (t.image_url && String(t.image_url).trim()) ? String(t.image_url).split(',').filter(Boolean) : [];
-        return `
-          <tr>
-            <td><span style="font-family:monospace;font-size:12px">${t.ticket_id}</span></td>
-            <td>${formatDate(t.created_date)}</td>
-            <td style="font-size:12px">${t.requester_email}</td>
-            <td>${t.device_id}</td>
-            <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${t.symptom}">${t.symptom}</td>
-            <td><span class="badge badge-${t.status==='pending'?'borrowed':'available'}">${t.status}</span></td>
-            <td style="white-space:nowrap;display:flex;gap:4px;flex-wrap:wrap">
-              ${t.status==='pending' ? `<button class="btn-success" onclick="closeTicket('${t.ticket_id}')">✅ ปิดงาน</button>` : ''}
-              ${imgUrls.length > 0
-                ? `<button class="btn-photo" onclick='openPhotoModal("${t.ticket_id}",${JSON.stringify(imgUrls)})'>📷 ${imgUrls.length} รูป</button>`
-                : '<span style="font-size:11px;color:#ccc;padding:6px 4px">ไม่มีรูป</span>'}
-            </td>
-          </tr>`;
+        return `<tr>
+          <td><span style="font-family:monospace;font-size:12px">${t.ticket_id}</span></td>
+          <td>${formatDate(t.created_date)}</td>
+          <td style="font-size:12px">${t.requester_email}</td>
+          <td>${t.device_id}</td>
+          <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${t.symptom}">${t.symptom}</td>
+          <td><span class="badge badge-${t.status==='pending'?'borrowed':'available'}">${t.status}</span></td>
+          <td style="white-space:nowrap;display:flex;gap:4px;flex-wrap:wrap">
+            ${t.status==='pending'?`<button class="btn-success" onclick="closeTicket('${t.ticket_id}')">✅ ปิดงาน</button>`:''}
+            ${imgUrls.length>0?`<button class="btn-photo" onclick='openPhotoModal("${t.ticket_id}",${JSON.stringify(imgUrls)})'>📷 ${imgUrls.length} รูป</button>`:'<span style="font-size:11px;color:#ccc;padding:6px 4px">ไม่มีรูป</span>'}
+          </td>
+        </tr>`;
       }).join('');
     }
 
-    const BORROW_STATUS_LABEL = { 'pending':'รออนุมัติ','approved':'กำลังยืม','rejected':'ไม่อนุมัติ','returning':'📬 แจ้งคืนแล้ว','returned':'คืนแล้ว' };
-    const BORROW_BADGE = { 'pending':'borrowed','approved':'available','rejected':'inactive','returning':'returning','returned':'inactive' };
+    const BORROW_STATUS_LABEL = {'pending':'รออนุมัติ','approved':'กำลังยืม','rejected':'ไม่อนุมัติ','returning':'📬 แจ้งคืนแล้ว','returned':'คืนแล้ว'};
+    const BORROW_BADGE = {'pending':'borrowed','approved':'available','rejected':'inactive','returning':'returning','returned':'inactive'};
 
     function renderBorrows() {
       const tbody = document.getElementById('borrows-table');
-      if (!allBorrows.length) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>'; return; }
+      if (!allBorrows.length) { tbody.innerHTML='<tr><td colspan="8" style="text-align:center;color:#999">ไม่มีข้อมูล</td></tr>'; return; }
       tbody.innerHTML = allBorrows.map(b => `
         <tr>
           <td><span style="font-family:monospace;font-size:12px">${b.borrow_id}</span></td>
@@ -533,41 +541,64 @@
           <td style="font-size:12px">${formatDate(b.return_date)}</td>
           <td><span class="badge badge-${BORROW_BADGE[b.status]||'available'}">${BORROW_STATUS_LABEL[b.status]||b.status}</span></td>
           <td style="white-space:nowrap;display:flex;gap:4px">
-            ${b.status==='pending' ? `<button class="btn-success" onclick="openApproveModal('${b.borrow_id}')">✅ อนุมัติ</button><button class="btn-danger" onclick="rejectBorrow('${b.borrow_id}')">❌ ไม่อนุมัติ</button>` : ''}
-            ${b.status==='returning' ? `<button class="btn-info" onclick="openConfirmReturn('${b.borrow_id}')">📦 ยืนยันรับคืน</button>` : ''}
-            ${(b.status==='returned'||b.status==='approved') ? '-' : ''}
+            ${b.status==='pending'?`<button class="btn-success" onclick="openApproveModal('${b.borrow_id}')">✅ อนุมัติ</button><button class="btn-danger" onclick="rejectBorrow('${b.borrow_id}')">❌ ไม่อนุมัติ</button>`:''}
+            ${b.status==='returning'?`<button class="btn-info" onclick="openConfirmReturn('${b.borrow_id}')">📦 ยืนยันรับคืน</button>`:''}
+            ${(b.status==='returned'||b.status==='approved')?'-':''}
           </td>
         </tr>`).join('');
     }
 
     // ===== User =====
     async function addUser() {
-      const email = document.getElementById('new-email').value.trim();
-      const name  = document.getElementById('new-name').value.trim();
+      const email  = document.getElementById('new-email').value.trim();
+      const name   = document.getElementById('new-name').value.trim();
+      const prefix = document.getElementById('new-prefix').value.trim();
       if (!email||!name) { showMsg('กรุณากรอกอีเมลและชื่อ','error'); return; }
       if (!email.endsWith('@ku.th')) { showMsg('อีเมลต้องเป็น @ku.th','error'); return; }
-      const res  = await fetch(GAS_URL, {method:'POST', body:JSON.stringify({ action:'addUser', email, name, role:document.getElementById('new-role').value, phone:document.getElementById('new-phone').value.trim(), department:document.getElementById('new-department').value.trim(), position:document.getElementById('new-position').value.trim(), online_contact:document.getElementById('new-online').value.trim(), added_by:user.email })});
+      const res  = await fetch(GAS_URL, {method:'POST', body:JSON.stringify({
+        action:'addUser', email, name, prefix,
+        role:document.getElementById('new-role').value,
+        phone:document.getElementById('new-phone').value.trim(),
+        department:document.getElementById('new-department').value.trim(),
+        position:document.getElementById('new-position').value.trim(),
+        online_contact:document.getElementById('new-online').value.trim(),
+        added_by:user.email
+      })});
       const data = await res.json();
-      if (data.success) { showMsg('✅ เพิ่มผู้ใช้สำเร็จ','success'); ['new-email','new-name','new-phone','new-department','new-position','new-online'].forEach(id=>document.getElementById(id).value=''); loadAll(); }
-      else showMsg('❌ '+data.message,'error');
+      if (data.success) {
+        showMsg('✅ เพิ่มผู้ใช้สำเร็จ','success');
+        ['new-email','new-name','new-prefix','new-phone','new-department','new-position','new-online'].forEach(id=>document.getElementById(id).value='');
+        loadAll();
+      } else showMsg('❌ '+data.message,'error');
     }
 
     function openEditModal(email) {
       const u = allUsers.find(u=>u.email===email); if (!u) return;
-      ['edit-email','edit-name','edit-department','edit-position','edit-phone','edit-online'].forEach(id => {
-        const map = {'edit-email':'email','edit-name':'name','edit-department':'department','edit-position':'position','edit-phone':'phone','edit-online':'online_contact'};
-        document.getElementById(id).value = u[map[id]]||'';
-      });
-      document.getElementById('edit-role').value = u.role||'user';
-      document.getElementById('msg-edit').style.display = 'none';
+      document.getElementById('edit-email').value      = u.email;
+      document.getElementById('edit-prefix').value     = u.prefix||'';
+      document.getElementById('edit-name').value       = u.name||'';
+      document.getElementById('edit-role').value       = u.role||'user';
+      document.getElementById('edit-department').value = u.department||'';
+      document.getElementById('edit-position').value   = u.position||'';
+      document.getElementById('edit-phone').value      = u.phone||'';
+      document.getElementById('edit-online').value     = u.online_contact||'';
+      document.getElementById('msg-edit').style.display='none';
       document.getElementById('edit-modal').classList.add('show');
     }
     function closeEditModal() { document.getElementById('edit-modal').classList.remove('show'); }
 
     async function saveEditUser() {
       const name = document.getElementById('edit-name').value.trim();
+      const prefix = document.getElementById('edit-prefix').value.trim();
       if (!name) { showEditMsg('กรุณากรอกชื่อ','error'); return; }
-      const res  = await fetch(GAS_URL, {method:'POST', body:JSON.stringify({ action:'updateUser', email:document.getElementById('edit-email').value, name, role:document.getElementById('edit-role').value, department:document.getElementById('edit-department').value.trim(), position:document.getElementById('edit-position').value.trim(), phone:document.getElementById('edit-phone').value.trim(), online_contact:document.getElementById('edit-online').value.trim() })});
+      const res  = await fetch(GAS_URL, {method:'POST', body:JSON.stringify({
+        action:'updateUser', email:document.getElementById('edit-email').value, name, prefix,
+        role:document.getElementById('edit-role').value,
+        department:document.getElementById('edit-department').value.trim(),
+        position:document.getElementById('edit-position').value.trim(),
+        phone:document.getElementById('edit-phone').value.trim(),
+        online_contact:document.getElementById('edit-online').value.trim()
+      })});
       const data = await res.json();
       if (data.success) { closeEditModal(); showMsg('✅ แก้ไขข้อมูลสำเร็จ','success'); loadAll(); }
       else showEditMsg('❌ '+data.message,'error');
@@ -575,23 +606,27 @@
 
     async function toggleUserStatus(email, status) {
       if (!confirm((status==='inactive'?'บล็อก':'ปลดบล็อก')+' '+email+' ?')) return;
-      const res  = await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'toggleUserStatus',email,status})});
+      const res = await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'toggleUserStatus',email,status})});
       const data = await res.json();
       if (data.success) { showMsg('✅ สำเร็จ','success'); loadAll(); } else showMsg('❌ '+data.message,'error');
     }
 
     // ===== Device =====
     async function addDevice() {
-      const devId = document.getElementById('dev-id').value.trim();
-      const krupha= document.getElementById('dev-krupha').value.trim();
-      const brand = document.getElementById('dev-brand').value.trim();
-      const model = document.getElementById('dev-model').value.trim();
-      const loc   = document.getElementById('dev-location').value.trim();
-      const type  = document.getElementById('dev-type').value;
-      const owner = document.getElementById('dev-owner').value;
+      const devId=document.getElementById('dev-id').value.trim(), krupha=document.getElementById('dev-krupha').value.trim();
+      const brand=document.getElementById('dev-brand').value.trim(), model=document.getElementById('dev-model').value.trim();
+      const loc=document.getElementById('dev-location').value.trim(), type=document.getElementById('dev-type').value;
+      const owner=document.getElementById('dev-owner').value;
       if (!devId||!krupha||!brand||!model||!loc) { showDeviceMsg('กรุณากรอกข้อมูลที่มี * ให้ครบ','error'); return; }
       if (type==='assigned'&&!owner) { showDeviceMsg('กรุณาเลือกผู้ถือครอง','error'); return; }
-      const res  = await fetch(GAS_URL, {method:'POST', body:JSON.stringify({ action:'addDevice', device_id:devId, krupha_no:krupha, serial_no:document.getElementById('dev-serial').value.trim(), mac_ethernet:document.getElementById('dev-mac').value.trim(), mac_wifi:document.getElementById('dev-macwifi').value.trim(), mac_bluetooth:document.getElementById('dev-macbt').value.trim(), name:getDeviceName(), category:document.getElementById('dev-category').value, brand, model, purchase_date:document.getElementById('dev-date').value, purchase_price:document.getElementById('dev-price').value, type, status:type==='assigned'?'assigned':'available', owner_email:owner, location:loc, added_by:user.email })});
+      const res  = await fetch(GAS_URL, {method:'POST', body:JSON.stringify({
+        action:'addDevice', device_id:devId, krupha_no:krupha, serial_no:document.getElementById('dev-serial').value.trim(),
+        mac_ethernet:document.getElementById('dev-mac').value.trim(), mac_wifi:document.getElementById('dev-macwifi').value.trim(),
+        mac_bluetooth:document.getElementById('dev-macbt').value.trim(), name:getDeviceName(),
+        category:document.getElementById('dev-category').value, brand, model,
+        purchase_date:document.getElementById('dev-date').value, purchase_price:document.getElementById('dev-price').value,
+        type, status:type==='assigned'?'assigned':'available', owner_email:owner, location:loc, added_by:user.email
+      })});
       const data = await res.json();
       if (data.success) {
         showDeviceMsg('✅ เพิ่มสำเร็จ','success');
@@ -602,168 +637,101 @@
     }
 
     async function updateStatus(deviceId, status) {
-      const res  = await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'updateDeviceStatus',device_id:deviceId,status})});
-      const data = await res.json();
-      if (data.success) loadAll();
+      const res = await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'updateDeviceStatus',device_id:deviceId,status})});
+      const data = await res.json(); if (data.success) loadAll();
     }
 
-    // ===== Ticket — modal แทน prompt =====
+    // ===== Ticket =====
     function closeTicket(ticketId) {
-      pendingTicketId = ticketId;
-      document.getElementById('close-ticket-solution').value = '';
-      document.getElementById('msg-close-ticket').style.display = 'none';
+      pendingTicketId=ticketId; document.getElementById('close-ticket-solution').value='';
+      document.getElementById('msg-close-ticket').style.display='none';
       document.getElementById('close-ticket-modal').classList.add('show');
     }
-
     async function submitCloseTicket() {
-      const solution = document.getElementById('close-ticket-solution').value.trim();
-      if (!solution) {
-        const el = document.getElementById('msg-close-ticket');
-        el.style.display='block'; el.className='msg-error'; el.textContent='กรุณากรอกวิธีแก้ไข'; return;
-      }
-      const btn = document.querySelector('#close-ticket-modal .btn-primary');
-      btn.disabled=true; btn.textContent='⏳ กำลังบันทึก...';
-      const res  = await fetch(GAS_URL, {method:'POST', body:JSON.stringify({action:'closeTicket', ticket_id:pendingTicketId, solution, assigned_to:user.email})});
-      const data = await res.json();
+      const solution=document.getElementById('close-ticket-solution').value.trim();
+      if (!solution) { const el=document.getElementById('msg-close-ticket'); el.style.display='block'; el.className='msg-error'; el.textContent='กรุณากรอกวิธีแก้ไข'; return; }
+      const btn=document.querySelector('#close-ticket-modal .btn-primary'); btn.disabled=true; btn.textContent='⏳ กำลังบันทึก...';
+      const res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'closeTicket',ticket_id:pendingTicketId,solution,assigned_to:user.email})});
+      const data=await res.json();
       if (data.success) { document.getElementById('close-ticket-modal').classList.remove('show'); loadAll(); }
       else { const el=document.getElementById('msg-close-ticket'); el.style.display='block'; el.className='msg-error'; el.textContent='❌ '+data.message; btn.disabled=false; btn.textContent='✅ บันทึกและปิดงาน'; }
     }
 
     // ===== Borrow =====
-    function openApproveModal(borrowId) {
-      document.getElementById('approve-borrow-id').value = borrowId;
-      document.getElementById('approve-note').value = '';
-      document.getElementById('msg-approve').style.display = 'none';
-      document.getElementById('approve-modal').classList.add('show');
-    }
+    function openApproveModal(borrowId) { document.getElementById('approve-borrow-id').value=borrowId; document.getElementById('approve-note').value=''; document.getElementById('msg-approve').style.display='none'; document.getElementById('approve-modal').classList.add('show'); }
     function closeApproveModal() { document.getElementById('approve-modal').classList.remove('show'); }
-
     async function submitApproveBorrow() {
-      const borrowId = document.getElementById('approve-borrow-id').value;
-      const note     = document.getElementById('approve-note').value.trim();
-      const btn = document.querySelector('#approve-modal .btn-primary');
-      btn.disabled=true; btn.textContent='⏳ กำลังบันทึก...';
-      const res  = await fetch(GAS_URL, {method:'POST', body:JSON.stringify({action:'approveBorrow', borrow_id:borrowId, approved_by:user.email, note})});
-      const data = await res.json();
+      const borrowId=document.getElementById('approve-borrow-id').value, note=document.getElementById('approve-note').value.trim();
+      const btn=document.querySelector('#approve-modal .btn-primary'); btn.disabled=true; btn.textContent='⏳ กำลังบันทึก...';
+      const res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'approveBorrow',borrow_id:borrowId,approved_by:user.email,note})});
+      const data=await res.json();
       if (data.success) { closeApproveModal(); loadAll(); }
       else { const el=document.getElementById('msg-approve'); el.style.display='block'; el.className='msg-error'; el.textContent=data.message; btn.disabled=false; btn.textContent='✅ ยืนยันอนุมัติ'; }
     }
 
-    // ===== ไม่อนุมัติ — modal แทน prompt =====
-    function rejectBorrow(borrowId) {
-      pendingRejectId = borrowId;
-      document.getElementById('reject-reason').value = '';
-      document.getElementById('msg-reject').style.display = 'none';
-      document.getElementById('reject-modal').classList.add('show');
-    }
-
+    function rejectBorrow(borrowId) { pendingRejectId=borrowId; document.getElementById('reject-reason').value=''; document.getElementById('msg-reject').style.display='none'; document.getElementById('reject-modal').classList.add('show'); }
     async function submitRejectBorrow() {
-      const reason = document.getElementById('reject-reason').value.trim();
-      const btn = document.querySelector('#reject-modal .btn-primary');
-      btn.disabled=true; btn.textContent='⏳ กำลังบันทึก...';
-      const res  = await fetch(GAS_URL, {method:'POST', body:JSON.stringify({action:'rejectBorrow', borrow_id:pendingRejectId, reason, rejected_by:user.email})});
-      const data = await res.json();
+      const reason=document.getElementById('reject-reason').value.trim();
+      const btn=document.querySelector('#reject-modal .btn-primary'); btn.disabled=true; btn.textContent='⏳ กำลังบันทึก...';
+      const res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'rejectBorrow',borrow_id:pendingRejectId,reason,rejected_by:user.email})});
+      const data=await res.json();
       if (data.success) { document.getElementById('reject-modal').classList.remove('show'); loadAll(); }
       else { const el=document.getElementById('msg-reject'); el.style.display='block'; el.className='msg-error'; el.textContent='❌ '+data.message; btn.disabled=false; btn.textContent='❌ ยืนยันไม่อนุมัติ'; }
     }
 
-    // ===== ยืนยันรับคืน =====
     function onConditionChange() {
-      const cond  = document.getElementById('cr-condition').value;
-      const group = document.getElementById('cr-detail-group');
-      const label = document.getElementById('cr-detail-label');
+      const cond=document.getElementById('cr-condition').value, group=document.getElementById('cr-detail-group'), label=document.getElementById('cr-detail-label');
       if (cond==='ขาดอุปกรณ์') { group.style.display='block'; label.textContent='ระบุอุปกรณ์ที่ขาด *'; document.getElementById('cr-detail').placeholder='เช่น สายชาร์จ, กระเป๋า...'; document.getElementById('cr-next-status').value='prep'; }
-      else if (cond==='เสียหาย') { group.style.display='block'; label.textContent='ระบุความเสียหาย *'; document.getElementById('cr-detail').placeholder='เช่น หน้าจอแตก, แป้นพิมพ์ไม่ทำงาน...'; document.getElementById('cr-next-status').value='degraded'; }
+      else if (cond==='เสียหาย') { group.style.display='block'; label.textContent='ระบุความเสียหาย *'; document.getElementById('cr-detail').placeholder='เช่น หน้าจอแตก...'; document.getElementById('cr-next-status').value='degraded'; }
       else { group.style.display='none'; document.getElementById('cr-next-status').value='available'; }
     }
-
-    function openConfirmReturn(borrowId) {
-      document.getElementById('cr-borrow-id').value = borrowId;
-      document.getElementById('cr-note').value = '';
-      document.getElementById('cr-detail').value = '';
-      document.getElementById('cr-condition').value = 'ปกติ';
-      document.getElementById('cr-next-status').value = 'available';
-      document.getElementById('cr-detail-group').style.display = 'none';
-      document.getElementById('msg-cr').style.display = 'none';
-      document.getElementById('confirm-return-modal').classList.add('show');
-    }
+    function openConfirmReturn(borrowId) { document.getElementById('cr-borrow-id').value=borrowId; document.getElementById('cr-note').value=''; document.getElementById('cr-detail').value=''; document.getElementById('cr-condition').value='ปกติ'; document.getElementById('cr-next-status').value='available'; document.getElementById('cr-detail-group').style.display='none'; document.getElementById('msg-cr').style.display='none'; document.getElementById('confirm-return-modal').classList.add('show'); }
     function closeConfirmReturnModal() { document.getElementById('confirm-return-modal').classList.remove('show'); }
-
     async function submitConfirmReturn() {
-      const condition = document.getElementById('cr-condition').value;
-      const detail    = document.getElementById('cr-detail').value.trim();
-      if ((condition==='ขาดอุปกรณ์'||condition==='เสียหาย') && !detail) {
-        const el=document.getElementById('msg-cr'); el.style.display='block'; el.className='msg-error'; el.textContent='กรุณาระบุรายละเอียดสภาพอุปกรณ์'; return;
-      }
-      const btn = document.querySelector('#confirm-return-modal .btn-primary');
-      btn.disabled=true; btn.textContent='⏳ กำลังบันทึก...';
-      const res  = await fetch(GAS_URL, {method:'POST', body:JSON.stringify({ action:'confirmReturn', borrow_id:document.getElementById('cr-borrow-id').value, condition, condition_detail:detail, next_status:document.getElementById('cr-next-status').value, note:document.getElementById('cr-note').value.trim(), confirmed_by:user.email })});
-      const data = await res.json();
+      const condition=document.getElementById('cr-condition').value, detail=document.getElementById('cr-detail').value.trim();
+      if ((condition==='ขาดอุปกรณ์'||condition==='เสียหาย')&&!detail) { const el=document.getElementById('msg-cr'); el.style.display='block'; el.className='msg-error'; el.textContent='กรุณาระบุรายละเอียดสภาพอุปกรณ์'; return; }
+      const btn=document.querySelector('#confirm-return-modal .btn-primary'); btn.disabled=true; btn.textContent='⏳ กำลังบันทึก...';
+      const res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'confirmReturn',borrow_id:document.getElementById('cr-borrow-id').value,condition,condition_detail:detail,next_status:document.getElementById('cr-next-status').value,note:document.getElementById('cr-note').value.trim(),confirmed_by:user.email})});
+      const data=await res.json();
       if (data.success) { closeConfirmReturnModal(); loadAll(); }
       else { const el=document.getElementById('msg-cr'); el.style.display='block'; el.className='msg-error'; el.textContent='❌ '+data.message; btn.disabled=false; btn.textContent='✅ ยืนยันรับคืน'; }
     }
 
     // ===== Photo Modal =====
-    let currentLightboxUrl = '';
-
+    let currentLightboxUrl='';
     function openPhotoModal(ticketId, urls) {
-      document.getElementById('photo-modal-title').textContent = '📷 รูปภาพแจ้งซ่อม — ' + ticketId + ' (' + urls.length + ' รูป)';
-      const grid = document.getElementById('photo-grid-modal');
-      if (!urls.length) { grid.innerHTML = '<div class="photo-empty">ไม่มีรูปภาพ</div>'; }
-      else {
-        grid.innerHTML = urls.map((url, i) => `
-          <div class="photo-thumb" onclick="openLightbox('${url}')">
-            <img src="${url}" alt="รูป ${i+1}" onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:11px;color:#999;padding:8px;text-align:center;cursor:pointer\' onclick=\'window.open(\\\"${url}\\\",\\\"_blank\\\")\'>กดเพื่อเปิดใน Drive</div>'"/>
-            <span class="photo-num">รูป ${i+1}</span>
-          </div>`).join('');
-      }
+      document.getElementById('photo-modal-title').textContent='📷 รูปภาพแจ้งซ่อม — '+ticketId+' ('+urls.length+' รูป)';
+      const grid=document.getElementById('photo-grid-modal');
+      if (!urls.length) { grid.innerHTML='<div class="photo-empty">ไม่มีรูปภาพ</div>'; }
+      else { grid.innerHTML=urls.map((url,i)=>`<div class="photo-thumb" onclick="openLightbox('${url}')"><img src="${url}" alt="รูป ${i+1}" onerror="this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;font-size:11px;color:#999;padding:8px;text-align:center;cursor:pointer\' onclick=\'window.open(\\\"${url}\\\",\\\"_blank\\\")\'>กดเพื่อเปิดใน Drive</div>'"/><span class="photo-num">รูป ${i+1}</span></div>`).join(''); }
       document.getElementById('photo-modal-overlay').classList.add('show');
     }
-
     function closePhotoModal() { document.getElementById('photo-modal-overlay').classList.remove('show'); }
-
-    function openLightbox(url) {
-      currentLightboxUrl = url;
-      document.getElementById('lightbox-img').src = url;
-      document.getElementById('lightbox').classList.add('show');
-    }
+    function openLightbox(url) { currentLightboxUrl=url; document.getElementById('lightbox-img').src=url; document.getElementById('lightbox').classList.add('show'); }
     function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); }
-    function openLightboxUrl(e) { e.stopPropagation(); if (currentLightboxUrl) window.open(currentLightboxUrl, '_blank'); }
+    function openLightboxUrl(e) { e.stopPropagation(); if (currentLightboxUrl) window.open(currentLightboxUrl,'_blank'); }
 
     // ===== Device modal =====
     function openEditDeviceModal(deviceId) {
-      const d = allDevices.find(d=>d.device_id===deviceId); if (!d) return;
-      document.getElementById('ed-device-id').value = d.device_id;
-      document.getElementById('ed-id').value        = d.device_id;
-      document.getElementById('ed-krupha').value    = d.krupha_no||'';
-      document.getElementById('ed-serial').value    = d.serial_no||'';
-      document.getElementById('ed-category').value  = d.category||'Other';
-      document.getElementById('ed-brand').value     = d.brand||'';
-      document.getElementById('ed-model').value     = d.model||'';
-      document.getElementById('ed-type').value      = d.type||'borrow';
-      document.getElementById('ed-location').value  = d.location||'';
-      document.getElementById('ed-date').value      = d.purchase_date ? String(d.purchase_date).split('T')[0] : '';
-      document.getElementById('ed-price').value     = d.purchase_price||'';
-      document.getElementById('ed-mac').value       = d.mac_ethernet||'';
-      document.getElementById('ed-macwifi').value   = d.mac_wifi||'';
-      document.getElementById('ed-name-preview').textContent = d.name||'-';
-      document.getElementById('msg-ed').style.display='none';
-      document.getElementById('edit-device-modal').classList.add('show');
+      const d=allDevices.find(d=>d.device_id===deviceId); if (!d) return;
+      document.getElementById('ed-device-id').value=d.device_id; document.getElementById('ed-id').value=d.device_id;
+      document.getElementById('ed-krupha').value=d.krupha_no||''; document.getElementById('ed-serial').value=d.serial_no||'';
+      document.getElementById('ed-category').value=d.category||'Other'; document.getElementById('ed-brand').value=d.brand||'';
+      document.getElementById('ed-model').value=d.model||''; document.getElementById('ed-type').value=d.type||'borrow';
+      document.getElementById('ed-location').value=d.location||'';
+      document.getElementById('ed-date').value=d.purchase_date?String(d.purchase_date).split('T')[0]:'';
+      document.getElementById('ed-price').value=d.purchase_price||''; document.getElementById('ed-mac').value=d.mac_ethernet||'';
+      document.getElementById('ed-macwifi').value=d.mac_wifi||''; document.getElementById('ed-name-preview').textContent=d.name||'-';
+      document.getElementById('msg-ed').style.display='none'; document.getElementById('edit-device-modal').classList.add('show');
     }
-    function updateEditDeviceName() {
-      document.getElementById('ed-name-preview').textContent = [document.getElementById('ed-category').value, document.getElementById('ed-brand').value.trim(), document.getElementById('ed-model').value.trim()].filter(Boolean).join(' ') || '-';
-    }
+    function updateEditDeviceName() { document.getElementById('ed-name-preview').textContent=[document.getElementById('ed-category').value,document.getElementById('ed-brand').value.trim(),document.getElementById('ed-model').value.trim()].filter(Boolean).join(' ')||'-'; }
     function closeEditDeviceModal() { document.getElementById('edit-device-modal').classList.remove('show'); }
-
     async function saveEditDevice() {
-      const brand = document.getElementById('ed-brand').value.trim();
-      const model = document.getElementById('ed-model').value.trim();
-      const cat   = document.getElementById('ed-category').value;
+      const brand=document.getElementById('ed-brand').value.trim(), model=document.getElementById('ed-model').value.trim(), cat=document.getElementById('ed-category').value;
       if (!brand||!model) { showEdMsg('กรุณากรอกยี่ห้อและรุ่น','error'); return; }
-      const btn = document.querySelector('#edit-device-modal .btn-primary');
-      btn.disabled=true; btn.textContent='⏳ กำลังบันทึก...';
-      const res  = await fetch(GAS_URL, {method:'POST', body:JSON.stringify({ action:'updateDevice', device_id:document.getElementById('ed-device-id').value, krupha_no:document.getElementById('ed-krupha').value.trim(), serial_no:document.getElementById('ed-serial').value.trim(), name:[cat,brand,model].filter(Boolean).join(' '), category:cat, brand, model, type:document.getElementById('ed-type').value, location:document.getElementById('ed-location').value.trim(), purchase_date:document.getElementById('ed-date').value, purchase_price:document.getElementById('ed-price').value, mac_ethernet:document.getElementById('ed-mac').value.trim(), mac_wifi:document.getElementById('ed-macwifi').value.trim() })});
-      const data = await res.json();
+      const btn=document.querySelector('#edit-device-modal .btn-primary'); btn.disabled=true; btn.textContent='⏳ กำลังบันทึก...';
+      const res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'updateDevice',device_id:document.getElementById('ed-device-id').value,krupha_no:document.getElementById('ed-krupha').value.trim(),serial_no:document.getElementById('ed-serial').value.trim(),name:[cat,brand,model].filter(Boolean).join(' '),category:cat,brand,model,type:document.getElementById('ed-type').value,location:document.getElementById('ed-location').value.trim(),purchase_date:document.getElementById('ed-date').value,purchase_price:document.getElementById('ed-price').value,mac_ethernet:document.getElementById('ed-mac').value.trim(),mac_wifi:document.getElementById('ed-macwifi').value.trim()})});
+      const data=await res.json();
       if (data.success) { closeEditDeviceModal(); loadAll(); }
       else { showEdMsg('❌ '+data.message,'error'); btn.disabled=false; btn.textContent='💾 บันทึก'; }
     }
@@ -772,17 +740,11 @@
       document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['users','devices','tickets','borrows'][i]===tab));
       document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('active',['panel-users','panel-devices','panel-tickets','panel-borrows'][i]==='panel-'+tab));
     }
-
-    function formatDate(v) {
-      if (!v) return '-';
-      try { return new Date(v).toLocaleDateString('th-TH',{year:'numeric',month:'short',day:'numeric'}); }
-      catch(e) { return String(v); }
-    }
-
-    function showMsg(t,type)       { const el=document.getElementById('msg-admin');  el.style.display='block'; el.className=type==='success'?'msg-success':'msg-error'; el.textContent=t; setTimeout(()=>el.style.display='none',3000); }
+    function formatDate(v) { if (!v) return '-'; try { return new Date(v).toLocaleDateString('th-TH',{year:'numeric',month:'short',day:'numeric'}); } catch(e) { return String(v); } }
+    function showMsg(t,type) { const el=document.getElementById('msg-admin'); el.style.display='block'; el.className=type==='success'?'msg-success':'msg-error'; el.textContent=t; setTimeout(()=>el.style.display='none',3000); }
     function showDeviceMsg(t,type) { const el=document.getElementById('msg-device'); el.style.display='block'; el.className=type==='success'?'msg-success':'msg-error'; el.textContent=t; setTimeout(()=>el.style.display='none',3000); }
-    function showEditMsg(t,type)   { const el=document.getElementById('msg-edit');   el.style.display='block'; el.className=type==='success'?'msg-success':'msg-error'; el.textContent=t; }
-    function showEdMsg(t,type)     { const el=document.getElementById('msg-ed');     el.style.display='block'; el.className=type==='success'?'msg-success':'msg-error'; el.textContent=t; }
+    function showEditMsg(t,type) { const el=document.getElementById('msg-edit'); el.style.display='block'; el.className=type==='success'?'msg-success':'msg-error'; el.textContent=t; }
+    function showEdMsg(t,type) { const el=document.getElementById('msg-ed'); el.style.display='block'; el.className=type==='success'?'msg-success':'msg-error'; el.textContent=t; }
 
     loadAll();
   </script>
