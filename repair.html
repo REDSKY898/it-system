@@ -7,77 +7,33 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Sarabun', sans-serif; background: #f0f4f8; }
-    .navbar {
-      background: #1D9E75; padding: 14px 24px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
+    .navbar { background: #1D9E75; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
     .navbar-brand { color: white; font-size: 18px; font-weight: 600; }
-    .btn-back {
-      background: rgba(255,255,255,0.2); color: white;
-      border: none; padding: 6px 14px; border-radius: 8px;
-      cursor: pointer; font-size: 13px;
-    }
+    .btn-back { background: rgba(255,255,255,0.2); color: white; border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; }
     .container { max-width: 600px; margin: 0 auto; padding: 24px 16px; }
-    .card {
-      background: white; border-radius: 16px; padding: 24px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 16px;
-    }
-    .card-title {
-      font-size: 15px; font-weight: 600; color: #1a1a1a;
-      margin-bottom: 16px; padding-bottom: 10px;
-      border-bottom: 0.5px solid #eee;
-    }
-
-    /* Toggle ประเภทอุปกรณ์ */
-    .type-toggle {
-      display: flex; gap: 8px; margin-bottom: 16px;
-    }
-    .type-btn {
-      flex: 1; padding: 10px; border-radius: 10px; border: 1.5px solid #ddd;
-      background: white; font-size: 13px; font-weight: 500; cursor: pointer;
-      font-family: inherit; color: #666; transition: all 0.2s;
-    }
-    .type-btn.active {
-      background: #1D9E75; color: white; border-color: #1D9E75;
-    }
-
-    .device-selected {
-      display: flex; align-items: center; gap: 12px;
-      background: #f0f4f8; border-radius: 10px; padding: 12px;
-      margin-bottom: 16px;
-    }
+    .card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 16px; }
+    .card-title { font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 0.5px solid #eee; }
+    .type-toggle { display: flex; gap: 8px; margin-bottom: 16px; }
+    .type-btn { flex: 1; padding: 10px; border-radius: 10px; border: 1.5px solid #ddd; background: white; font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; color: #666; transition: all 0.2s; }
+    .type-btn.active { background: #1D9E75; color: white; border-color: #1D9E75; }
+    .device-selected { display: flex; align-items: center; gap: 12px; background: #f0f4f8; border-radius: 10px; padding: 12px; margin-bottom: 16px; }
     .device-icon { font-size: 28px; }
     .device-info-name { font-size: 14px; font-weight: 500; color: #1a1a1a; }
     .device-info-code { font-size: 12px; color: #999; font-family: monospace; }
-    .btn-change {
-      margin-left: auto; font-size: 12px; color: #1D9E75;
-      background: none; border: none; cursor: pointer;
-    }
+    .btn-change { margin-left: auto; font-size: 12px; color: #1D9E75; background: none; border: none; cursor: pointer; }
     .form-group { margin-bottom: 16px; }
-    .form-label {
-      font-size: 13px; font-weight: 500; color: #444;
-      margin-bottom: 6px; display: block;
-    }
+    .form-label { font-size: 13px; font-weight: 500; color: #444; margin-bottom: 6px; display: block; }
     .form-label span { color: #e53e3e; }
-    .form-input {
-      width: 100%; padding: 10px 14px; border: 0.5px solid #ddd;
-      border-radius: 10px; font-size: 14px; outline: none;
-      font-family: inherit; background: white; color: #1a1a1a;
-    }
+    .form-input { width: 100%; padding: 10px 14px; border: 0.5px solid #ddd; border-radius: 10px; font-size: 14px; outline: none; font-family: inherit; background: white; color: #1a1a1a; }
     .form-input:focus { border-color: #1D9E75; }
     textarea.form-input { height: 100px; resize: none; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-    /* Personal device box */
-    .personal-box {
-      background: #fff8f0; border: 1.5px solid #EF9F27;
-      border-radius: 12px; padding: 16px; margin-bottom: 16px;
-    }
+    .personal-box { background: #fff8f0; border: 1.5px solid #EF9F27; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
     .personal-box .form-input:focus { border-color: #EF9F27; }
+    .note-personal { font-size: 12px; color: #EF9F27; font-weight: 500; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
 
-    .photo-grid {
-      display: grid; grid-template-columns: repeat(5,1fr); gap: 8px;
-    }
+    /* Photo grid */
+    .photo-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; }
     .photo-slot {
       aspect-ratio: 1; border: 1.5px dashed #ddd; border-radius: 10px;
       display: flex; flex-direction: column; align-items: center;
@@ -85,26 +41,34 @@
       background: #fafafa; position: relative; overflow: hidden;
     }
     .photo-slot:hover { border-color: #1D9E75; background: #f0fdf8; }
-    .photo-slot img { width: 100%; height: 100%; object-fit: cover; position: absolute; }
+    .photo-slot img { width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; }
     .photo-slot input { display: none; }
     .photo-label { font-size: 10px; color: #999; margin-top: 4px; }
-    .btn-submit {
-      width: 100%; padding: 14px; background: #1D9E75; color: white;
-      border: none; border-radius: 12px; font-size: 16px; font-weight: 500;
-      cursor: pointer; margin-top: 8px;
+    .photo-slot .remove-btn {
+      position: absolute; top: 3px; right: 3px; width: 18px; height: 18px;
+      background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%;
+      font-size: 10px; cursor: pointer; display: none;
+      align-items: center; justify-content: center; z-index: 10; line-height: 1;
     }
+    .photo-slot.has-image .remove-btn { display: flex; }
+    .photo-slot.has-image .photo-label { display: none; }
+
+    /* Size indicator */
+    .size-info { font-size: 11px; color: #888; margin-top: 6px; }
+    .size-info span { color: #1D9E75; font-weight: 500; }
+
+    /* Progress */
+    .upload-progress { display: none; margin-top: 10px; }
+    .progress-bar-wrap { background: #eee; border-radius: 6px; height: 6px; margin-top: 6px; }
+    .progress-bar { background: #1D9E75; height: 6px; border-radius: 6px; width: 0%; transition: width 0.3s; }
+    .progress-text { font-size: 12px; color: #666; margin-top: 4px; }
+
+    .btn-submit { width: 100%; padding: 14px; background: #1D9E75; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 500; cursor: pointer; margin-top: 8px; }
     .btn-submit:hover { background: #178a64; }
     .btn-submit:disabled { background: #aaa; cursor: not-allowed; }
-    #msg {
-      padding: 12px; border-radius: 10px; font-size: 14px;
-      text-align: center; display: none; margin-top: 12px;
-    }
+    #msg { padding: 12px; border-radius: 10px; font-size: 14px; text-align: center; display: none; margin-top: 12px; }
     .msg-success { background: #E1F5EE; color: #085041; }
     .msg-error { background: #FCEBEB; color: #791F1F; }
-    .note-personal {
-      font-size: 12px; color: #EF9F27; font-weight: 500;
-      margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
-    }
   </style>
 </head>
 <body>
@@ -112,28 +76,22 @@
   <div class="navbar">
     <span class="navbar-brand">🔧 แจ้งซ่อม</span>
     <div style="display:flex;gap:8px">
-  <button class="btn-back" onclick="history.back()">← กลับ</button>
-  <button class="btn-back" onclick="location.href='dashboard.html'">🏠 หน้าแรก</button>
-</div>
+      <button class="btn-back" onclick="history.back()">← กลับ</button>
+      <button class="btn-back" onclick="location.href='dashboard.html'">🏠 หน้าแรก</button>
+    </div>
   </div>
 
   <div class="container">
     <div class="card">
       <p class="card-title">อุปกรณ์ที่แจ้งซ่อม</p>
 
-      <!-- Toggle ประเภท -->
       <div class="type-toggle">
-        <button class="type-btn active" id="btn-system" onclick="switchType('system')">
-          💻 อุปกรณ์ในระบบ
-        </button>
-        <button class="type-btn" id="btn-personal" onclick="switchType('personal')">
-          👤 อุปกรณ์ส่วนตัว
-        </button>
+        <button class="type-btn active" id="btn-system" onclick="switchType('system')">💻 อุปกรณ์ในระบบ</button>
+        <button class="type-btn" id="btn-personal" onclick="switchType('personal')">👤 อุปกรณ์ส่วนตัว</button>
       </div>
 
-      <!-- อุปกรณ์ในระบบ -->
       <div id="section-system">
-        <div class="device-selected" id="device-selected">
+        <div class="device-selected">
           <span class="device-icon" id="rep-icon">📦</span>
           <div>
             <p class="device-info-name" id="rep-name">เลือกอุปกรณ์</p>
@@ -143,7 +101,6 @@
         </div>
       </div>
 
-      <!-- อุปกรณ์ส่วนตัว -->
       <div id="section-personal" style="display:none">
         <div class="personal-box">
           <p class="note-personal">⚠️ กรอกข้อมูลอุปกรณ์ส่วนตัวให้ครบเพื่อให้ IT ระบุได้ถูกต้อง</p>
@@ -180,59 +137,53 @@
         </div>
       </div>
 
-      <!-- อาการ -->
       <div class="form-group">
         <label class="form-label">อาการที่พบ <span>*</span></label>
-        <textarea class="form-input" id="symptom"
-          placeholder="อธิบายอาการที่พบ เช่น หน้าจอกะพริบ เปิดไม่ติด ปริ้นไม่ได้..."></textarea>
+        <textarea class="form-input" id="symptom" placeholder="อธิบายอาการที่พบ เช่น หน้าจอกะพริบ เปิดไม่ติด ปริ้นไม่ได้..."></textarea>
       </div>
 
-      <!-- รูปภาพ -->
+      <!-- รูปภาพ + compress -->
       <div class="form-group">
         <label class="form-label">รูปภาพประกอบ (สูงสุด 5 รูป)</label>
-        <div class="photo-grid">
-          <div class="photo-slot" onclick="document.getElementById('photo1').click()">
-            📷<span class="photo-label">รูปที่ 1</span>
-            <input type="file" id="photo1" accept="image/*" onchange="previewPhoto(this,0)"/>
-          </div>
-          <div class="photo-slot" onclick="document.getElementById('photo2').click()">
-            📷<span class="photo-label">รูปที่ 2</span>
-            <input type="file" id="photo2" accept="image/*" onchange="previewPhoto(this,1)"/>
-          </div>
-          <div class="photo-slot" onclick="document.getElementById('photo3').click()">
-            📷<span class="photo-label">รูปที่ 3</span>
-            <input type="file" id="photo3" accept="image/*" onchange="previewPhoto(this,2)"/>
-          </div>
-          <div class="photo-slot" onclick="document.getElementById('photo4').click()">
-            📷<span class="photo-label">รูปที่ 4</span>
-            <input type="file" id="photo4" accept="image/*" onchange="previewPhoto(this,3)"/>
-          </div>
-          <div class="photo-slot" onclick="document.getElementById('photo5').click()">
-            📷<span class="photo-label">รูปที่ 5</span>
-            <input type="file" id="photo5" accept="image/*" onchange="previewPhoto(this,4)"/>
-          </div>
+        <div class="photo-grid" id="photo-grid">
+          <!-- สร้างด้วย JS -->
+        </div>
+        <div class="size-info" id="size-info" style="display:none">
+          ขนาดรูปรวมหลัง compress: <span id="size-total">0 KB</span>
         </div>
       </div>
 
-      <button class="btn-submit" id="btn-submit" onclick="submitRepair()">
-        📨 ส่งแจ้งซ่อม
-      </button>
+      <!-- Progress -->
+      <div class="upload-progress" id="upload-progress">
+        <div class="progress-text" id="progress-text">กำลังประมวลผลรูป...</div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+      </div>
+
+      <button class="btn-submit" id="btn-submit" onclick="submitRepair()">📨 ส่งแจ้งซ่อม</button>
       <div id="msg"></div>
     </div>
   </div>
 
   <script>
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbwRwYG6zliBbpSrQQzgTIVhFODMbe6Nfb5zG-AV_APAIuC-2HP2QJAb98FfKEYVC3vY/exec';
+    const ICONS = { 'Notebook':'💻','Projector':'📽️','PC':'🖥️','Adapter':'🔌','Camera':'📷','Mouse':'🖱️','default':'📦' };
 
-    const ICONS = {
-      'Notebook':'💻','Projector':'📽️','PC':'🖥️',
-      'Adapter':'🔌','Camera':'📷','Mouse':'🖱️','default':'📦'
-    };
+    // ==========================================
+    // Config compress
+    // ==========================================
+    const COMPRESS_MAX_PX  = 1280;  // ด้านยาวสุดหลัง resize (px)
+    const COMPRESS_QUALITY = 0.70;  // JPEG quality 0-1
+    const MAX_PHOTOS = 5;
 
     let currentType = 'system';
+    // เก็บ compressed base64 ของแต่ละ slot
+    const photoData = new Array(MAX_PHOTOS).fill(null); // { base64, sizeKB, filename }
 
     const deviceStr = localStorage.getItem('selectedDevice');
     const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user.email) location.href = 'index.html';
 
     if (deviceStr) {
       const d = JSON.parse(deviceStr);
@@ -241,81 +192,185 @@
       document.getElementById('rep-code').textContent = d.device_id + ' · ' + d.krupha_no;
     }
 
+    // สร้าง photo slots
+    const grid = document.getElementById('photo-grid');
+    for (let i = 0; i < MAX_PHOTOS; i++) {
+      grid.innerHTML += `
+        <div class="photo-slot" id="slot-${i}" onclick="triggerFile(${i})">
+          <span style="font-size:20px">📷</span>
+          <span class="photo-label">รูปที่ ${i+1}</span>
+          <input type="file" id="photo-input-${i}" accept="image/*" onchange="handlePhoto(this,${i})"/>
+          <button class="remove-btn" onclick="removePhoto(event,${i})">✕</button>
+        </div>`;
+    }
+
+    function triggerFile(i) {
+      if (document.getElementById('slot-' + i).classList.contains('has-image')) return;
+      document.getElementById('photo-input-' + i).click();
+    }
+
+    function removePhoto(e, i) {
+      e.stopPropagation();
+      const slot = document.getElementById('slot-' + i);
+      slot.classList.remove('has-image');
+      slot.innerHTML = `
+        <span style="font-size:20px">📷</span>
+        <span class="photo-label">รูปที่ ${i+1}</span>
+        <input type="file" id="photo-input-${i}" accept="image/*" onchange="handlePhoto(this,${i})"/>
+        <button class="remove-btn" onclick="removePhoto(event,${i})">✕</button>`;
+      photoData[i] = null;
+      updateSizeInfo();
+    }
+
+    // ==========================================
+    // compress รูปใน browser ด้วย Canvas
+    // ==========================================
+    function compressImage(file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            // คำนวณ dimension ใหม่ ไม่เกิน COMPRESS_MAX_PX
+            let w = img.width, h = img.height;
+            if (w > COMPRESS_MAX_PX || h > COMPRESS_MAX_PX) {
+              if (w >= h) { h = Math.round(h * COMPRESS_MAX_PX / w); w = COMPRESS_MAX_PX; }
+              else        { w = Math.round(w * COMPRESS_MAX_PX / h); h = COMPRESS_MAX_PX; }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            const base64 = canvas.toDataURL('image/jpeg', COMPRESS_QUALITY);
+            // คำนวณขนาด KB จาก base64 (หัก data:image/jpeg;base64,)
+            const sizeKB = Math.round((base64.length - 'data:image/jpeg;base64,'.length) * 3 / 4 / 1024);
+            resolve({ base64, sizeKB, filename: file.name.replace(/\.[^.]+$/, '') + '.jpg' });
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function handlePhoto(input, i) {
+      if (!input.files[0]) return;
+      const file = input.files[0];
+      const slot = document.getElementById('slot-' + i);
+
+      // แสดง loading
+      slot.innerHTML = '<span style="font-size:12px;color:#999">⏳</span>';
+
+      const result = await compressImage(file);
+      photoData[i] = result;
+
+      // แสดง preview
+      slot.classList.add('has-image');
+      slot.innerHTML = `
+        <img src="${result.base64}" alt="รูปที่ ${i+1}"/>
+        <input type="file" id="photo-input-${i}" accept="image/*" onchange="handlePhoto(this,${i})"/>
+        <button class="remove-btn" onclick="removePhoto(event,${i})">✕</button>`;
+
+      updateSizeInfo();
+    }
+
+    function updateSizeInfo() {
+      const total = photoData.reduce((s, p) => s + (p ? p.sizeKB : 0), 0);
+      const count = photoData.filter(Boolean).length;
+      const info = document.getElementById('size-info');
+      if (count > 0) {
+        info.style.display = 'block';
+        document.getElementById('size-total').textContent = count + ' รูป · ' + total + ' KB';
+      } else {
+        info.style.display = 'none';
+      }
+    }
+
     function switchType(type) {
       currentType = type;
       document.getElementById('btn-system').classList.toggle('active', type === 'system');
       document.getElementById('btn-personal').classList.toggle('active', type === 'personal');
-      document.getElementById('section-system').style.display = type === 'system' ? 'block' : 'none';
+      document.getElementById('section-system').style.display   = type === 'system'   ? 'block' : 'none';
       document.getElementById('section-personal').style.display = type === 'personal' ? 'block' : 'none';
     }
 
-    function previewPhoto(input, index) {
-      if (!input.files[0]) return;
-      const slots = document.querySelectorAll('.photo-slot');
-      const reader = new FileReader();
-      reader.onload = e => {
-        const img = document.createElement('img');
-        img.src = e.target.result;
-        slots[index].innerHTML = '';
-        slots[index].appendChild(img);
-      };
-      reader.readAsDataURL(input.files[0]);
-    }
-
+    // ==========================================
+    // ส่งข้อมูล + รูป
+    // ==========================================
     async function submitRepair() {
       const symptom = document.getElementById('symptom').value.trim();
       if (!symptom) { showMsg('กรุณากรอกอาการที่พบ', 'error'); return; }
 
-      let device_id = '';
-      let deviceLabel = '';
-
+      let device_id = '', deviceLabel = '';
       if (currentType === 'system') {
         if (!deviceStr) { showMsg('กรุณาเลือกอุปกรณ์ก่อน', 'error'); return; }
         const device = JSON.parse(deviceStr);
-        device_id = device.device_id;
-        deviceLabel = device.name;
+        device_id    = device.device_id;
+        deviceLabel  = device.name;
       } else {
-        const brand = document.getElementById('p-brand').value.trim();
-        const model = document.getElementById('p-model').value.trim();
+        const brand    = document.getElementById('p-brand').value.trim();
+        const model    = document.getElementById('p-model').value.trim();
         const category = document.getElementById('p-category').value;
-        const desc = document.getElementById('p-desc').value.trim();
+        const desc     = document.getElementById('p-desc').value.trim();
         if (!brand) { showMsg('กรุณากรอกยี่ห้ออุปกรณ์', 'error'); return; }
-        device_id = '[ส่วนตัว]';
+        device_id   = '[ส่วนตัว]';
         deviceLabel = category + ' ' + brand + ' ' + model + (desc ? ' (' + desc + ')' : '');
       }
 
+      const photos = photoData.filter(Boolean); // เฉพาะ slot ที่มีรูป
+
       const btn = document.getElementById('btn-submit');
       btn.disabled = true;
-      btn.textContent = '⏳ กำลังส่ง...';
+
+      // ถ้ามีรูป — แสดง progress
+      if (photos.length > 0) {
+        btn.textContent = '⏳ กำลังอัปโหลด...';
+        document.getElementById('upload-progress').style.display = 'block';
+        setProgress(10, 'กำลังส่งข้อมูล...');
+      } else {
+        btn.textContent = '⏳ กำลังส่ง...';
+      }
 
       const payload = {
         action: 'createTicket',
-        device_id: device_id,
+        device_id,
         device_label: deviceLabel,
         requester_email: user.email || '',
-        symptom: symptom,
-        is_personal: currentType === 'personal'
+        symptom,
+        is_personal: currentType === 'personal',
+        // ส่ง array รูป: base64 (ตัด data:image/jpeg;base64, ออก) + filename
+        images: photos.map(p => ({
+          base64: p.base64.replace(/^data:image\/jpeg;base64,/, ''),
+          filename: p.filename
+        }))
       };
 
+      if (photos.length > 0) setProgress(30, 'กำลังส่งรูป ' + photos.length + ' ใบ...');
+
       try {
-        const res = await fetch(GAS_URL, {
-          method: 'POST',
-          body: JSON.stringify(payload)
-        });
+        const res = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+        if (photos.length > 0) setProgress(90, 'GAS กำลังบันทึกรูป...');
         const data = await res.json();
         if (data.success) {
-          showMsg('✅ ส่งแจ้งซ่อมสำเร็จ! Ticket: ' + data.ticket_id, 'success');
+          setProgress(100, 'เสร็จแล้ว!');
+          const imgNote = data.image_count > 0 ? ` · ${data.image_count} รูป` : '';
+          showMsg('✅ ส่งแจ้งซ่อมสำเร็จ! Ticket: ' + data.ticket_id + imgNote, 'success');
           btn.textContent = '✅ ส่งแล้ว';
         } else {
           showMsg('❌ ' + data.message, 'error');
           btn.disabled = false;
           btn.textContent = '📨 ส่งแจ้งซ่อม';
+          document.getElementById('upload-progress').style.display = 'none';
         }
       } catch(e) {
         showMsg('❌ เกิดข้อผิดพลาด กรุณาลองใหม่', 'error');
         btn.disabled = false;
         btn.textContent = '📨 ส่งแจ้งซ่อม';
+        document.getElementById('upload-progress').style.display = 'none';
       }
+    }
+
+    function setProgress(pct, text) {
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').textContent = text;
     }
 
     function showMsg(text, type) {
